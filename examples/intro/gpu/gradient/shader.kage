@@ -1,0 +1,11 @@
+package main
+
+func Fragment(position vec4, _ vec2, _ vec4) vec4 {
+	return Gradient(position.xy)
+}
+
+func Gradient(position vec2) vec4 {
+	green   := (299 - position.y)/299
+	magenta := position.y/299
+	return vec4(magenta, green, magenta, 1.0)
+}
