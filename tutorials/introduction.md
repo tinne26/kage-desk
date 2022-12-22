@@ -4,7 +4,7 @@ Kage is a programming language to implement shaders in Ebitengine.
 
 If you are new to shaders, the short version is that they are programs that run on the GPU instead of the CPU. For our purposes, shaders are programs that allow us to create or modify images[^1], like recoloring them, adding noise or grain, distorting them and many others. Shaders are programs that allow us to perform sophisticated computations for the individual pixels of an image in a highly parallel manner.
 
-[^1]: Shaders can also be used for general computation, not just graphics, but that's outside the scope of this guide. We have thrown a few links [here]() if you want to learn more later.
+[^1]: Shaders can also be used for general computation, not just graphics, but that's outside the scope of this guide. We have thrown a few links [here](https://github.com/tinne26/kage-desk/blob/main/tutorials/general_links.md) if you want to learn more later.
 
 There are a few different languages in which shaders can be written: you may have heard of GLSL, HLSL and others. Ebitengine has it's own intermediate language, Kage, which allows us to write shaders in a Golang-like syntax and forget about the rest. At runtime, Ebitengine will translate that Kage program to HLSL, MSL or whatever language is needed to make it work on the platform where the game's being run.
 
@@ -17,6 +17,7 @@ There are a few different languages in which shaders can be written: you may hav
 6. [More input: uniforms](#more-input-uniforms)
 7. [Using a texture](#using-a-texture)
 8. [Screen vs sprites](#screen-effects-vs-sprite-effects)
+
 
 ## CPU vs GPU: a change of mindset
 
@@ -51,7 +52,7 @@ func Gradient() *image.RGBA {
 	return img
 }
 ```
-*(full program available at [examples/intro/cpu/gradient](https://github.com/tinne26/kage-desk/examples/intro/cpu/gradient))*
+*(Full program available at [examples/intro/cpu/gradient](https://github.com/tinne26/kage-desk/blob/main/examples/intro/cpu/gradient))*
 
 The GPU program, instead, would go like this (pseudo-code only for the moment):
 ```Golang
@@ -61,7 +62,7 @@ func Gradient(position vec2) vec4 {
 	return vec4(magenta, green, magenta, 1.0)
 }	
 ```
-*(full program available at [examples/intro/gpu/gradient](https://github.com/tinne26/kage-desk/examples/intro/gpu/gradient))*
+*(Full program available at [examples/intro/gpu/gradient](https://github.com/tinne26/kage-desk/blob/main/examples/intro/gpu/gradient))*
 
 Notice that there's no outer loop. Without going into details, we can see that we only take the position of the pixel to compute and figure out its color. An operation for a single pixel.
 
@@ -77,6 +78,7 @@ Congratulations, you have successfully executed your first Kage shader!
 
 Key takeaway:
 > When creating shaders, we need to break a task into a pixel-level independent process.
+
 
 ## The first Kage program
 
@@ -132,6 +134,7 @@ vec3(32, 44.0, 0).xy // fields can't only be accessed as rgba, but also xyzw or 
 vec2(3, 5).yxx // you can even use a different order or repeated fields!
 ```
 The field access thingie is called "swizzling", if you needed the fancy name.
+
 
 ## The `position` input parameter
 
@@ -197,6 +200,7 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	}
 }
 ```
+
 If your screen has any form of DPI scaling, you may see the result somewhat aliased. What would you do to make the pattern bigger? Like, alternating 2x2 pixels white and 2x2 pixels black? This one is a bit trickier, but that's the kind of math problems you will often find with shaders. Think about it for a while!
 
 Here's my solution:
@@ -210,11 +214,13 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	}
 }
 ```
+
 You can also divide by 4, for example, to see the result more clearly. If you got it, well done! If you didn't, don't worry. There's a common idea here that's worth explaining as it comes up all the time when writing shaders: conceptually, we wanted to do the same as in the previous example... but at a different scale. We wanted to project the original "canvas" to one that was half the size, and then apply the same `mod` function as we had been doing. This idea of scaling / projecting / deforming a space or surface is quite common in shaders. In general, when you have to work at the context of a single pixel, mathematical transformations are a very powerful tool.
 
 Let's go with another challenge. Remember the half-white half-black screen? Try now to make the split be wavy instead of a straight line using `sin` or `cos`.
 
 I kinda liked this version (you can use the environment variable `EBITENGINE_SCREENSHOT_KEY=q` to take screenshots):
+
 ![](https://github.com/tinne26/kage-desk/blob/main/img/intro_gpu_wave.png?raw=true)
 
 My code looked like this:
@@ -262,11 +268,14 @@ func main() {
 }
 ```
 
+
 ## More input: uniforms
 ...
 
+
 ## Using a texture
 ...
+
 
 ## Screen effects vs sprite effects
 ...

@@ -2,7 +2,7 @@
 
 **UNDER CONSTRUCTION**
 
-This repository is a project to make Kage shaders more accessible to Ebitengine[^1] game developers. Whether you are a newbie at shaders and need a [gentle introduction]() to them, you are a curious passerby looking for [cool examples](), or you are an initiated user looking for snippets and [cheatsheets](), we made this to help you out.
+This repository is a project to make Kage shaders more accessible to Ebitengine[^1] game developers. Whether you are a newbie at shaders and need a [gentle introduction](https://github.com/tinne26/kage-desk/blob/main/tutorials/introduction.md) to them, you are a curious passerby looking for [cool examples](), or you are an initiated user looking for snippets and [cheatsheets](), we made this to help you out.
 
 Without further ado:
 - [Kage for newbies](https://github.com/tinne26/kage-desk/blob/main/tutorials/introduction.md): learn about shaders and Kage from zero. Practical oriented to game development.
