@@ -21,9 +21,9 @@ There are a few different languages in which shaders can be written: you may hav
 
 ## CPU vs GPU: a change of mindset
 
-While we would love to jump right away into Kage, understanding in which ways CPU programs are different from GPU programs will allow us to move forward much faster later. When are shaders better than their CPU equivalents... and why?
+Jumping right into Kage would be nice, but before that it may be wiser to try to understand how CPU and GPU programs differ.
 
-The key concept behind shaders is **parallelization**. GPUs don't solve one big problem sequentially, but many small problems at the same time. Instead of looping through each pixel of an image to decide its color, a single shader program is run on many pixels in parallel, at the same time. Shader programs, therefore, only need to determine the color of the specific pixel they are being executed for. Yes! A single shader program is executed many times, one for each pixel, without any information being shared between runs or any specific order!
+When we talk about shaders, we have to talk about **parallelism**. If CPUs can solve big problems sequentially, GPUs prefer solving many small problems at the same time. Instead of looping through each pixel of an image to decide their color, shader programs are executed on many pixels at once, executing many instances of the same program in parallel.
 
 This can be hard to grasp at first, so let's start with an example. Let's create a vertical gradient of 300x300, from green to magenta, like the following:
 
