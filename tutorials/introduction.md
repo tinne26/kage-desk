@@ -105,6 +105,7 @@ func Fragment(_ vec4, _ vec2, _ vec4) vec4 {
 	// ...
 }
 ```
+*(Tip: you can [configure your editor](https://github.com/tinne26/kage-desk/blob/main/tutorials/config_editor.md) to highlight `.kage` files like `.go` programs)*
 
 In main programs, the "main" function is the entry point. In Ebitengine shaders, the "Fragment" function is the entry point instead. The reason the entry function is called "Fragment" is because there are multiple types of shader programs: vertex shaders, geometry shaders, compute shaders, tessellation shaders... and fragment shaders. Fragment shaders, also called pixel shaders, are shaders that compute the color of a single pixel or fragment. Ebitengine only has fragment shaders at the moment.
 
@@ -122,6 +123,7 @@ You probably figured it out on your own, but as you can see, we don't use `color
 ```Golang
 func Fragment(_ vec4, _ vec2, _ vec4) vec4
 ```
+
 We have a few input vectors of different sizes that we are ignoring for the moment, and one output `vec4`. That output vector is the color of the pixel! With alpha included after the red, green and blue values.
 
 Vectors in Kage are made of `float` values, which have 32-bit precision. That's why the color values don't range from 0 to 255 but rather 0 to 1. If you use values outside that range in the returned color, they will be clamped to 0 - 1.

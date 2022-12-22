@@ -5,9 +5,9 @@ There are two ways:
 - Use [sedyh/ebitengine-kage](https://github.com/sedyh/ebitengine-kage-vscode) plugins for VSCode, Sublime or Vim.
 
 If you decide to go with the first option:
-- VSCode: open a `.kage` file, press F1 to open the search, type "language", select `Change Language Mode`, then `Configure File Association for '.kage'`, and select `Go` from the list of options.
-- Sublime: open a `.kage` file and go to `View`, then `Syntax`, then `Open all with current extension as...` and choose `Go`.
-- Vim: open a `.kage` file and use `:set syntax=go`.
+- **VSCode**: open a `.kage` file, press F1 to open the search, type "language", select `Change Language Mode`, then `Configure File Association for '.kage'`, and select `Go` from the list of options.
+- **Sublime**: open a `.kage` file and go to `View`, then `Syntax`, then `Open all with current extension as...` and choose `Go`.
+- **Vim**: open a `.kage` file and use `:set syntax=go`.
 - ...
 
 If your editor is missing or the given instructions don't work, let us know and help us improve this!
