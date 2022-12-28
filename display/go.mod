@@ -1,4 +1,4 @@
-module github.com/tinne26/kage-desk/tools/display
+module github.com/tinne26/kage-desk/display
 
 go 1.19
 

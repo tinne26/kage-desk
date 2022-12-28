@@ -1,7 +1,7 @@
 go 1.19
 
 use (
-	./examples/intro/cpu/gradient
-	./examples/intro/gpu/gradient
-	./tools/display
+	./examples/intro/gradient-cpu
+	./examples/intro/gradient
+	./display
 )

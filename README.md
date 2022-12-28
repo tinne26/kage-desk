@@ -2,11 +2,11 @@
 
 **UNDER CONSTRUCTION**
 
-This repository is a project to make Kage shaders more accessible to Ebitengine[^1] game developers. Whether you are a newbie at shaders and need a [gentle introduction](https://github.com/tinne26/kage-desk/blob/main/tutorials/introduction.md) to them, you are a curious passerby looking for [cool examples](), or you are an initiated user looking for snippets and [cheatsheets](), we made this to help you out.
+This repository is a project to make Kage shaders more accessible to Ebitengine[^1] game developers. Whether you are a newbie at shaders and need a [gentle introduction](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/00_main.md) to them, you are a curious passerby looking for [cool examples](), or you are an initiated user looking for snippets and [cheatsheets](), we made this to help you out.
 
 Without further ado:
-- [Kage for newbies](https://github.com/tinne26/kage-desk/blob/main/tutorials/introduction.md): learn about shaders and Kage from zero. Practical oriented to game development.
-- [Kage for game devs](): quickstart guide to Kage for those already familiar with shaders.
+- [Kage for newbies](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/00_main.md): learn about shaders and Kage from zero. Practical oriented to game development.
+- [Kage for game devs](https://github.com/tinne26/kage-desk/blob/main/tutorials/kage_for_devs.md): quickstart guide to Kage for those already familiar with shaders.
 - [The pirate doc](): references, cheatsheets and shiny techniques for the seadogs.
 - [The official doc](https://ebitengine.org/en/documents/shader.html): *the* reference from Hajime Hoshi himself. Concise and with good coverage.
 - [Learn by example](): simple examples to serve as references for common techniques and problems.
