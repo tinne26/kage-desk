@@ -73,15 +73,17 @@ Let's summarize before the next section:
 - Maths and projections are a very important tool in the GPU realm.
 
 
-#### Table of Contents  
+### Table of Contents
+Next up: [#5](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md).
+
 0. [Main](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/00_main.md)
 1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/01_cpu_vs_gpu.md)
 2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/02_shader_setup.md)
 3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/03_position_input.md)
-4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/04_built_in_functions.md) <= current step
-5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md) <= next step! (WIP)
-6. [More input: uniforms]() (WIP)
-7. [Using a texture]() (WIP)
-8. [Screen vs sprite effects]() (WIP)
-9. [Performance considerations]() (WIP)
-10. [Graduation challenges]() (WIP)
+4. [**Built-in functions**](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/04_built_in_functions.md)
+5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
+6. [More input: uniforms]()
+7. [Using a texture]()
+8. [Screen vs sprite effects]()
+9. [Performance considerations]()
+10. [Graduation challenges]()
