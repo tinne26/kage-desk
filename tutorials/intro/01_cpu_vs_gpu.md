@@ -34,7 +34,7 @@ func Gradient() *image.RGBA {
 	return img
 }
 ```
-*(Full program available at [examples/intro/cpu/gradient](https://github.com/tinne26/kage-desk/blob/main/examples/intro/gradient-cpu))*
+*(Full program available at [examples/intro/gradient-cpu](https://github.com/tinne26/kage-desk/blob/main/examples/intro/gradient-cpu))*
 
 That should be easy enough to understand. Let's take a look at the GPU version now, in pseudo-code:
 ```Golang
@@ -44,7 +44,7 @@ func Gradient(position vec2) vec4 {
 	return vec4(0, green, blue, 1.0)
 }	
 ```
-*(Full program available at [examples/intro/gpu/gradient](https://github.com/tinne26/kage-desk/blob/main/examples/intro/gradient))*
+*(Full program available at [examples/intro/gradient](https://github.com/tinne26/kage-desk/blob/main/examples/intro/gradient))*
 
 Notice that in this version there's no outer loop. We won't go into much detail, but you can see that we only take the position of the pixel we are working on and compute its color. One pixel, one calculation.
 

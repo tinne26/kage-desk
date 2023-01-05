@@ -2,7 +2,7 @@
 
 The half-white half-black shader was too easy, so let's complicate it a bit more now. For example, if I asked you to make a shader that creates a pattern by making a pixel white if it's on an even position, and black otherwise... would you be able to make it?
 
-Well, with what you have been explained up to this point, you won't. Because you don't know how to check if a number is even or odd in a Kage shader: it's time to introduce the *built-in* functions. Although there's a [full list](https://ebitengine.org/en/documents/shader.html#Built-in_functions_(mathematics)) at the official ebitengine.org page for shaders, I don't recommend going there yet. Just know it exists. Instead, I'll share the most common ones here:
+Well, with what you have been explained up to this point, you won't. Because you don't know how to check if a number is even or odd in a Kage shader: it's time to introduce the *built-in* functions. Although there's a [full list](https://ebitengine.org/en/documents/shader.html#Built-in_functions_(mathematics)) at ebitengine.org, you don't need to go there yet, just know it exists. Learning about a few of the functions will do for the moment:
 - Single argument functions: `abs`, `sign` (returns -1, 0 or 1), `sin`, `cos`, `sqrt`, `floor`, `ceil`, `fract` (returns the fractional part of a number), `length` (length of a vector) and `len` (same as in Golang, but applied to `vec` types, there are no slices or maps in Kage).
 - Two-argument functions: `mod(x, m)` (`%`), `min(a, b)`, `max(a, b)`, `pow(x, exp)`, `step(s, x)` (0 if `x < s`, 1 otherwise), `distance(pointA, pointB)`.
 - Three-argument functions: `clamp(x, min, max)`, `mix(a, b, t)` (linear interpolation).

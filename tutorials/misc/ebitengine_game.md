@@ -55,15 +55,15 @@ First, let's see the method signature:
 Layout(logicWinWidth, logicWinHeight int) (canvasWidth, canvasHeight int)
 ```
 
-Ebitengine calls `Layout()` with the current window size in logical or *device-independent pixels*, which are pixels divided by the display scaling. Then, based on this "window size", you can tell Ebitengine what do you want your "canvas size" to be. The canvas size is the specific size in pixels of the "canvas" you want to draw your game graphics to. If the canvas size is different from the window size, then Ebitengine will automatically apply some scaling to your "canvas" so it fits the current window.
+Ebitengine calls `Layout()` with the current window size in logical or *device-independent pixels*, which are pixels divided by the display scaling[^1]. Then, based on this "window size", you can tell Ebitengine what do you want your "canvas size" to be. The canvas size is the specific size in pixels of the "canvas" you want to draw your game graphics to. If the canvas size is different from the window size with the display scale applied, then Ebitengine will automatically apply some scaling to your "canvas" so it fits the current window.
 
-You are probably still super confused. Logical pixels? Display scaling? Window size? Canvas size? Are there "real pixels" too then? Weeeeell... on some platforms you can have "real pixels", and on others not, like macOS. Sometimes you don't know exactly how your pixels will end up being projected to the screen. We are still going to try our best.
+You are probably still super confused. Logical pixels? Display scaling? Window size? Canvas size? Are there "real pixels" too then? Weeeeell... on some platforms you can have "real pixels" and on others not (e.g. macOS). Sometimes you simply don't know exactly how your pixels will be projected to the screen. We are still going to try our best.
 
 ### One step at a time
 
 Let's start with a low-resolution game. Imagine you make a game with a very small 128x72 resolution (128 pixels wide, 72 pixels tall) and want it to look as good as possible on Ebitengine. When we say 128x72, we are referring to our "canvas size". We will make pixel art assets that fit within a game screen of that size. Canvas sizes are not some abstract dimensions: your sprites have a concrete amount of pixels, and you position these sprites in concrete positions of the canvas. Artists can set each pixel with love, care and certainty. Simple stuff, great stuff.
 
-So we make our beautiful pixel art, our fantastic pixelated world... and when everything seems perfect, the time to project it to a screen of arbitrary size[^1] arrives.
+So we make our beautiful pixel art, our fantastic pixelated world... and when everything seems perfect, the time to project it to a screen of arbitrary size[^2] arrives.
 
 The simplest option in this case would be the following:
 ```Golang
@@ -73,11 +73,11 @@ We tell Ebitengine that we *don't care* what the current screen size is, that we
 
 This simple approach is actually perfectly ok for most pixel art games that *only contain pixel art*. Ebitengine won't change the aspect ratio of your game and will keep black bars on the top or the sides of the screen if necessary, but beyond that it will only try to scale the canvas to fill as much of the window as possible.
 
-You may notice that this can still produce distortions. For example, if the actual screen size is 1920x1080, the canvas will be zoomed in x15 in both dimensions. Since this is a whole number, what before was one pixel now will become a block of 15x15 pixels, but the game will visually remain the same. But if the screen size is 1366x768 instead, the scaling will be x10.67! Scaling the canvas as much as possible can cause distortions.
+You may notice that this can still produce distortions. For example, if the actual screen size is 1920x1080, the canvas will be zoomed-in x15 in both dimensions. Since this is a whole number, what before was one pixel now will become a block of 15x15 pixels, but the game will visually remain the same. But if the screen size is 1366x768 instead, the scaling will be x10.67! Scaling the canvas as much as possible can cause distortions.
 
 On the topic of distortions and scaling, you should know that Ebitengine supports both simple interpolation and nearest neighbour scaling, which can be configured through `ebiten.SetScreenFilterEnabled(bool)`. This filter is enabled by default, but in some very specific cases the game may look better with the filter disabled. Just keep it in mind as a possibility.
 
-Sadly, this will only change the "type of distortions" that you get. Depending on your game's original resolution and the screen it's being projected to, these distortions can be more or less annoying.
+Sadly, this will only change the "type of distortions" that you get. Depending on your game's original resolution and the screen it's being projected to, these distortions can be more or less noticeable.
 
 One idea I personally like is adding an option in the game to do only integer scaling. Instead of scaling by x10.67, one can do the scaling manually and truncate the scaling factor so it's x10 instead, and then center the result on the screen. Depending on the game resolution, this can end up wasting a lot of space on the screen, but it's an idea to keep in mind if you want to go the extra mile to allow a truly pixel-perfect experience. Unless the game is being played on macOS, of course. You can't do pixel-perfect on macOS, period.
 
@@ -109,7 +109,7 @@ func (_ *Game) LayoutF(logicWinWidth, logicWinHeight float64) (float64, float64)
 }
 ```
 
-Notice that `Layout()` still needs to exist with a dummy implementation (e.g. `panic("unused")`) so your struct complies with the `ebiten.Game` interface.
+Notice that `Layout()` still needs to exist with a dummy implementation (e.g. `panic("unused")`) so your struct complies with the `ebiten.Game` interface. Can't wait for `LayoutF()` to become the default in v3!
 
 The need for `math.Ceil` is an implementation detail that we shouldn't have to be aware of, but that's what we have for the moment.
 
@@ -123,4 +123,5 @@ Layout gives us the **window size** and we return our desired **canvas size** ba
 
 For high resolution games, we will need to make use of **`LayoutF()`**, **`DeviceScaleFactor()`** and keep this scaling factor into account for many game elements.
 
-[^1]: To be fair, screen sizes are not arbitrary. The most common aspect ratio is 16:9. When making a pure pixel-art game, you should choose a multiple of that (e.g. 128x72, 256x144, 512x288, 768x432...). The most common screen resolution is 1920x1080, so choosing a size that divides that evenly is almost always a good idea. You may also go for a 4:3 ratio, also quite common in games, but then you will have black borders on most modern screens (you could do screen stretching yourself, but that's *really ugly*).
+[^1]: The display scaling is the "zoom level" applied to the screen contents. Screens can have different resolutions, and the pixel sizes can also vary between screens. For example, a screen with a very high resolution may have pixels that are half the size compared to another screen. In practice, this means we should not be drawing fixed size graphics (e.g. 32x32 pixels) on a screen. We need to worry about the display scaling and apply it in order to properly dimension the content we want to draw. In Ebitengine, the display scaling can be obtained through the `DeviceScaleFactor()` function.
+[^2]: To be fair, screen sizes are not arbitrary. The most common aspect ratio is 16:9. When making a pure pixel-art game, you should choose a multiple of that (e.g. 128x72, 256x144, 512x288, 768x432...). The most common screen resolution is 1920x1080, so choosing a size that divides that evenly is almost always a good idea. You may also go for a 4:3 ratio, also quite common in games, but then you will have black borders on most modern screens (you could do screen stretching yourself, but that's *really ugly*).

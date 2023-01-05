@@ -4,9 +4,9 @@ Shaders, being run in the GPU as they are, are rather limited in regards of the 
 
 So... can we pass additional parameters to the shaders?
 
-The answer to this question are uniforms: uniforms are variables whose values can be set from your code running on the CPU.
+The answer to this question is yes: **uniforms** are variables whose values can be set from your code running on the CPU.
 
-As an exercise, now we will try to draw a circumference using a shader. Our draw function looked like this in the last chapter:
+In order to show how to use uniforms, we will try to draw a circumference using a shader now. Our draw function looked like this in the last chapter:
 ```Golang
 func (self *Game) Draw(screen *ebiten.Image) {
 	// create draw options
@@ -18,7 +18,7 @@ func (self *Game) Draw(screen *ebiten.Image) {
 }
 ```
 
-Now we will change it a bit to add a new parameter for our shader: the center center position and radius of our circle.
+Now we will change it a bit to add a new parameter for our shader: the center position of our circle.
 ```Golang
 func (self *Game) Draw(screen *ebiten.Image) {
 	// create draw options
@@ -47,7 +47,7 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 
 Uniform variables must always be capitalized (exported variables) and appear at the start of our shader code.
 
-Try to complete the shader so it draw a circumference. Use a radius of 80px and any color you want.
+Try to complete the shader so it draws a circumference. Use a radius of 80px and any color you want.
 
 Here's a possible solution:
 ```Golang
@@ -102,7 +102,9 @@ Again we made it too easy? Ok, ok... then, here's a challenge. Try to do this:
 
 ![](https://github.com/tinne26/kage-desk/blob/main/img/circle_anim.gif?raw=true)
 
-Spoilers on how to solve this problem: add an `angle int` variable to the `Game`, going from 0 to 359 and back again to zero at a rate of 1 degree per tick, and then on `Draw()` use a radius of `80 + 30*someOscillatingFactor`, where the factor oscillates between `[-1, 1]`.
+Basically, we will have the same we had in the latest shader, but animating the circumference radius.
+
+Spoilers on how to solve this problem: add an `angle int` variable to the `Game` struct. You want its value to go from 0 to 359 and back again to zero at a rate of 1 degree per tick. Then, on `Draw()`, you can use a radius of `80 + 30*someOscillatingFactor`, where the factor oscillates between `[-1, 1]` and is derived from the `angle`.
 
 The actual code can be found at [`kage-desk/examples/intro/circle-anim`](https://github.com/tinne26/kage-desk/blob/main/examples/intro/circle-anim).
 

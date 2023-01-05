@@ -1,8 +1,8 @@
 ## Invoking shaders manually
 
-While writing the first shaders we have been using `kage-desk/display` to keep our `main.go` file really simple. This is great to get started, but if we want to keep expanding our powers, we need to take off the training wheels. We have learned how to make shaders, but we still haven't seen how to invoke them from Ebitengine by ourselves.
+While writing the first shaders we have been using `kage-desk/display` to keep our `main.go` file really simple. This is great to get started, but if we want to keep growing, we need to take off the training wheels. We have learned how to make shaders, but we still haven't seen how to invoke them from Ebitengine by ourselves.
 
-Let's start by reworking our `main.go` with `ebiten.DrawRectShader(...)`, which is the simplest call that can be used to invoke a shader in Ebitengine:
+Let's start by reworking our `main.go` with [`ebiten.DrawRectShader(...)`](https://pkg.go.dev/github.com/hajimehoshi/ebiten/v2#Image.DrawRectShader), which is the simplest call that can be used to invoke a shader in Ebitengine:
 ```Golang
 package main
 
@@ -59,7 +59,7 @@ It takes more code than before, but most of it is boilerplate that you should al
 - The `Game` struct itself only keeps a reference to the compiled shader program and draws it with `DrawRectShader()` on each frame. The arguments of `DrawRectShader()` are the width and height of the area the shader will be drawn on, the compiled shader object and the draw options. The code shows that `GeoM` is available on the options, and the fancier options will be explained in the next chapter.
 - The last point to keep in mind is that we are using a fixed layout of 512x512 at all times. If you are still confused about how `Game.Layout()` works in Ebitengine, make sure to [revise the basics](https://github.com/tinne26/kage-desk/blob/main/tutorials/misc/ebitengine_game.md). More advanced examples may use variable sizes in the future, and you may need to adjust the position or resolution of the shader.
 
-*(If you are having any trouble, the full code for this manual shader invocation (along with the wave shader of the previous section) can be found at [`kage-desk/examples/intro/invoke-shader`](https://github.com/tinne26/kage-desk/blob/main/examples/intro/invoke-shader).)*
+*(If you are having any trouble, the full code for this manual shader invocation (along with the wave shader of the previous section) can be found at [`kage-desk/examples/intro/invoke-shader`](https://github.com/tinne26/kage-desk/blob/main/examples/intro/invoke-shader))*
 
 There's another way to invoke a shader, using `DrawTrianglesShader()` instead of `DrawRectShader()`. GPUs can only draw triangles, so using this call can be more efficient and/or offer more fine-grained control, but it's also more advanced and you may not need it yet. Drawing triangles in Ebitengine does confuse quite a lot of people, so we have made a [tutorial for drawing triangles](https://github.com/tinne26/kage-desk/blob/main/tutorials/misc/triangles.md), but you should skip it unless you are specifically interested in it.
 
