@@ -1,0 +1,10 @@
+package main
+
+var Center vec2
+var Radius float
+
+func Fragment(position vec4, _ vec2, _ vec4) vec4 {
+	factor := distance(Center, position.xy) - Radius
+	factor  = clamp(-factor, 0, 1)
+	return vec4(204.0/255, 41.0/255, 54.0/255, 1.0)*factor
+}

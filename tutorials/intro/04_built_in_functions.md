@@ -23,7 +23,7 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 }
 ```
 
-If your screen has any form of DPI scaling, you may see the result somewhat aliased. What would you do to make the pattern bigger? Like, alternating 2x2 pixels white and 2x2 pixels black? This one is a bit trickier, but that's the kind of math problems you will often find with shaders. Think about it for a while!
+If your screen has any form of DPI scaling, you may see the result somewhat aliased. What would you do to make the pattern bigger and easier to see? Like, alternating 2x2 pixels white and 2x2 pixels black? This one is a bit trickier, but that's the kind of math problems you will often find with shaders. Think about it for a while!
 
 Here's my solution:
 ```Golang
@@ -37,7 +37,7 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 }
 ```
 
-You can also divide by 4, for example, to see the result more clearly. If you got it, well done! If you didn't, don't worry. There's a common idea here that's worth explaining as it comes up all the time when writing shaders: conceptually, we wanted to do the same as in the previous example... but at a different scale. We wanted to project the original "canvas" to one that was half the size, and then apply the same `mod` function as we had been doing. This idea of scaling / projecting / deforming a space or surface is quite common in shaders. In general, when you have to work at the context of a single pixel, mathematical transformations are a very powerful tool.
+You can also divide by 4, for example, to see the result even more clearly. If you got it, well done! If you didn't, don't worry. There's a common idea here that's worth explaining as it comes up all the time when writing shaders: conceptually, we wanted to do the same as in the previous example... but at a different scale. We wanted to project the original "canvas" to one that was half the size, and then apply the same `mod` function as we had been doing. This idea of scaling / projecting / deforming a space or surface is extremely common in shaders. It may be confusing at the beginning, but try to wrap your mind around it. In general, when you have to work at the context of a single pixel, mathematical transformations are a very powerful tool.
 
 Let's go with another challenge. Remember the half-white half-black screen? Try now to make the split be wavy instead of a straight line using `sin` or `cos`.
 
@@ -82,8 +82,8 @@ Next up: [#5](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_
 3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/03_position_input.md)
 4. [**Built-in functions**](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/04_built_in_functions.md)
 5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
-6. [More input: uniforms]()
-7. [Using a texture]()
+6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md)
+7. [Using images](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md)
 8. [Screen vs sprite effects]()
 9. [Performance considerations]()
 10. [Graduation challenges]()

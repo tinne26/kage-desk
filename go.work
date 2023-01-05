@@ -3,5 +3,8 @@ go 1.19
 use (
 	./examples/intro/gradient-cpu
 	./examples/intro/gradient
+	./examples/intro/invoke-shader
+	./examples/intro/circle-anim
+	./examples/misc/triangles
 	./display
 )
