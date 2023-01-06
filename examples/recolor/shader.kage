@@ -1,0 +1,23 @@
+package main
+
+var DarkColor  vec4
+var LightColor vec4
+
+func Fragment(_ vec4, texCoord vec2, _ vec4) vec4 {
+	color := imageSrc0UnsafeAt(texCoord)
+	light := lightness(color)
+	return mix(DarkColor, LightColor, light)
+}
+
+func lightness(color vec4) float {
+	r, g, b := linearize(color.r), linearize(color.g), linearize(color.b)
+	return 0.2126*r + 0.7152*g + 0.0722*b
+}
+
+func linearize(colorChan float) float {
+	if colorChan <= 0.04045 {
+		return colorChan/12.92
+	} else {
+		return pow((colorChan + 0.055)/1.055, 2.4)
+	}
+}

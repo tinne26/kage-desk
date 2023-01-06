@@ -6,5 +6,6 @@ use (
 	./examples/intro/invoke-shader
 	./examples/intro/circle-anim
 	./examples/misc/triangles
+	./examples/recolor
 	./display
 )

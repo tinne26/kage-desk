@@ -1,9 +1,9 @@
 ## Built-in functions
 
-The half-white half-black shader was too easy, so let's complicate it a bit more now. For example, if I asked you to make a shader that creates a pattern by making a pixel white if it's on an even position, and black otherwise... would you be able to make it?
+The half-white half-black shader was too easy, so let's make it more challenging now. For example, if I asked you to make a shader that creates a checkerboard-like pattern by making a pixel white if it's on an even position, and black otherwise... would you be able to make it?
 
-Well, with what you have been explained up to this point, you won't. Because you don't know how to check if a number is even or odd in a Kage shader: it's time to introduce the *built-in* functions. Although there's a [full list](https://ebitengine.org/en/documents/shader.html#Built-in_functions_(mathematics)) at ebitengine.org, you don't need to go there yet, just know it exists. Learning about a few of the functions will do for the moment:
-- Single argument functions: `abs`, `sign` (returns -1, 0 or 1), `sin`, `cos`, `sqrt`, `floor`, `ceil`, `fract` (returns the fractional part of a number), `length` (length of a vector) and `len` (same as in Golang, but applied to `vec` types, there are no slices or maps in Kage).
+Well, with what you have been explained up to this point, you won't... because you don't know how to check if a number is even or odd in a Kage shader. To solve this, it's time to introduce the *built-in* functions. Although there's a [full list](https://ebitengine.org/en/documents/shader.html#Built-in_functions_(mathematics)) at ebitengine.org, you don't need to go there yet, just know it exists. Learning about just a few of the functions will do for the moment:
+- Single argument functions: `abs`, `sign` (returns -1, 0 or 1), `sin`, `cos`, `sqrt`, `floor`, `ceil`, `fract` (returns the fractional part of a number), `length` (mathematical length of a vector) and `len` (same as in Golang, but applied to `vec` types, there are no slices or maps in Kage).
 - Two-argument functions: `mod(x, m)` (`%`), `min(a, b)`, `max(a, b)`, `pow(x, exp)`, `step(s, x)` (0 if `x < s`, 1 otherwise), `distance(pointA, pointB)`.
 - Three-argument functions: `clamp(x, min, max)`, `mix(a, b, t)` (linear interpolation).
 
@@ -37,7 +37,7 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 }
 ```
 
-You can also divide by 4, for example, to see the result even more clearly. If you got it, well done! If you didn't, don't worry. There's a common idea here that's worth explaining as it comes up all the time when writing shaders: conceptually, we wanted to do the same as in the previous example... but at a different scale. We wanted to project the original "canvas" to one that was half the size, and then apply the same `mod` function as we had been doing. This idea of scaling / projecting / deforming a space or surface is extremely common in shaders. It may be confusing at the beginning, but try to wrap your mind around it. In general, when you have to work at the context of a single pixel, mathematical transformations are a very powerful tool.
+You can also divide by 8, for example, to see the result even more clearly. If you got it, well done! If you didn't, don't worry. There's a common idea here that's worth explaining as it comes up all the time when writing shaders: conceptually, we wanted to do the same as in the previous example... but at a different scale. We wanted to project the original "canvas" to one that was half the size, and only then apply the same `mod` function as we did earlier. This idea of scaling / projecting / deforming a space or surface is extremely common in shaders. It may be confusing at the beginning, but try to wrap your mind around it. In general, when you have to work at the context of a single pixel, mathematical transformations are a very powerful tool.
 
 Let's go with another challenge. Remember the half-white half-black screen? Try now to make the split be wavy instead of a straight line using `sin` or `cos`.
 
@@ -76,7 +76,7 @@ Let's summarize before the next section:
 ### Table of Contents
 Next up: [#5](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md).
 
-0. [Main](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/00_main.md)
+0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/00_introduction.md)
 1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/01_cpu_vs_gpu.md)
 2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/02_shader_setup.md)
 3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/03_position_input.md)

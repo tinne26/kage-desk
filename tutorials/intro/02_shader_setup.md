@@ -61,7 +61,7 @@ If you need the fancy name, this field access thing is called "swizzling".
 ### Table of Contents
 Next up: [#3](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/03_position_input.md).
 
-0. [Main](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/00_main.md)
+0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/00_introduction.md)
 1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/01_cpu_vs_gpu.md)
 2. [**Setting up your first shader**](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/02_shader_setup.md)
 3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/03_position_input.md)

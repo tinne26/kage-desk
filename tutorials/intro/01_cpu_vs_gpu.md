@@ -65,13 +65,13 @@ Key takeaway:
 ### Table of Contents
 Next up: [#2](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/02_shader_setup.md).
 
-0. [Main](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/00_main.md)
+0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/00_introduction.md)
 1. [**CPU vs GPU: different paradigms**](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/01_cpu_vs_gpu.md)
 2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/02_shader_setup.md)
 3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/03_position_input.md)
 4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/04_built_in_functions.md)
 5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
-6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_images.md)
+6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md)
 7. [Using images](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md)
 8. [Screen vs sprite effects]()
 9. [Performance considerations]()
