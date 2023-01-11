@@ -25,7 +25,9 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 
 If your screen has any form of DPI scaling, you may see the result somewhat aliased. What would you do to make the pattern bigger and easier to see? Like, alternating 2x2 pixels white and 2x2 pixels black? This one is a bit trickier, but that's the kind of math problems you will often find with shaders. Think about it for a while!
 
-Here's my solution:
+<details>
+<summary>Click to show the solution</summary>
+
 ```Golang
 func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	xy := floor(position.x/2) + floor(position.y/2)
@@ -36,6 +38,7 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	}
 }
 ```
+</details>
 
 You can also divide by 8, for example, to see the result even more clearly. If you got it, well done! If you didn't, don't worry. There's a common idea here that's worth explaining as it comes up all the time when writing shaders: conceptually, we wanted to do the same as in the previous example... but at a different scale. We wanted to project the original "canvas" to one that was half the size, and only then apply the same `mod` function as we did earlier. This idea of scaling / projecting / deforming a space or surface is extremely common in shaders. It may be confusing at the beginning, but try to wrap your mind around it. In general, when you have to work at the context of a single pixel, mathematical transformations are a very powerful tool.
 

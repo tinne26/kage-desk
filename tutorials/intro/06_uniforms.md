@@ -49,7 +49,9 @@ Uniform variables must always be capitalized (exported variables) and appear at 
 
 Try to complete the shader so it draws a filled circle. Use a radius of 80px and any color you want.
 
-Here's a possible solution:
+<details>
+<summary>Click to show the solution</summary>
+
 ```Golang
 package main
 
@@ -74,10 +76,9 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 If you used `if` statements instead of clamp and don't know what gamma correction is, don't worry. The reason clamp (or some combinations of min/max) are preferred to conditionals is that shaders are executed by many GPU processors in parallel, and typically they are all executing the same instruction at the same time. When there are branches, all branches may have to be executed for all processors anyway. The topic is deep and complex and it's not something you have to worry about right now, but it's good to start seeing ways to avoid conditionals. Here an actual conditional wouldn't be much worse, but you definitely don't want big conditionals doing completely different things, because you may end up having to execute all those big branches on all processors anyway.
 
 On the other topic of gamma correction, the issue is that lightness is not perceived linearly by humans, but follows a power function instead. Therefore, using a linear fall-off for the opacity at the edge of the circumference is not ideal, so... we can use a simple formula to correct it. Again, this doesn't matter much here, but it's a concept you may want to know about for your future adventures. In more complex shaders it can have a significant effect.
+</details>
 
-Back to the topic. Modify the `main.go` and the `shader.kage` programs now so the `Radius` also becomes a uniform. Pass the value of 80 from the `Draw()` function in `main.go` instead of hardcoding it in the shader.
-
-Too easy?
+Modify the `main.go` and the `shader.kage` programs now so the `Radius` also becomes a uniform. Pass the value of 80 from the `Draw()` function in `main.go` instead of hardcoding it in the shader.
 
 Now the draw function in `main.go` should look like this:
 ```Golang
@@ -100,13 +101,17 @@ And the `shader.kage` should have `const Radius = 80.0` replaced by `var Radius 
 
 Again we made it too easy? Ok, ok... then, here's a challenge. Try to do this:
 
-![](https://github.com/tinne26/kage-desk/blob/main/img/circle_anim.mp4?raw=true)
+
 
 Basically, we will have the same we had in the latest shader, but animating the circumference radius.
+
+<details>
+<summary>Click to show hints and link to the solution</summary>
 
 Spoilers on how to solve this problem: add an `angle int` variable to the `Game` struct. You want its value to go from 0 to 359 and back again to zero at a rate of 1 degree per tick. Then, on `Draw()`, you can use a radius of `80 + 30*someOscillatingFactor`, where the factor oscillates between `[-1, 1]` and is derived from the `angle`.
 
 The actual code can be found at [`kage-desk/examples/intro/circle-anim`](https://github.com/tinne26/kage-desk/blob/main/examples/intro/circle-anim).
+</details>
 
 You are now able to pass your own parameters to the shaders and we have even seen how to use this to create an animated effect. If you start having ideas to try on your own, now is the time! Feel free to experiment by yourself, you will only learn shaders by writing shaders.
 

@@ -69,7 +69,9 @@ To complete the program, make sure to use the spider-cat-dog bounds for the wind
 
 Ok, next part! Let's start with a very simple exercise to get you more familiar with working with images: modify the previous shader to display the same image, but with the rgb channels mixed up. For example, try to put the red channel into the green, the green into the blue, and the blue into the red!
 
-Have it already? My code looks like this:
+<details>
+<summary>Click to show the solution</summary>
+
 ```Golang
 func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	return imageColorAtPixel(position.xy).brga
@@ -78,6 +80,7 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 *(Full program available at [examples/intro/color-swap](https://github.com/tinne26/kage-desk/blob/main/examples/intro/color-swap))*
 
 Don't tell me you forgot about *swizzling*! So simple and yet so cool!
+</details>
 
 
 ### Table of Contents

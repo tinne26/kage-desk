@@ -41,17 +41,9 @@ Remember also the `imageColorAtPixel(vec2)` helper function from the previous ch
 
 Ok, the time has come: with the current setup, try to write the mirror shader by yourself! This is probably the hardest shader you will be asked to write in the tutorial, so take your time... and don't get frustrated if you fail, but at least try to come out of the attempt with *more specific questions* than going in.
 
-*...*
+<details>
+<summary>Click to show the solution</summary>
 
-*working on it, wait a sec...*
-
-*...*
-
-*huh, this one is actually tricky...*
-
-*...*
-
-Ok, this is what I got:
 ```Golang
 func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	// prepare helper information
@@ -74,6 +66,7 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 }
 ```
 *(Full program available at [examples/intro/mirror](https://github.com/tinne26/kage-desk/blob/main/examples/intro/mirror))*
+</details>
 
 
 ### Table of Contents
