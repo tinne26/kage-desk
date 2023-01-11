@@ -1,24 +1,26 @@
 package main
 
-const CellWidth  float = 12.0 // must be at least 1
-const CellHeight float = 12.0 // must be at least 1
+var CellSize float // uniform: max value is MaxCellSize
+const MaxCellSize float = 32.0
 
 func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	// find the position of the cell we are working on
-	baseX := floor(position.x/CellWidth)*CellWidth
-	baseY := floor(position.y/CellHeight)*CellHeight
+	baseX := floor(position.x/CellSize)*CellSize
+	baseY := floor(position.y/CellSize)*CellSize
 
 	// iterate the pixelization cell
 	colorAcc := vec4(0.0) // color accumulator
-	for y := 0.0; y < CellHeight; y += 1.0 {
-		for x := 0.0; x < CellWidth; x += 1.0 {
+	for y := 0.0; y < MaxCellSize; y += 1.0 {
+		if y >= CellSize { break }
+		for x := 0.0; x < MaxCellSize; x += 1.0 {
+			if x >= CellSize { break }
 			pixCoords := vec2(baseX + x, baseY + y)
-			colorAcc += imageColorAtPixel(pixCoords)
+			colorAcc += imageColorAtPixel(pixCoords)	
 		}
 	}
 
 	// divide the color to average it
-	return colorAcc/(CellWidth*CellHeight)
+	return colorAcc/(CellSize*CellSize)
 }
 
 // Helper function to access an image's color at the given pixel coordinates.

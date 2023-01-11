@@ -7,6 +7,8 @@ use (
 	./examples/intro/circle-anim
 	./examples/intro/color-swap
 	./examples/intro/pixelize
+	./examples/intro/pixelize-anim
+	./examples/intro/pixelize-anim-opt
 	./examples/intro/mirror
 	./examples/misc/triangles
 	./examples/recolor

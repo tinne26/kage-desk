@@ -97,13 +97,11 @@ func (self *Game) Draw(screen *ebiten.Image) {
 }
 ```
 
-And the `shader.kage` should have `const Radius = 80.0` replaced by `var Radius float`.
-
-Again we made it too easy? Ok, ok... then, here's a challenge. Try to do this:
+And the `shader.kage` should have `const Radius = 80.0` replaced by `var Radius float`. Finally, we are ready for the final challenge:
 
 https://user-images.githubusercontent.com/95440833/211798694-9fb3f26f-5ca6-4669-8f6e-8db4a212feac.mp4
 
-Basically, we will have the same we had in the latest shader, but animating the circumference radius.
+Basically, we will have the same we had in the latest shader, but animating the radius of the circle. Try to write this shader yourself!
 
 <details>
 <summary>Click to show hints and link to the solution</summary>

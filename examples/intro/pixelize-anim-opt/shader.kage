@@ -1,0 +1,34 @@
+package main
+
+var CellSize int // uniform: max value is MaxCellSize
+const MaxCellSize int = 32
+
+func Fragment(position vec4, _ vec2, _ vec4) vec4 {
+	// find the position of the cell we are working on
+	baseX := (int(position.x)/CellSize)*CellSize
+	baseY := (int(position.y)/CellSize)*CellSize
+
+	// prepare helper variables
+	sizeInPixels := imageSrcTextureSize()
+	offsetInTexels, _ := imageSrcRegionOnTexture()
+	texDeltaX := 1.0/sizeInPixels.x
+	texDeltaY := 1.0/sizeInPixels.y
+	texBaseX := float(baseX)/sizeInPixels.x + offsetInTexels.x
+	texCurrY := float(baseY)/sizeInPixels.y + offsetInTexels.y
+
+	// iterate the pixelization cell
+	colorAcc := vec4(0.0) // color accumulator
+	for y := 0; y < MaxCellSize; y += 1 {
+		if y >= CellSize { break }
+		texCurrX := texBaseX
+		for x := 0; x < MaxCellSize; x += 1 {
+			if x >= CellSize { break }
+			colorAcc += imageSrc0At(vec2(texCurrX, texCurrY))
+			texCurrX += texDeltaX
+		}
+		texCurrY += texDeltaY
+	}
+
+	// divide the color to average it
+	return colorAcc/float(CellSize*CellSize)
+}

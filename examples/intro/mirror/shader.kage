@@ -18,10 +18,10 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 
 	// bottom part (inverted and alpha-adjusted creature)
 	mirrorPosition := vec2(relativePos.x, rectHeight - relativePos.y)
-	mirrorColor := imageColorAtPixel(mirrorPosition)
+	mirrorColor := imageColorAtPixel(mirrorPosition)*MirrorAlphaMult
 
 	// compose the result
-	return mainColor + mirrorColor*MirrorAlphaMult
+	return mainColor + mirrorColor
 }
 
 func imageColorAtPixel(pixelCoords vec2) vec4 {

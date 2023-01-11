@@ -61,13 +61,13 @@ func imageColorAtUnit(unitCoords vec2) vec4 {
 }
 ```
 
-You can copy `imageColorAtPixel()` into the previous shader in order to complete it. Notice also that if you want to use multiple images, you will need to write additional versions of these helper functions using `imageSrc1At` and the others instead of `imageSrc0At`.
+You can copy `imageColorAtPixel()` into the previous shader in order to make it work it. Notice also that if you want to use multiple images, you will need to write additional versions of these helper functions using `imageSrc1At()` and the others instead of `imageSrc0At()`.
 
 To complete the program, make sure to use the spider-cat-dog bounds for the window and layout sizes in your `main.go` and try to run it! You should be seeing this silly creature, but with a black background:
 
 ![](https://github.com/tinne26/kage-desk/blob/main/display/spider_cat_dog.png?raw=true)
 
-Ok, next part! Let's start with a very simple exercise to get you more familiar with working with images: modify the previous shader to display the same image, but with the rgb channels mixed up. For example, try to put the red channel into the green, the green into the blue, and the blue into the red!
+Easy! Let's end this chapter with a very simple exercise to get you more familiar with working with images: modify the previous shader to display the same image, but with the rgb channels mixed up. For example, try to put the red channel into the green, the green into the blue, and the blue into the red!
 
 <details>
 <summary>Click to show the solution</summary>
