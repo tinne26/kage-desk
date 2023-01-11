@@ -54,6 +54,7 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	return colorAcc/(CellWidth*CellHeight)
 }
 ```
+*(Full program available at [examples/intro/pixelize](https://github.com/tinne26/kage-desk/blob/main/examples/intro/pixelize))*
 </details>
 
 This technique can also be used to create blurs, motion blurs, implement [image kernels](https://setosa.io/ev/image-kernels/) and much more, but keep in mind that looping can quickly get expensive and slow.
@@ -62,7 +63,7 @@ This technique can also be used to create blurs, motion blurs, implement [image 
 
 This is all very nice, but having to use constants instead of uniforms can get a bit painful. What if we wanted to animate the pixelization effect, for example, making cells bigger and bigger each time?
 
-
+https://user-images.githubusercontent.com/95440833/211917307-81d31314-8746-4efe-a5eb-a15db877485e.mp4
 
 There are three tricks I can share with you:
 - **Upper bounding**: your looping constant will act as an upper bound, and you will use the `break` keyword to break earlier if possible. Since the uniform value will be the same for all shaders, they should all finish at the same time (as opposed to have to wait for the slowest one).
