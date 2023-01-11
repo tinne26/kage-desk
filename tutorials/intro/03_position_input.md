@@ -24,7 +24,8 @@ func Fragment(pos4 vec4, _ vec2, _ vec4) vec4 {
 With this new tool we can finally start making something a bit more interesting... like the gradient from the first section. You can experiment with that if you want, but I'll also give you a new challenge: keeping the screen size at 512, make the left half be white and the right half be black. Try it on your own!
 
 <details>
-<summary>Click to see the solution</summary>
+<summary>Click to show the solution</summary>
+
 Did you do it? Here's a possible answer:
 ```Golang
 func Fragment(position vec4, _ vec2, _ vec4) vec4 {
