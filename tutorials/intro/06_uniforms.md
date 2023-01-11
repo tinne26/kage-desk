@@ -101,7 +101,7 @@ And the `shader.kage` should have `const Radius = 80.0` replaced by `var Radius 
 
 Again we made it too easy? Ok, ok... then, here's a challenge. Try to do this:
 
-
+https://user-images.githubusercontent.com/95440833/211798694-9fb3f26f-5ca6-4669-8f6e-8db4a212feac.mp4
 
 Basically, we will have the same we had in the latest shader, but animating the circumference radius.
 
