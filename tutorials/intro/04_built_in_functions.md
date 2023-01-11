@@ -1,4 +1,4 @@
-## Built-in functions
+# Built-in functions
 
 The half-white half-black shader was too easy, so let's make it more challenging now. For example, if I asked you to make a shader that creates a checkerboard-like pattern by making a pixel white if it's on an even position, and black otherwise... would you be able to make it?
 
@@ -84,6 +84,5 @@ Next up: [#5](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_
 5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
 6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md)
 7. [Using images](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md)
-8. [Screen vs sprite effects]()
-9. [Performance considerations]()
-10. [Graduation challenges]()
+8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/08_triangles.md)
+9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/09_loops.md)

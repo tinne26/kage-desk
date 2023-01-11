@@ -1,10 +1,10 @@
 package main
 
-import "math"
 import "log"
 import _ "embed"
 
 import "github.com/hajimehoshi/ebiten/v2"
+import "github.com/tinne26/kage-desk/display"
 
 //go:embed shader.kage
 var shaderProgram []byte
@@ -18,41 +18,32 @@ func main() {
 	game := &Game{ shader: shader }
 
 	// configure window and run game
-	ebiten.SetWindowTitle("intro/circle-anim")
-	ebiten.SetWindowSize(512, 512)
+	bounds := display.ImageSpiderCatDog().Bounds()
+	ebiten.SetWindowTitle("intro/pixelize")
+	ebiten.SetWindowSize(bounds.Dx(), bounds.Dy())
 	err = ebiten.RunGame(game)
 	if err != nil { log.Fatal(err) }
 }
 
 // Struct implementing the ebiten.Game interface.
-type Game struct {
-	degrees int
-	shader *ebiten.Shader
-}
+type Game struct { shader *ebiten.Shader }
 
 // Assume a fixed layout.
 func (self *Game) Layout(_, _ int) (int, int) {
-	return 512, 512
+	bounds := display.ImageSpiderCatDog().Bounds()
+	return bounds.Dx(), bounds.Dy()
 }
 
-// Increase angle degrees.
-func (self *Game) Update() error {
-	self.degrees += 1
-	if self.degrees >= 360 { self.degrees = 0 }
-	return nil
-}
+// No logic to update.
+func (self *Game) Update() error { return nil }
 
 // Core drawing function from where we call DrawRectShader.
 func (self *Game) Draw(screen *ebiten.Image) {
 	// create draw options
 	opts := &ebiten.DrawRectShaderOptions{}
-	opts.Uniforms = make(map[string]interface{})
-	opts.Uniforms["Center"] = []float32{
-		float32(screen.Bounds().Dx())/2,
-		float32(screen.Bounds().Dy())/2,
-	}
-	opts.Uniforms["Radius"] = float32(80 + 30*math.Sin(float64(self.degrees)*math.Pi/180.0))
+	opts.Images[0] = display.ImageSpiderCatDog()
 	
 	// draw shader
-	screen.DrawRectShader(512, 512, self.shader, opts)
+	bounds := display.ImageSpiderCatDog().Bounds()
+	screen.DrawRectShader(bounds.Dx(), bounds.Dy(), self.shader, opts)
 }

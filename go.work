@@ -5,6 +5,9 @@ use (
 	./examples/intro/gradient
 	./examples/intro/invoke-shader
 	./examples/intro/circle-anim
+	./examples/intro/color-swap
+	./examples/intro/pixelize
+	./examples/intro/mirror
 	./examples/misc/triangles
 	./examples/recolor
 	./display

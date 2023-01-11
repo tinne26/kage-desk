@@ -1,0 +1,25 @@
+package main
+
+const BlockWidth  float = 12.0 // must be at least 1
+const BlockHeight float = 12.0 // must be at least 1
+
+func Fragment(position vec4, _ vec2, _ vec4) vec4 {
+	// find the cell we are working on
+	cellX := floor(position.x/BlockWidth)
+	cellY := floor(position.y/BlockHeight)
+	baseX := cellX*BlockWidth
+	baseY := cellY*BlockHeight
+
+	// iterate the pixelization block
+	colorAcc := vec4(0.0) // color accumulator
+	texSize := imageSrcTextureSize()
+	for y := 0.0; y < BlockHeight; y += 1.0 {
+		texY := (baseY + y)/texSize.y
+		for x := 0.0; x < BlockWidth; x += 1.0 {
+			texX := (baseX + x)/texSize.x
+			colorAcc += imageSrc0At(vec2(texX, texY))
+		}
+	}
+
+	return colorAcc/(BlockWidth*BlockHeight)
+}

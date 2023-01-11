@@ -13,6 +13,6 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	// by one), and discard it if we are outside (multiply
 	// by zero), so we need to change the sign and clamp
 	factor := clamp(-distToEdge, 0, 1)
-	factor  = pow(opacity, 1.0/2.2) // gamma correction
+	factor  = pow(factor, 1.0/2.2) // gamma correction
 	return vec4(1, 0, 0, 1)*factor
 }

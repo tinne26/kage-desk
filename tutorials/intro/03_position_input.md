@@ -1,4 +1,4 @@
-## The `position` input parameter
+# The `position` input parameter
 
 So, we got started with our Kage shaders, running directly on Ebitengine! Cool!
 
@@ -9,7 +9,9 @@ There are many ways, but the first step are the input parameters passed to the `
 func Fragment(position vec4, _ vec2, _ vec4) vec4
 ```
 
-As you may expect, the `position` argument tells us what pixel we are working with. If the position is `(0, 0)`, we are working with the pixel at the top-left corner of the screen. If it's `(320, 240)`, it's probably somewhere closer to the middle of the screen. Know also that position coordinates are global, not local. If we received a 400x400 screen image on our game's `Draw()` function and we drew a shader on the bottom right quadrant, on the shader we would see x and y coordinates go from 200 to 399, not 0 to 199.
+As you may expect, the `position` argument tells us what pixel we are working with. If the position is `(0.5, 0.5)`, we are working with the pixel at the top-left corner of the screen. If it's `(320.5, 240.5)`, it's probably somewhere closer to the middle of the screen. And yes, notice that we receive the positions at the *center* of the pixel, not at the corner! So, we have `(0.5, 0.5)`, not `(0, 0)`! This is kind of a subtle detail that you will almost never need to think about consciously, but if you are a mad dev obsessed with subpixel perfect centering... let me tell you that it helps.
+
+Another important fact to be aware of is that position coordinates are global, not local. If we received a 400x400 screen image on our game's `Draw()` function and we drew a shader on the bottom right quadrant, on the shader we would see x and y coordinates go from 200 to 399, not 0 to 199.
 
 Back to the topic: so we have this `vec4` position... but, if Ebitengine is a 2D game engine, why does the position have 4 components? Mostly convention. In 3D, `Z` and `W` components are relevant (`W` is used for perspective projection), but in Ebitengine they are both always 0 so you can ignore them. You may even do this for comfort:
 ```Golang
@@ -50,6 +52,5 @@ Next up: [#4](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/04_
 5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
 6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md)
 7. [Using images](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md)
-8. [Screen vs sprite effects]()
-9. [Performance considerations]()
-10. [Graduation challenges]()
+8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/08_triangles.md)
+9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/09_loops.md)

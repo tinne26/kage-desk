@@ -1,4 +1,4 @@
-## Setting up your first shader
+# Setting up your first shader
 
 We've got the general idea now, so it's time to get on with it by ourselves. If you want to learn shaders, you need to write shaders!
 
@@ -51,11 +51,12 @@ Vectors in Kage are made of `float` values, which are 32-bit precision. This mea
 These vector types are actually quite cool, and you can do many weird operations with them:
 ```Golang
 vec4(1) // creates a vector with 4 components, all set to 1
+vec4(0, 0, 16, 32)[3] // access the last component of a vec4 with normal indexing
 vec4(0.5, 0.5, 1.0, 1.0).rgb // gets a vec3 with the r, g, and b components from the vec4
 vec3(32, 44.0, 0).xy // fields can't only be accessed as rgba, but also xyzw or stpq
 vec2(3, 5).yxx // you can even mix up the order or repeat fields!
 ```
-If you need the fancy name, this field access thing is called "swizzling".
+This field access magic is known as "swizzling". I'll test you again in 5 chapters, so you better remember it!
 
 
 ### Table of Contents
@@ -69,6 +70,5 @@ Next up: [#3](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/03_
 5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
 6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md)
 7. [Using images](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md)
-8. [Screen vs sprite effects]()
-9. [Performance considerations]()
-10. [Graduation challenges]()
+8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/08_triangles.md)
+9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/09_loops.md)

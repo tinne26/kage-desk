@@ -5,7 +5,7 @@ Kage is a programming language to implement shaders in Ebitengine.
 If you are new to shaders, the short version is that they are programs that run on the GPU instead of the CPU. For our purposes, shaders are programs that allow us to create or modify images[^1], like recoloring them, adding noise or grain, distorting them and many others:
 
 ![](https://github.com/tinne26/kage-desk/blob/main/img/zombie_aliens_recolor.webp?raw=true)
-*Simple recoloring example based on lightness.*
+*(Shader recoloring based on lightness)*
 
 Shaders are programs that allow us to perform sophisticated computations for the individual pixels of an image in a highly parallel manner.
 
@@ -22,8 +22,7 @@ Next up: [#1](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/01_
 5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
 6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md)
 7. [Using images](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md)
-8. [Screen vs sprite effects]()
-9. [Performance considerations]()
-10. [Graduation challenges]()
+8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/08_triangles.md)
+9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/09_loops.md)
 
 [^1]: Shaders can also be used for general computation, not just graphics, but that's outside the scope of this guide. We have thrown a few links [here](https://github.com/tinne26/kage-desk/blob/main/tutorials/general_links.md) if you want to learn more later.

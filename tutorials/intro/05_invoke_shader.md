@@ -1,4 +1,4 @@
-## Invoking shaders manually
+# Invoking shaders manually
 
 While writing the first shaders we have been using `kage-desk/display` to keep our `main.go` file really simple. This is great to get started, but if we want to keep growing, we need to take off the training wheels. We have learned how to make shaders, but we still haven't seen how to invoke them from Ebitengine by ourselves.
 
@@ -61,7 +61,7 @@ It takes more code than before, but most of it is boilerplate that you should al
 
 *(If you are having any trouble, the full code for this manual shader invocation (along with the wave shader of the previous section) can be found at [`kage-desk/examples/intro/invoke-shader`](https://github.com/tinne26/kage-desk/blob/main/examples/intro/invoke-shader))*
 
-There's another way to invoke a shader, using `DrawTrianglesShader()` instead of `DrawRectShader()`. GPUs can only draw triangles, so using this call can be more efficient and/or offer more fine-grained control, but it's also more advanced and you may not need it yet. Drawing triangles in Ebitengine does confuse quite a lot of people, so we have made a [tutorial for drawing triangles](https://github.com/tinne26/kage-desk/blob/main/tutorials/misc/triangles.md), but you should skip it unless you are specifically interested in it.
+There's another way to invoke a shader, using `DrawTrianglesShader()` instead of `DrawRectShader()`. We will explain this second method later in the tutorial, but only when it becomes necessary.
 
 
 ### Table of Contents
@@ -75,6 +75,5 @@ Next up: [#6](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_
 5. [**Manual shader invocation**](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
 6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md)
 7. [Using images](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md)
-8. [Screen vs sprite effects]()
-9. [Performance considerations]()
-10. [Graduation challenges]()
+8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/08_triangles.md)
+9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/09_loops.md)

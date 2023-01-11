@@ -1,12 +1,12 @@
-## More input: uniforms
+# More input: uniforms
 
-Shaders, being run in the GPU as they are, are rather limited in regards of the information they can access. Until now, the only real input we have seen for them is the `position vec4` input parameter that we receive on the `Fragment()` entry function.
+Shaders, being run in the GPU as they are, are rather limited in regards to the information they can access. Until now, the only real input we have seen for them is the `position vec4` input parameter that we receive on the `Fragment()` entry function.
 
 So... can we pass additional parameters to the shaders?
 
 The answer to this question is yes: **uniforms** are variables whose values can be set from your code running on the CPU.
 
-In order to show how to use uniforms, we will try to draw a circumference using a shader now. Our draw function looked like this in the last chapter:
+In order to show how to use uniforms, we will try to draw a filled circle using a shader now. Our draw function looked like this in the last chapter:
 ```Golang
 func (self *Game) Draw(screen *ebiten.Image) {
 	// create draw options
@@ -47,7 +47,7 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 
 Uniform variables must always be capitalized (exported variables) and appear at the start of our shader code.
 
-Try to complete the shader so it draws a circumference. Use a radius of 80px and any color you want.
+Try to complete the shader so it draws a filled circle. Use a radius of 80px and any color you want.
 
 Here's a possible solution:
 ```Golang
@@ -66,7 +66,7 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	// by one), and discard it if we are outside (multiply
 	// by zero), so we need to change the sign and clamp
 	factor := clamp(-distToEdge, 0, 1)
-	factor  = pow(opacity, 1.0/2.2) // gamma correction
+	factor  = pow(factor, 1.0/2.2) // gamma correction
 	return vec4(1, 0, 0, 1)*factor
 }
 ```
@@ -100,7 +100,10 @@ And the `shader.kage` should have `const Radius = 80.0` replaced by `var Radius 
 
 Again we made it too easy? Ok, ok... then, here's a challenge. Try to do this:
 
-![](https://github.com/tinne26/kage-desk/blob/main/img/circle_anim.gif?raw=true)
+<video loop autoplay muted>
+  <source src="https://github.com/tinne26/kage-desk/blob/main/img/circle_anim.mp4?raw=true" type="video/mp4">
+  Your browser does not support mp4.
+</video>
 
 Basically, we will have the same we had in the latest shader, but animating the circumference radius.
 
@@ -122,6 +125,4 @@ Next up: [#7](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_
 5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
 6. [**More input: uniforms**](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md)
 7. [Using images](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md)
-8. [Screen vs sprite effects]()
-9. [Performance considerations]()
-10. [Graduation challenges]()
+8. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/08_loops.md)

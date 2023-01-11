@@ -1,4 +1,4 @@
-## CPU vs GPU: different paradigms
+# CPU vs GPU: different paradigms
 
 Jumping right into Kage would be nice, but before that it may be wiser to try to understand how CPU and GPU programs differ.
 
@@ -73,6 +73,5 @@ Next up: [#2](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/02_
 5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
 6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md)
 7. [Using images](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md)
-8. [Screen vs sprite effects]()
-9. [Performance considerations]()
-10. [Graduation challenges]()
+8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/08_triangles.md)
+9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/09_loops.md)
