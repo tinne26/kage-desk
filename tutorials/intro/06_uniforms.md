@@ -101,16 +101,16 @@ And the `shader.kage` should have `const Radius = 80.0` replaced by `var Radius 
 
 Again we made it too easy? Ok, ok... then, here's a challenge. Try to do this:
 
-
+https://user-images.githubusercontent.com/95440833/211798694-9fb3f26f-5ca6-4669-8f6e-8db4a212feac.mp4
 
 Basically, we will have the same we had in the latest shader, but animating the circumference radius.
 
 <details>
 <summary>Click to show hints and link to the solution</summary>
 
-Spoilers on how to solve this problem: add an `angle int` variable to the `Game` struct. You want its value to go from 0 to 359 and back again to zero at a rate of 1 degree per tick. Then, on `Draw()`, you can use a radius of `80 + 30*someOscillatingFactor`, where the factor oscillates between `[-1, 1]` and is derived from the `angle`.
+To solve this problem you can add an `angle int` variable to the `Game` struct. You want its value to go from 0 to 359 and back again to zero at a rate of 1 degree per tick. Then, on `Draw()`, you can use a radius of `80 + 30*someOscillatingFactor`, where the factor oscillates between `[-1, 1]` and is derived from the `angle`.
 
-The actual code can be found at [`kage-desk/examples/intro/circle-anim`](https://github.com/tinne26/kage-desk/blob/main/examples/intro/circle-anim).
+The full code of a working solution can be found at [`kage-desk/examples/intro/circle-anim`](https://github.com/tinne26/kage-desk/blob/main/examples/intro/circle-anim).
 </details>
 
 You are now able to pass your own parameters to the shaders and we have even seen how to use this to create an animated effect. If you start having ideas to try on your own, now is the time! Feel free to experiment by yourself, you will only learn shaders by writing shaders.
@@ -127,4 +127,5 @@ Next up: [#7](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_
 5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
 6. [**More input: uniforms**](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md)
 7. [Using images](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md)
-8. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/08_loops.md)
+8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/08_triangles.md)
+9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/09_loops.md)

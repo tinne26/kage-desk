@@ -11,7 +11,9 @@ These are all built-in functions that you can use just like you would use `copy`
 
 With this new superpower, implement the shader we mentioned earlier: even pixels white, odd pixels black. Go!
 
-This is a possible answer:
+<details>
+<summary>Click to show the solution</summary>
+
 ```Golang
 func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	xy := position.x + position.y
@@ -22,6 +24,7 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	}
 }
 ```
+</details>
 
 If your screen has any form of DPI scaling, you may see the result somewhat aliased. What would you do to make the pattern bigger and easier to see? Like, alternating 2x2 pixels white and 2x2 pixels black? This one is a bit trickier, but that's the kind of math problems you will often find with shaders. Think about it for a while!
 
@@ -42,13 +45,13 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 
 You can also divide by 8, for example, to see the result even more clearly. If you got it, well done! If you didn't, don't worry. There's a common idea here that's worth explaining as it comes up all the time when writing shaders: conceptually, we wanted to do the same as in the previous example... but at a different scale. We wanted to project the original "canvas" to one that was half the size, and only then apply the same `mod` function as we did earlier. This idea of scaling / projecting / deforming a space or surface is extremely common in shaders. It may be confusing at the beginning, but try to wrap your mind around it. In general, when you have to work at the context of a single pixel, mathematical transformations are a very powerful tool.
 
-Let's go with another challenge. Remember the half-white half-black screen? Try now to make the split be wavy instead of a straight line using `sin` or `cos`.
-
-I kinda liked this version (you can use the environment variable `EBITENGINE_SCREENSHOT_KEY=q` to take screenshots):
+Let's go with another challenge. Remember the half-white half-black screen? Try now to make the split be wavy instead of a straight line using `sin` or `cos`. Here's my take:
 
 ![](https://github.com/tinne26/kage-desk/blob/main/img/intro_gpu_wave.png?raw=true)
 
-My code looked like this:
+<details>
+<summary>Click to show the solution</summary>
+
 ```Golang
 func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	const Pi = 3.14159265
@@ -65,6 +68,7 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 ```
 
 Let's break it down a bit: `sin` expects a value in radians. There are `2*Pi` radians in a circumference. Therefore, if we can go from `0` to `2*Pi` through the 512 pixels of height that the screen has, we will have completed a full sine oscillation. We want more oscillations? Just multiply the value going into `sin` by `NumOscillations`! Finally, we can also control the width of the sine wave by multiplying the `sin` result by `WaveWidth/2`. Since the result is already oscillating between `[-N, +N]`, we only need to add this `waveFactor` to our previous cutoff point... and now we have a fancy sine wave splitting the screen instead of a plain straight line.
+</details>
 
 You may have noticed that the edge of the sine wave is jaggy, not smooth. We will see how to improve that in later examples, so don't get too hung up on it for the time being.
 
