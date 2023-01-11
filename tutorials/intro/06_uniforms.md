@@ -100,10 +100,7 @@ And the `shader.kage` should have `const Radius = 80.0` replaced by `var Radius 
 
 Again we made it too easy? Ok, ok... then, here's a challenge. Try to do this:
 
-<video loop autoplay muted>
-  <source src="https://github.com/tinne26/kage-desk/blob/main/img/circle_anim.mp4?raw=true" type="video/mp4">
-  Your browser does not support mp4.
-</video>
+![](https://github.com/tinne26/kage-desk/blob/main/img/circle_anim.mp4?raw=true)
 
 Basically, we will have the same we had in the latest shader, but animating the circumference radius.
 
