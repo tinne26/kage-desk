@@ -63,7 +63,7 @@ This technique can also be used to create blurs, motion blurs, implement [image 
 
 This is all very nice, but having to use constants instead of uniforms can get a bit painful. What if we wanted to animate the pixelization effect, for example, making cells bigger and bigger each time?
 
-https://user-images.githubusercontent.com/95440833/211917307-81d31314-8746-4efe-a5eb-a15db877485e.mp4
+https://user-images.githubusercontent.com/95440833/212187726-a42a80d6-42c6-4e74-95e4-f6bcc404bae2.mp4
 
 There are three tricks I can share with you:
 - **Upper bounding**: your looping constant will act as an upper bound, and you will use the `break` keyword to break earlier if possible. Since the uniform value will be the same for all shaders, they should all finish at the same time (as opposed to have to wait for the slowest one).
