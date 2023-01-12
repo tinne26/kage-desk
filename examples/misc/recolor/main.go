@@ -39,7 +39,7 @@ func main() {
 	game := &Game{ shader: shader }
 
 	// configure window and run game
-	ebiten.SetWindowTitle("examples/recolor")
+	ebiten.SetWindowTitle("examples/misc/recolor")
 	ebiten.SetWindowSize(512, 512)
 	err = ebiten.RunGame(game)
 	if err != nil { log.Fatal(err) }

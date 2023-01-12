@@ -99,7 +99,8 @@ func (self *Game) Draw(screen *ebiten.Image) {
 
 And the `shader.kage` should have `const Radius = 80.0` replaced by `var Radius float`. Finally, we are ready for the final challenge:
 
-https://user-images.githubusercontent.com/95440833/211798694-9fb3f26f-5ca6-4669-8f6e-8db4a212feac.mp4
+https://github.com/tinne26/kage-desk/blob/main/img/circle_anim.mkv
+<!-- https://user-images.githubusercontent.com/95440833/211798694-9fb3f26f-5ca6-4669-8f6e-8db4a212feac.mp4 -->
 
 Basically, we will have the same we had in the latest shader, but animating the radius of the circle. Try to write this shader yourself!
 
@@ -115,15 +116,15 @@ You are now able to pass your own parameters to the shaders and we have even see
 
 
 ### Table of Contents
-Next up: [#7](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md).
+Next up: [#7](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/07_images.md).
 
-0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/00_introduction.md)
-1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/01_cpu_vs_gpu.md)
-2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/02_shader_setup.md)
-3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/03_position_input.md)
-4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/04_built_in_functions.md)
-5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
-6. [**More input: uniforms**](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md)
-7. [Using images](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md)
-8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/08_triangles.md)
-9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/09_loops.md)
+0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md)
+1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/01_cpu_vs_gpu.md)
+2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/02_shader_setup.md)
+3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/03_position_input.md)
+4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/04_built_in_functions.md)
+5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/05_invoke_shader.md)
+6. [**More input: uniforms**](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/06_uniforms.md)
+7. [Using images](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/07_images.md)
+8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/08_triangles.md)
+9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/09_loops.md)

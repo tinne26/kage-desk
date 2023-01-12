@@ -1,0 +1,22 @@
+# Access textures
+
+```Golang
+// Helper function to access an image's color at the given pixel coordinates.
+func imageColorAtPixel(pixelCoords vec2) vec4 {
+	sizeInPixels := imageSrcTextureSize()
+	offsetInTexels, _ := imageSrcRegionOnTexture()
+	adjustedTexelCoords := pixelCoords/sizeInPixels + offsetInTexels
+	return imageSrc0At(adjustedTexelCoords)
+}
+```
+
+```Golang
+// Helper function to access an image's color at the given coordinates
+// from the unit interval (e.g. top-left is (0, 0), center is (0.5, 0.5),
+// bottom-right is (1.0, 1.0)).
+func imageColorAtUnit(unitCoords vec2) vec4 {
+	offsetInTexels, sizeInTexels := imageSrcRegionOnTexture()
+	adjustedTexelCoords := unitCoords*sizeInTexels + offsetInTexels
+	return imageSrc0At(adjustedTexelCoords)
+}
+```

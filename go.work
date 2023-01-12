@@ -11,6 +11,6 @@ use (
 	./examples/intro/pixelize-anim-opt
 	./examples/intro/mirror
 	./examples/misc/triangles
-	./examples/recolor
+	./examples/misc/recolor
 	./display
 )

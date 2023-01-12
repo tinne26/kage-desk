@@ -10,7 +10,7 @@ You may remember from the previous chapters that the `DrawRectShaderOptions` ima
 
 Since `DrawRectShader()` won't work, we need to switch to `DrawTrianglesShader()` instead.
 
-Triangle-drawing calls in Ebitengine are confusing for *a lot of people*, so we have made a separate [tutorial](https://github.com/tinne26/kage-desk/blob/main/tutorials/misc/triangles.md) for them. If you want to properly learn how triangles work, jump there and read. Otherwise, we have also prepared a helper function in `kage-desk/display` so you can adapt your `main.go` file and keep going even without understanding the thing that we titled this chapter with:
+Triangle-drawing calls in Ebitengine are confusing for *a lot of people*, so we have made a separate [tutorial](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/misc/triangles.md) for them. If you want to properly learn how triangles work, jump there and read. Otherwise, we have also prepared a helper function in `kage-desk/display` so you can adapt your `main.go` file and keep going even without understanding the thing that we titled this chapter with:
 ```Golang
 func (self *Game) Draw(screen *ebiten.Image) {
 	// create draw options
@@ -72,16 +72,15 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 
 
 ### Table of Contents
-Next up: [#9](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/09_loops.md).
+Next up: [#9](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/09_loops.md).
 
-0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/00_introduction.md)
-1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/01_cpu_vs_gpu.md)
-2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/02_shader_setup.md)
-3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/03_position_input.md)
-4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/04_built_in_functions.md)
-5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
-6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md)
-7. [Using images](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md)
-8. [**`DrawTrianglesShader()`**](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/08_triangles.md)
-9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/09_loops.md)
-<!-- 10. [Tutorial end](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/10_end.md) -->
+0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md)
+1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/01_cpu_vs_gpu.md)
+2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/02_shader_setup.md)
+3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/03_position_input.md)
+4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/04_built_in_functions.md)
+5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/05_invoke_shader.md)
+6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/06_uniforms.md)
+7. [Using images](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/07_images.md)
+8. [**`DrawTrianglesShader()`**](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/08_triangles.md)
+9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/09_loops.md)

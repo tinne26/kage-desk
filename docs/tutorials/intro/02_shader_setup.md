@@ -25,7 +25,7 @@ func Fragment(_ vec4, _ vec2, _ vec4) vec4 {
 	// ...
 }
 ```
-*(Tip: you can [configure your editor](https://github.com/tinne26/kage-desk/blob/main/tutorials/config_editor.md) to highlight `.kage` files like `.go` programs)*
+*(Tip: you can [configure your editor](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/config_editor.md) to highlight `.kage` files like `.go` programs)*
 
 In your typical CPU programs, the entry point is the `main()` function. In Kage, the entry point is the `Fragment()` function instead. The reason the entry function is called "fragment" is because there are multiple types of shader programs: vertex shaders, geometry shaders, compute shaders, tessellation shaders... but you don't need to remember those now, as Ebitengine only has fragment shaders. Fragment shaders, also called pixel shaders, are shaders that compute the color of a single fragment or pixel.
 
@@ -60,15 +60,15 @@ This field access magic is known as "swizzling". I'll test you again in 5 chapte
 
 
 ### Table of Contents
-Next up: [#3](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/03_position_input.md).
+Next up: [#3](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/03_position_input.md).
 
-0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/00_introduction.md)
-1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/01_cpu_vs_gpu.md)
-2. [**Setting up your first shader**](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/02_shader_setup.md)
-3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/03_position_input.md)
-4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/04_built_in_functions.md)
-5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
-6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md)
-7. [Using images](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md)
-8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/08_triangles.md)
-9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/09_loops.md)
+0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md)
+1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/01_cpu_vs_gpu.md)
+2. [**Setting up your first shader**](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/02_shader_setup.md)
+3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/03_position_input.md)
+4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/04_built_in_functions.md)
+5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/05_invoke_shader.md)
+6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/06_uniforms.md)
+7. [Using images](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/07_images.md)
+8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/08_triangles.md)
+9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/09_loops.md)

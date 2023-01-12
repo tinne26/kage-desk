@@ -101,20 +101,20 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 ```
 *(Full program available at [examples/intro/pixelize-anim](https://github.com/tinne26/kage-desk/blob/main/examples/intro/pixelize-anim))*
 
-With this shader, if you open up your GPU software monitor you will already be able to observe that when the cell sizes increase, the GPU load also increases, creating a sine wave of GPU load over time. This shader can still be optimized by manually inlining the helper function, moving the reused values outside the loop and computing the texture coordinates as fixed deltas before entering the loop. With this we can avoid the divisions in the inner part of the loop and get a performance improvement somewhere between 15-20%. The optimized code can be found at [examples/intro/pixelize-anim-opt](https://github.com/tinne26/kage-desk/blob/main/examples/intro/pixelize-anim-opt), but it requires you to have read the [appendix explaining texels](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/appx_texels.md) to really understand everything that's going on. This is offered as an optimization exercise, but it's not part of the main tutorial (optimization is not one of the goals of the introduction).
+With this shader, if you open up your GPU software monitor you will already be able to observe that when the cell sizes increase, the GPU load also increases, creating a sine wave of GPU load over time. This shader can still be optimized by manually inlining the helper function, moving the reused values outside the loop and computing the texture coordinates as fixed deltas before entering the loop. With this we can avoid the divisions in the inner part of the loop and get a performance improvement somewhere between 15-20%. The optimized code can be found at [examples/intro/pixelize-anim-opt](https://github.com/tinne26/kage-desk/blob/main/examples/intro/pixelize-anim-opt), but it requires you to have read the [tutorial explaining texels](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/texels.md) to really understand everything that's going on. This is offered as an optimization exercise, but it's not part of the main tutorial (optimization is not one of the goals of the introduction).
 </details>
 
 
 ### Table of Contents
-<!-- Next up: [#9](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/09_loops.md). -->
+<!-- Next up: [#9](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/09_loops.md). -->
 
-0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/00_introduction.md)
-1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/01_cpu_vs_gpu.md)
-2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/02_shader_setup.md)
-3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/03_position_input.md)
-4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/04_built_in_functions.md)
-5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
-6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md)
-7. [Using images](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md)
-8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/08_triangles.md)
-9. [**Loops are tricky**](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/09_loops.md)
+0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md)
+1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/01_cpu_vs_gpu.md)
+2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/02_shader_setup.md)
+3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/03_position_input.md)
+4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/04_built_in_functions.md)
+5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/05_invoke_shader.md)
+6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/06_uniforms.md)
+7. [Using images](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/07_images.md)
+8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/08_triangles.md)
+9. [**Loops are tricky**](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/09_loops.md)

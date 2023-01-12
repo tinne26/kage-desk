@@ -56,7 +56,7 @@ func main() {
 	texture := ebiten.NewImageFromImage(img)
 
 	// setup window and 
-	ebiten.SetWindowTitle("learn/triangles")
+	ebiten.SetWindowTitle("examples/misc/triangles")
 	ebiten.SetScreenClearedEveryFrame(false)
 	x, y, width, height := GetWindowSize(4, 3, 0.66)
 	ebiten.SetWindowPosition(x, y)

@@ -1,5 +1,7 @@
 # Kage for game devs
 
+**Work in progress, this is currently still a mess**
+
 Quick reference for developers with previous knowledge of how shaders work.
 
 Kage is the language used on Ebitengine to write shaders. It has a Golang-like syntax and it's internally translated to GLSL, HSL or MSL at runtime as required. Only fragment shaders are supported at the moment.
@@ -54,33 +56,33 @@ Full [official reference](https://ebitengine.org/en/documents/shader.html#Built-
 ```Golang
 package main
 
-var Time float // [[ time, 60Hz ]]
-var Size vec2 // [[ 400x400 * DeviceScale ]]
-const Size vec2 // [[ 200x400 ]]
-
-// TODO: try how can everything appear. uniforms are always uppercase, let's consider utf8 letters
-//       though. let's see what to link. implement it. have slices of logic blocks for each param type.
-
 func Fragment(pos4 vec4, _ vec2, _ vec4) vec4 {
-	position := pos4.xy // z and w are always 0
+	const Pi = 3.14159265
+	const NumOscillations = 7.0
+	const WaveHeight = 18.0
 
+	position := pos4.xy
 
+	waveFactor := sin((position.x/511.0)*2*Pi*NumOscillations)*(WaveHeight/2)
+	if position.y < 256 + waveFactor {
+		return vec4(1, 1, 0, 1) // yellow
+	} else {
+		return vec4(0, 1, 1, 1) // cyan
+	}
 }
-
 ```
 
-Make sure to [configure your editor](https://github.com/tinne26/kage-desk/blob/main/tutorials/config_editor.md) so you get syntax highlight.
+Make sure to [configure your editor](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/config_editor.md) so you get syntax highlight.
 
 For quick testing, you can put the code into a `shader.kage` file and run it with the following `main.go`:
 ```Golang
 package main
-import _ "embed"
-import "github.com/tinne26/kage-desk/tools/display"
 
-//go:embed shader.kage
-var source []byte
+import "github.com/tinne26/kage-desk/display"
+
 func main() {
-	display.Shader(source, "kage/sine", 512, 512)
+	display.SetTitle("kage/sine")
+	display.SetSize(512, 512)
+	display.Shader("shader.kage")
 }
-// TODO: autodetect some uniforms by parsing the program?
 ```

@@ -57,7 +57,7 @@ It takes more code than before, but most of it is boilerplate that you should al
 - We use the `embed` package in order to store the shader program directly into the compiled executable. While you could also use `os.ReadFile()` instead of the `go:embed` macro to obtain the shader's source code, using `embed` is recommended because it also works on browsers and mobile.
 - In the `main` function, we compile the shader with `NewShader()` and create a minimal `Game` struct that can display it.
 - The `Game` struct itself only keeps a reference to the compiled shader program and draws it with `DrawRectShader()` on each frame. The arguments of `DrawRectShader()` are the width and height of the area the shader will be drawn on, the compiled shader object and the draw options. The code shows that `GeoM` is available on the options, and the fancier options will be explained in the next chapter.
-- The last point to keep in mind is that we are using a fixed layout of 512x512 at all times. If you are still confused about how `Game.Layout()` works in Ebitengine, make sure to [revise the basics](https://github.com/tinne26/kage-desk/blob/main/tutorials/misc/ebitengine_game.md). More advanced examples may use variable sizes in the future, and you may need to adjust the position or resolution of the shader.
+- The last point to keep in mind is that we are using a fixed layout of 512x512 at all times. If you are still confused about how `Game.Layout()` works in Ebitengine, make sure to [revise the basics](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/misc/ebitengine_game.md). More advanced examples may use variable sizes in the future, and you may need to adjust the position or resolution of the shader.
 
 *(If you are having any trouble, the full code for this manual shader invocation (along with the wave shader of the previous section) can be found at [`kage-desk/examples/intro/invoke-shader`](https://github.com/tinne26/kage-desk/blob/main/examples/intro/invoke-shader))*
 
@@ -65,15 +65,15 @@ There's another way to invoke a shader, using `DrawTrianglesShader()` instead of
 
 
 ### Table of Contents
-Next up: [#6](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md).
+Next up: [#6](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/06_uniforms.md).
 
-0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/00_introduction.md)
-1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/01_cpu_vs_gpu.md)
-2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/02_shader_setup.md)
-3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/03_position_input.md)
-4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/04_built_in_functions.md)
-5. [**Manual shader invocation**](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
-6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md)
-7. [Using images](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md)
-8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/08_triangles.md)
-9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/09_loops.md)
+0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md)
+1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/01_cpu_vs_gpu.md)
+2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/02_shader_setup.md)
+3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/03_position_input.md)
+4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/04_built_in_functions.md)
+5. [**Manual shader invocation**](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/05_invoke_shader.md)
+6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/06_uniforms.md)
+7. [Using images](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/07_images.md)
+8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/08_triangles.md)
+9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/09_loops.md)

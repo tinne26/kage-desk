@@ -84,18 +84,17 @@ Don't tell me you forgot about *swizzling*! So simple and yet so cool!
 
 
 ### Table of Contents
-Next up: [#8](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/08_triangles.md).
+Next up: [#8](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/08_triangles.md).
 
-0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/00_introduction.md)
-1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/01_cpu_vs_gpu.md)
-2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/02_shader_setup.md)
-3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/03_position_input.md)
-4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/04_built_in_functions.md)
-5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/05_invoke_shader.md)
-6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/06_uniforms.md)
-7. [**Using images**](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/07_images.md)
-8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/08_triangles.md)
-9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/09_loops.md)
-10. [Tutorial end](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/10_end.md)
+0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md)
+1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/01_cpu_vs_gpu.md)
+2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/02_shader_setup.md)
+3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/03_position_input.md)
+4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/04_built_in_functions.md)
+5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/05_invoke_shader.md)
+6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/06_uniforms.md)
+7. [**Using images**](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/07_images.md)
+8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/08_triangles.md)
+9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/09_loops.md)
 
-[^1]: If you want to understand texels in Ebitengine, we have written an [appendix for it](https://github.com/tinne26/kage-desk/blob/main/tutorials/intro/appx_texels.md). We consider it a burden for most people, but it can be useful for optimization or if you can't live without understanding the *why* of things.
+[^1]: If you want to understand texels in Ebitengine, we have written a [tutorial for it](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/texels.md). We consider it a burden for most people, but it can be useful for optimization or if you can't live without understanding the *why* of things.
