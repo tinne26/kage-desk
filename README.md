@@ -1,13 +1,10 @@
 # Kage's desk
 
-**UNDER CONSTRUCTION**
-
 This repository is a project to make Kage shaders more accessible to Ebitengine[^1] game developers. Whether you are a newbie at shaders and need a [gentle introduction](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md) to them, you are a curious passerby looking for [cool examples](https://github.com/tinne26/kage-desk/blob/main/docs/cool_examples.md), or you are an initiated user looking for [snippets](https://github.com/tinne26/kage-desk/blob/main/docs/snippets/access_textures.md) and cheatsheets, we made this to help you out.
 
 Without further ado:
 - [Kage for newbies](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md): learn about shaders and Kage from zero. Practical oriented to game development.
 - [Kage for game devs](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/kage_for_devs.md): quickstart guide to Kage for those already familiar with shaders.
-<!-- - [The pirate doc](): references, cheatsheets and shiny techniques for the seadogs. -->
 - [The official doc](https://ebitengine.org/en/documents/shader.html): *the* reference from Hajime Hoshi himself. Concise and with good coverage.
 - [Learn by example](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/learn_by_example.md): simple examples to serve as references for common techniques and problems.
 - [Showcase](https://github.com/tinne26/kage-desk/blob/main/docs/showcase.md): advanced examples and fancy shaders from the community.
