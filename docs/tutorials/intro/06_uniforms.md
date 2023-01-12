@@ -99,7 +99,7 @@ func (self *Game) Draw(screen *ebiten.Image) {
 
 And the `shader.kage` should have `const Radius = 80.0` replaced by `var Radius float`. Finally, we are ready for the final challenge:
 
-https://github.com/tinne26/kage-desk/blob/main/img/circle_anim.mp4
+![](https://github.com/tinne26/kage-desk/blob/main/img/circle_anim.mp4)
 
 Basically, we will have the same we had in the latest shader, but animating the radius of the circle. Try to write this shader yourself!
 
