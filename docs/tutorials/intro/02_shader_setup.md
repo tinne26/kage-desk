@@ -15,7 +15,7 @@ func main() {
 }
 ```
 
-Don't worry about the content of this `main.go` file for the moment, it's only helper code to get our shaders running more easily at the beginning.
+Don't worry about the meaning of this `main.go` file for the moment, it's only helper code to get our shaders running more easily at the beginning.
 
 Create also a `shader.kage` file with the following content:
 ```Golang
@@ -46,7 +46,7 @@ func Fragment(_ vec4, _ vec2, _ vec4) vec4
 
 We have a few input vectors of different sizes that we are ignoring for the moment, and one output `vec4`. That output vector is the color of the pixel! The vector has the four components that you may expect: red, green, blue and alpha.
 
-Vectors in Kage are made of `float` values, which are 32-bit precision. This means that unlike `color.RGBA`, `vec4` color values are expected in the [0, 1] range instead of [0, 255]. Keep this in mind because it's very easy to accidentally mix it up! If you use values outside that range in the returned color, they will be clamped to 0 - 1.
+Vectors in Kage are made of `float` values, which are 32-bit precision. In Golang we have both `float64` and `float32`; in kage we only have `float`. Using float values also means that unlike `color.RGBA`, `vec4` components are expected in the [0, 1] range (instead of [0, 255]). Keep this in mind because it's very easy to accidentally mix it up! If you use values outside that range in the returned color, they will be clamped to 0 - 1.
 
 These vector types are actually quite cool, and you can do many weird operations with them:
 ```Golang
@@ -56,7 +56,7 @@ vec4(0.5, 0.5, 1.0, 1.0).rgb // gets a vec3 with the r, g, and b components from
 vec3(32, 44.0, 0).xy // fields can't only be accessed as rgba, but also xyzw or stpq
 vec2(3, 5).yxx // you can even mix up the order or repeat fields!
 ```
-This field access magic is known as "swizzling". I'll test you again in 5 chapters, so you better remember it!
+This field access magic thing is known as "swizzling". I'll test you again in 5 chapters, so you better remember it!
 
 
 ### Table of Contents

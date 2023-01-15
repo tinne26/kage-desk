@@ -1,12 +1,10 @@
 # More input: uniforms
 
-Shaders, being run in the GPU as they are, are rather limited in regards to the information they can access. Until now, the only real input we have seen for them is the `position vec4` input parameter that we receive on the `Fragment()` entry function.
+Shaders, being run on the GPU, are rather limited in regards to the information they can access. Up to this point, the only real input we have seen for them is the `position vec4` input parameter that we receive on the `Fragment()` entry function... Which begs the question: can we pass additional parameters to the shaders?
 
-So... can we pass additional parameters to the shaders?
+The answer is yes: **uniforms** are variables whose values can be set from your code running on the CPU before actually invoking the shader.
 
-The answer to this question is yes: **uniforms** are variables whose values can be set from your code running on the CPU.
-
-In order to show how to use uniforms, we will try to draw a filled circle using a shader now. Our draw function looked like this in the last chapter:
+In order to show how to use uniforms, we will try to draw a filled circle using a shader. Our draw function looked like this in the last chapter:
 ```Golang
 func (self *Game) Draw(screen *ebiten.Image) {
 	// create draw options
@@ -18,7 +16,7 @@ func (self *Game) Draw(screen *ebiten.Image) {
 }
 ```
 
-Now we will change it a bit to add a new parameter for our shader: the center position of our circle.
+Now we will change this code to add a new parameter for our shader: the center position of our circle.
 ```Golang
 func (self *Game) Draw(screen *ebiten.Image) {
 	// create draw options
@@ -34,11 +32,11 @@ func (self *Game) Draw(screen *ebiten.Image) {
 }
 ```
 
-This `Uniforms` map allows us to send the `Center` variable to our shader. The main types that we can send are `int`, `float32` and `[]float32` values, which correspond to the shader `int`, `float` and `vec*` types. Since we passed a slice of two values, our shader has to look like this:
+The `Uniforms` map on the `DrawRectShaderOptions` allows us to send the `Center` variable to our shader. The main types that we can send are `int`, `float32` and `[]float32` values, which correspond to the shader `int`, `float` and `vec*` types. Since we passed a slice of two values, our shader has to look like this:
 ```Golang
 package main
 
-var Center vec2 // uniform: circumference center coords
+var Center vec2 // uniform: circle center coords
 
 func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	// ...
@@ -55,7 +53,7 @@ Try to complete the shader so it draws a filled circle. Use a radius of 80px and
 ```Golang
 package main
 
-var Center vec2 // uniform: circumference center coords
+var Center vec2 // uniform: circle center coords
 const Radius = 80.0
 
 func Fragment(position vec4, _ vec2, _ vec4) vec4 {
@@ -73,12 +71,12 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 }
 ```
 
-If you used `if` statements instead of clamp and don't know what gamma correction is, don't worry. The reason clamp (or some combinations of min/max) are preferred to conditionals is that shaders are executed by many GPU processors in parallel, and typically they are all executing the same instruction at the same time. When there are branches, all branches may have to be executed for all processors anyway. The topic is deep and complex and it's not something you have to worry about right now, but it's good to start seeing ways to avoid conditionals. Here an actual conditional wouldn't be much worse, but you definitely don't want big conditionals doing completely different things, because you may end up having to execute all those big branches on all processors anyway.
+If you used `if` statements instead of `clamp()` and don't know what gamma correction is, don't worry. The reason `clamp()` (or some combinations of `min()`/`max()`) are preferred to conditionals is that shaders are executed by many GPU processors in parallel, and typically they are all executing the same instruction at the same time. When there are branches, all branches may have to be executed for all processors anyway. The topic is deep and complex and it's not something you have to worry about right now, but it's good to start seeing ways to avoid conditionals. Here an actual conditional wouldn't be much worse, but you definitely don't want big conditionals doing completely different things, because you may end up having to execute all those big branches on all processors anyway.
 
 On the other topic of gamma correction, the issue is that lightness is not perceived linearly by humans, but follows a power function instead. Therefore, using a linear fall-off for the opacity at the edge of the circumference is not ideal, so... we can use a simple formula to correct it. Again, this doesn't matter much here, but it's a concept you may want to know about for your future adventures. In more complex shaders it can have a significant effect.
 </details>
 
-Modify the `main.go` and the `shader.kage` programs now so the `Radius` also becomes a uniform. Pass the value of 80 from the `Draw()` function in `main.go` instead of hardcoding it in the shader.
+With the circle shader working, the next step is to modify the `main.go` and the `shader.kage` programs so the `Radius` also becomes a uniform. Pass the value of 80 from the `Draw()` function in `main.go` instead of hardcoding it in the shader.
 
 Now the draw function in `main.go` should look like this:
 ```Golang
@@ -97,11 +95,13 @@ func (self *Game) Draw(screen *ebiten.Image) {
 }
 ```
 
-And the `shader.kage` should have `const Radius = 80.0` replaced by `var Radius float`. Finally, we are ready for the final challenge:
+And the `shader.kage` should have `const Radius = 80.0` replaced by `var Radius float`.
+
+Now we are ready for the final challenge:
 
 https://user-images.githubusercontent.com/95440833/212187119-f4445602-a534-47c0-822a-1c3a4bd5de14.mp4
 
-Basically, we will have the same we had in the latest shader, but animating the radius of the circle. Try to write this shader yourself!
+Your goal is to use uniforms in order to create an animation by changing the radius of the circle at each frame. Try to write this shader yourself!
 
 <details>
 <summary>Click to show hints and link to the solution</summary>

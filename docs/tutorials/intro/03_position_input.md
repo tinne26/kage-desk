@@ -9,11 +9,11 @@ There are many ways, but the first step are the input parameters passed to the `
 func Fragment(position vec4, _ vec2, _ vec4) vec4
 ```
 
-As you may expect, the `position` argument tells us what pixel we are working with. If the position is `(0.5, 0.5)`, we are working with the pixel at the top-left corner of the screen. If it's `(320.5, 240.5)`, it's probably somewhere closer to the middle of the screen. And yes, notice that we receive the positions at the *center* of the pixel, not at the corner! So, we have `(0.5, 0.5)`, not `(0, 0)`! This is kind of a subtle detail that you will almost never need to think about consciously, but if you are a mad dev obsessed with subpixel perfect centering... let me tell you that it helps.
+As you may expect, the `position` argument tells us what pixel we are working with. If the position is `(0.5, 0.5)`, we are working with the pixel at the top-left corner of the screen. If it's `(320.5, 240.5)`, it's probably somewhere closer to the middle of the screen. Notice that we receive the positions at the *center* of the pixel, not the corner! So, we have `(0.5, 0.5)`, not `(0, 0)`! This is kind of a subtle detail that you will almost never need to think about consciously, but if you are a dev with subpixel perfect centering OCD... it's *critical* to know.
 
-Another important fact to be aware of is that position coordinates are global, not local. If we received a 400x400 screen image on our game's `Draw()` function and we drew a shader on the bottom right quadrant, on the shader we would see x and y coordinates go from 200 to 399, not 0 to 199.
+Another important fact to be aware of is that position coordinates are *global*, not local. If we received a 400x400 screen image on our game's `Draw()` function and we drew a shader on the bottom right quadrant, on the shader we would see x and y coordinates go from 200.5 to 399.5, not 0.5 to 199.5.
 
-Back to the topic: so we have this `vec4` position... but, if Ebitengine is a 2D game engine, why does the position have 4 components? Mostly convention. In 3D, `Z` and `W` components are relevant (`W` is used for perspective projection), but in Ebitengine they are both always 0 so you can ignore them. You may even do this for comfort:
+Back to the topic: so we have this `vec4` position... but, if Ebitengine is a 2D game engine, why does the position have 4 components? Mostly convention. In 3D, `Z` and `W` components are relevant (`W` is used for perspective projection), but in Ebitengine they are both always 0, so you can ignore them. You may even do this for comfort:
 ```Golang
 func Fragment(pos4 vec4, _ vec2, _ vec4) vec4 {
 	position := pos4.xy // now position is a vec2 with only x and y
@@ -21,7 +21,7 @@ func Fragment(pos4 vec4, _ vec2, _ vec4) vec4 {
 }
 ```
 
-With this new tool we can finally start making something a bit more interesting... like the gradient from the first section. You can experiment with that if you want, but I'll also give you a new challenge: keeping the screen size at 512, make the left half be white and the right half be black. Try it on your own!
+With this new tool we can finally start making something a bit more interesting... like the gradient from the first section. You can experiment with that if you want, but I'd rather give you a new challenge: keeping the screen size at 512, make the left half be white and the right half be black. Try it on your own!
 
 <details>
 <summary>Click to show the solution</summary>

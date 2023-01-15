@@ -35,7 +35,7 @@ floor(x); ceil(x); fract(x)
 Key two-argument functions:
 ```Golang
 mod(x, m) // %
-min(a, b), max(a, b)
+min(a, b); max(a, b)
 pow(x, exp)
 step(s, x) // 0 if `x < s`, 1 otherwise
 dot(x, y); cross(x, y vec3) // dot and cross products
@@ -64,8 +64,8 @@ func Fragment(pos4 vec4, _ vec2, _ vec4) vec4 {
 	const WaveHeight = 18.0
 
 	position := pos4.xy
-
-	waveFactor := sin((position.x/Size)*2*Pi*NumOscillations)*(WaveHeight/2)
+	angle := (position.x/Size)*2*Pi*NumOscillations
+	waveFactor := sin(angle)*(WaveHeight/2)
 	if position.y < Size/2 + waveFactor {
 		return vec4(1, 1, 0, 1) // yellow
 	} else {
@@ -73,8 +73,7 @@ func Fragment(pos4 vec4, _ vec2, _ vec4) vec4 {
 	}
 }
 ```
-
-Make sure to [configure your editor](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/config_editor.md) so you get syntax highlight.
+*(Make sure to [configure your editor](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/config_editor.md) so you get syntax highlight)*
 
 For quick testing, you can put the code into a `shader.kage` file and run it with the following `main.go`:
 ```Golang

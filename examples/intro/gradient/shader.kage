@@ -5,7 +5,7 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 }
 
 func Gradient(position vec2) vec4 {
-	green := (299 - position.y)/299
-	blue  := position.y/299
+	green := (300 - position.y)/300
+	blue  := position.y/300
 	return vec4(0, green, blue, 1.0)
 }

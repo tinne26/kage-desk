@@ -1,5 +1,7 @@
 # Access textures
 
+For explanations of texels and these functions, see [docs/tutorials/texels.md](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/texels.md).
+
 ```Golang
 // Helper function to access an image's color at the given pixel coordinates.
 func imageColorAtPixel(pixelCoords vec2) vec4 {

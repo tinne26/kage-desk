@@ -1,23 +1,26 @@
 # Loops are tricky
 
-One thing we haven't discussed yet are loops. In Kage, loops can be used... but only within ranges determined by constants:
+One thing we haven't discussed yet are loops. In general, shaders do support loops, but in limited ways. In the case of Kage, we can only loop within ranges determined by constants:
 ```Golang
 for i := -2; i < 2; i++ {
 	// (do something)
 }
 ```
 
-This is a very harsh limitation. For example, it means that we can't use a uniform to dynamically determine the size of the area we want to iterate over.
+This is a very harsh limitation: if the bounds must be given by constants, we can't use uniforms to dynamically control the size of the area we want to iterate over.
 
-In this chapter we will tackle some practical problems and discuss how to relax or bypass some of these limitations.
+In this chapter we will be tackling some practical problems that involve loops and discuss how to relax or bypass some of these limitations.
 
-The first example of a shader that can be done using a loop will be a *pixelator effect*. Your first exercise will be to create something like this:
+The first challenge involving a loop will be a *pixelator effect* shader. Your first exercise will be to create something like this:
 
 ![](https://github.com/tinne26/kage-desk/blob/main/img/pixelated_creature.png?raw=true)
 
-The idea for this shader is not too complex: set a pixelation cell size (e.g. 8x8 pixels), find the cell corresponding to the current position, average the colors of all pixels in that cell and return that value. This last step is the part where you will use a for loop.
+The idea for this shader is not too complex:
+1. Set a pixelation cell size (e.g. 8x8 pixels).
+2. Find the cell corresponding to the current position.
+3. Average the colors of all pixels in that cell and return that value.
 
-Make a shader that uses this loop as a reference:
+This last step is the part where you will use a for loop. For example, you can use this as a reference:
 ```Golang
 for y := 0.0; y < CellHeight; y += 1.0 {
 	for x := 0.0; x < CellWidth; x += 1.0 {
@@ -26,11 +29,13 @@ for y := 0.0; y < CellHeight; y += 1.0 {
 }
 ```
 
-And where `CellHeight` and `CellWidth` are constants declared like this:
+Where `CellHeight` and `CellWidth` are constants declared in the following way:
 ```Golang
 const CellWidth  float = 12.0 // must be at least 1
 const CellHeight float = 12.0 // must be at least 1
 ```
+
+Try to write the pixelator effect by yourself!
 
 <details>
 <summary>Click to show the solution</summary>
@@ -61,16 +66,16 @@ This technique can also be used to create blurs, motion blurs, implement [image 
 
 ## Overcoming the limitations
 
-This is all very nice, but having to use constants instead of uniforms can get a bit painful. What if we wanted to animate the pixelization effect, for example, making cells bigger and bigger each time?
+This is all very nice, but having to use constants instead of uniforms is not great. What if we want to animate the pixelization effect like in the following video, changing the cell size?
 
 https://user-images.githubusercontent.com/95440833/212187726-a42a80d6-42c6-4e74-95e4-f6bcc404bae2.mp4
 
-There are three tricks I can share with you:
-- **Upper bounding**: your looping constant will act as an upper bound, and you will use the `break` keyword to break earlier if possible. Since the uniform value will be the same for all shaders, they should all finish at the same time (as opposed to have to wait for the slowest one).
-- **Not looping**: sometimes you can just fake it. For pixelation, for example, you could take the central pixel of the cell regardless of the cell size. This sacrifices accuracy, but in some cases it's may be ok! For some animations it may work well enough.
-- **Constant sampling**: sometimes you can't just fake it... but you still can kinda fake it. For example, what if you didn't check all the pixels within the cell, but only 6 values at properly distributed locations? This is a probabilistic method that can help you balance cost and accuracy, while still allowing you to scale your cell size as you want.
+There are three key tricks you should know about to get around these limitations:
+- **Upper bounding**: if you make your looping constant act as an upper bound for the number of loop iterations, you can use the `break` keyword to break earlier based on the value of an actual uniform. It doesn't look as sleek as a regular loop, but it works well enough.
+- **Not looping**: sometimes you can just fake it. For pixelation, for example, you could take the central pixel of the cell regardless of the cell size. This will be sacrificing accuracy, but for some animations it can work well enough!
+- **Constant sampling**: sometimes you can't just completely fake it... but you still can *half fake it*! What if you didn't check all the pixels within the cell, but only 6 values at properly distributed locations? This is a probabilistic method that can help you balance cost and accuracy, while still allowing you to scale your cell size as you want.
 
-Try to use the first approach to adapt our previous shader and make it animated as shown in the video above, making cell sizes go from 1 to 32, then back to 1 and so on.
+The last challenge for this chapter will be to use the first approach to adapt our previous shader and make it animated as shown in the video above, making cell sizes go from 1 to 32, then back to 1 and repeat. Show me what you have learned!
 
 <details>
 <summary>Click to show the solution</summary>
@@ -101,13 +106,13 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 ```
 *(Full program available at [examples/intro/pixelize-anim](https://github.com/tinne26/kage-desk/blob/main/examples/intro/pixelize-anim))*
 
-With this shader, if you open up your GPU software monitor you will already be able to observe that when the cell sizes increase, the GPU load also increases, creating a sine wave of GPU load over time. This shader can still be optimized by manually inlining the helper function, moving the reused values outside the loop and computing the texture coordinates as fixed deltas before entering the loop. With this we can avoid the divisions in the inner part of the loop and get a performance improvement somewhere between 15-20%. The optimized code can be found at [examples/intro/pixelize-anim-opt](https://github.com/tinne26/kage-desk/blob/main/examples/intro/pixelize-anim-opt), but it requires you to have read the [tutorial explaining texels](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/texels.md) to really understand everything that's going on. This is offered as an optimization exercise, but it's not part of the main tutorial (optimization is not one of the goals of the introduction).
+With this shader, if you open up your GPU software monitor you will already be able to observe that when the cell sizes increase, the GPU load also increases, creating a sine wave of GPU load over time.
+
+This shader can still be optimized by manually inlining the helper function, moving the reused values outside the loop and computing the texture coordinates as fixed deltas before entering the loop. With this we can avoid the divisions on the inner part of the loop and get a performance improvement somewhere between 15-20%. The optimized code can be found at [examples/intro/pixelize-anim-opt](https://github.com/tinne26/kage-desk/blob/main/examples/intro/pixelize-anim-opt), but it requires you to have read the [tutorial explaining texels](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/texels.md) to really understand everything that's going on. This is offered as an optimization exercise, but it's not part of the main tutorial (optimization is not one of the goals of the introduction).
 </details>
 
 
 ### Table of Contents
-<!-- Next up: [#9](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/09_loops.md). -->
-
 0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md)
 1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/01_cpu_vs_gpu.md)
 2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/02_shader_setup.md)

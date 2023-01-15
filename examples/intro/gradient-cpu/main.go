@@ -23,8 +23,8 @@ func Gradient() *image.RGBA {
 	img := image.NewRGBA(image.Rect(0, 0, 300, 300))
 	for y := 0; y < 300; y++ {
 		// compute the gradient color for this row (amount of blue and green)
-		greenLevel := (299.0 - float64(y))/299.0
-		blueLevel  := (float64(y)/299.0)
+		greenLevel := (300.0 - float64(y) + 0.5)/300.0
+		blueLevel  := ((float64(y) + 0.5)/300.0)
 
 		// convert the color from float to rgba, 8-bits per channel
 		greenValue := uint8(255*greenLevel)

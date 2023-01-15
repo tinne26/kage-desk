@@ -5,10 +5,7 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	const NumOscillations = 7.0
 	const WaveWidth = 18.0
 
-	waveFactor := sin((position.y/511.0)*2*Pi*NumOscillations)*(WaveWidth/2)
-	if position.x < 256 + waveFactor {
-		return vec4(1) // white
-	} else {
-		return vec4(0, 0, 0, 1) // black
-	}
+	waveFactor  := sin((position.y/512.0)*2*Pi*NumOscillations)*(WaveWidth/2)
+	whiteFactor := 1 - clamp(position.x - 256 + waveFactor, 0, 1)
+	return vec4(0, 0, 0, 1) + vec4(1, 1, 1, 0)*whiteFactor
 }

@@ -1,0 +1,15 @@
+package main
+
+// Shader for drawing a checkerboard pattern in black and white.
+// You can modify the CellSize value to make the checkerboard squares
+// bigger or smaller.
+const CellSize = 32 // powers of 2 recommended
+
+func Fragment(position vec4, _ vec2, _ vec4) vec4 {
+	xy := floor(position.x/CellSize) + floor(position.y/CellSize)
+	if mod(xy, 2) == 0 {
+		return vec4(1) // white
+	} else {
+		return vec4(0, 0, 0, 1) // black
+	}
+}

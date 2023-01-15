@@ -4,7 +4,7 @@ There's only one critical piece left to reveal before you can unlock the full po
 
 There are two main reasons why we might want to pass images to our shaders:
 - To **apply an effect** to our game sprites or screen. This is the most common way to use images in 2D games. Pixelize an image, apply a blur or movement blur effect to it, deform it, control its color, apply chromatic aberrations, make simple lighting effects, screen transitions, etc.
-- To **use the image as a texture** for the shader. This is very common in 3D, where textures are used for "painting" raw triangles and geometry and for lighting purposes. In 2D this is more unusual, but there are still some use-cases like creating animation effects on a sprite (e.g. being electrocuted), fancy glitches, reflections on the water, making "see behind the wall" effects and a few others that combine multiple images or textures to achieve a specific effect. Advanced lightning techniques with surfaces and normals can also be used in 2D, mainly in top-down view games, but this is rather uncommon, so we won't discuss it in this tutorial.
+- To **use the image as a texture** for the shader. This is very common in 3D, where textures are used for "painting" raw triangles, geometry and lighting purposes. In 2D this is more unusual, but there are still some use-cases like creating animation effects on a sprite (e.g. being electrocuted), fancy glitches, reflections on the water, making "see behind the wall" effects and a few others that combine multiple images or textures to achieve a specific effect. Advanced lightning techniques with surfaces and normals can also be used in 2D, mainly in top-down view games, but this is rather uncommon, so we won't discuss it in this tutorial.
 
 *(The words _image_ and _texture_ are often used interchangeably in the context of shaders. There are some nuances, but we won't get into it today)*
 
@@ -13,10 +13,10 @@ To get started, we will show how to pass an image to a shader in `main.go`: the 
 func (self *Game) Draw(screen *ebiten.Image) {
 	// create draw options
 	opts := &ebiten.DrawRectShaderOptions{}
-	opts.Images[0] = display.ImageSpiderCatDog
+	opts.Images[0] = display.ImageSpiderCatDog()
 	
 	// draw shader
-	bounds := display.ImageSpiderCatDog.Bounds()
+	bounds := display.ImageSpiderCatDog().Bounds()
 	screen.DrawRectShader(bounds.Dx(), bounds.Dy(), self.shader, opts)
 }
 ```
@@ -24,9 +24,9 @@ func (self *Game) Draw(screen *ebiten.Image) {
 Notice that we are importing `github.com/tinne26/kage-desk/display` again as it includes some images that we can use for our tests quite easily. You can try loading your own images if you want... but there's one **critical limitation** that you must know about:
 - Both the shader's target rectangle and the source images must all have the same size.
 
-We will discuss how to get around this in the next chapter, so keep calm and continue learning shaders.
+*(We will discuss how to get around this in the next chapter)*
 
-For the shader, the first thing we will do is simply show the image. No fancy effects yet. Just make the shader compute the color of each pixel as the color of the corresponding pixel in the passed image:
+For the shader, the first thing we will do is show the image. No effects yet. Just make the shader compute the color of each pixel as the color of the corresponding pixel in the passed image:
 ```Golang
 func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	return imageColorAtPixel(position.xy)
@@ -79,7 +79,7 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 ```
 *(Full program available at [examples/intro/color-swap](https://github.com/tinne26/kage-desk/blob/main/examples/intro/color-swap))*
 
-Don't tell me you forgot about *swizzling*! So simple and yet so cool!
+Don't tell me you forgot about *swizzling*! I told you in chapter 2 that I would ask again! So simple and yet so cool!
 </details>
 
 
