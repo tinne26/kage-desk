@@ -1,4 +1,4 @@
-## Appendix: texels in Kage
+## Texels in Kage
 
 From working with Ebitengine you will know that its graphical API is based around "images". Images are simply arrays of pixels with 4 channels (red, green, blue, alpha) per pixel. Images also have an integer width and height, in pixels.
 
@@ -58,7 +58,7 @@ Where `sizeInTexels` cancels out, simplifying to `pixelCoords/sizeInPixels`.
 ### Avoid texels unless optimizing
 
 Now you should understand why we prefer avoiding the concept of texels in the tutorials and recommend using the helper functions instead. That being said, it's true that if you want to get the most from your shaders, you may want to consider the following when it comes to optimization:
-- Getting `imageSrcTextureSize()` and `imageSrcRegionOnTexture()` values only once and reusing them when you need multiple samples from the texture within a single shader (e.g. [image kernels](https://setosa.io/ev/image-kernels/)).
+- Getting `imageSrcTextureSize()` and `imageSrcRegionOnTexture()` values only once and reusing them when you need multiple samples from the texture within a single shader (e.g. blurs and other [image kernels](https://setosa.io/ev/image-kernels/)).
 - Making use of `imageSrc0UnsafeAt` instead of the slower safe version if you know that you are operating strictly within the unit interval.
 - Using power-of-2 sized images and just removing all these computations. Doing less is the greatest optimization trick in the book.
 - Sometimes you can use the second input argument in `Fragment()`, which is the `texelCoords vec2` corresponding to the fragment. This works well for many `DrawRectShader()` invocations, but we don't even explain it in the regular tutorial because then we would also have to explain *when* it doesn't work and *why*, and that's... this document.

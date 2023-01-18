@@ -52,7 +52,6 @@ Full [official reference](https://ebitengine.org/en/documents/shader.html#Built-
 
 ## Basic `shader.kage` example
 
-
 ```Golang
 package main
 

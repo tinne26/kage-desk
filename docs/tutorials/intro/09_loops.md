@@ -1,22 +1,22 @@
 # Loops are tricky
 
-One thing we haven't discussed yet are loops. In general, shaders do support loops, but in limited ways. In the case of Kage, we can only loop within ranges determined by constants:
+One thing we haven't discussed yet are loops. While in general shaders do support loops, they only do it in limited ways. In the case of Kage, we can only use classical `for` loops within ranges determined by constants:
 ```Golang
 for i := -2; i < 2; i++ {
 	// (do something)
 }
 ```
 
-This is a very harsh limitation: if the bounds must be given by constants, we can't use uniforms to dynamically control the size of the area we want to iterate over.
+This is a very harsh limitation: if the bounds must be given by constants, this means we can't use uniforms to dynamically control the size of the area we want to iterate over.
 
 In this chapter we will be tackling some practical problems that involve loops and discuss how to relax or bypass some of these limitations.
 
-The first challenge involving a loop will be a *pixelator effect* shader. Your first exercise will be to create something like this:
+The first challenge involving a loop will be a *pixelator effect* shader. Your first task will be to create something like this:
 
 ![](https://github.com/tinne26/kage-desk/blob/main/img/pixelated_creature.png?raw=true)
 
 The idea for this shader is not too complex:
-1. Set a pixelation cell size (e.g. 8x8 pixels).
+1. Decide a pixelation cell size (e.g. 8x8 pixels).
 2. Find the cell corresponding to the current position.
 3. Average the colors of all pixels in that cell and return that value.
 
@@ -62,20 +62,20 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 *(Full program available at [examples/intro/pixelize](https://github.com/tinne26/kage-desk/blob/main/examples/intro/pixelize))*
 </details>
 
-This technique can also be used to create blurs, motion blurs, implement [image kernels](https://setosa.io/ev/image-kernels/) and much more, but keep in mind that looping can quickly get expensive and slow.
+This technique can also be used to create outlines or implement blurs and other [image kernels](https://setosa.io/ev/image-kernels/), but keep in mind that looping can quickly get expensive and slow.
 
 ## Overcoming the limitations
 
-This is all very nice, but having to use constants instead of uniforms is not great. What if we want to animate the pixelization effect like in the following video, changing the cell size?
+This is all very nice, but having to use constants instead of uniforms is not cool. What if we wanted to animate the pixelization effect like in the following video, changing the cell size through time?
 
 https://user-images.githubusercontent.com/95440833/212187726-a42a80d6-42c6-4e74-95e4-f6bcc404bae2.mp4
 
 There are three key tricks you should know about to get around these limitations:
-- **Upper bounding**: if you make your looping constant act as an upper bound for the number of loop iterations, you can use the `break` keyword to break earlier based on the value of an actual uniform. It doesn't look as sleek as a regular loop, but it works well enough.
+- **Upper bounding**: if you make your looping constant act as an upper bound for the number of loop iterations, you can use the `break` keyword to break earlier based on the value of an actual uniform. It doesn't look as sleek as a regular loop, but it's effective.
 - **Not looping**: sometimes you can just fake it. For pixelation, for example, you could take the central pixel of the cell regardless of the cell size. This will be sacrificing accuracy, but for some animations it can work well enough!
-- **Constant sampling**: sometimes you can't just completely fake it... but you still can *half fake it*! What if you didn't check all the pixels within the cell, but only 6 values at properly distributed locations? This is a probabilistic method that can help you balance cost and accuracy, while still allowing you to scale your cell size as you want.
+- **Constant sampling**: sometimes you can't just *completely fake it*... but you can *half fake it*! What if you didn't check all the pixels within the cell, but only 6 values at properly distributed locations? This is a probabilistic method that can help you balance cost and accuracy while still allowing you to scale your cell size as you want.
 
-The last challenge for this chapter will be to use the first approach to adapt our previous shader and make it animated as shown in the video above, making cell sizes go from 1 to 32, then back to 1 and repeat. Show me what you have learned!
+The last challenge for this chapter will be to use the first approach to adapt our previous shader and make it animated as shown in the video above. Try to make cell sizes go from 1 to 32, then back to 1 and repeat. Show me what you have learned!
 
 <details>
 <summary>Click to show the solution</summary>
@@ -106,9 +106,9 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 ```
 *(Full program available at [examples/intro/pixelize-anim](https://github.com/tinne26/kage-desk/blob/main/examples/intro/pixelize-anim))*
 
-With this shader, if you open up your GPU software monitor you will already be able to observe that when the cell sizes increase, the GPU load also increases, creating a sine wave of GPU load over time.
+With this shader, if you open up your GPU software monitor you will already be able to observe that when cell size increases, the GPU load also increases, creating a sine wave of GPU load over time.
 
-This shader can still be optimized by manually inlining the helper function, moving the reused values outside the loop and computing the texture coordinates as fixed deltas before entering the loop. With this we can avoid the divisions on the inner part of the loop and get a performance improvement somewhere between 15-20%. The optimized code can be found at [examples/intro/pixelize-anim-opt](https://github.com/tinne26/kage-desk/blob/main/examples/intro/pixelize-anim-opt), but it requires you to have read the [tutorial explaining texels](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/texels.md) to really understand everything that's going on. This is offered as an optimization exercise, but it's not part of the main tutorial (optimization is not one of the goals of the introduction).
+This shader can still be optimized by manually inlining the helper function, moving the reused values outside the loop and computing the texture coordinates as fixed deltas before entering it. With this we can avoid the divisions on the inner part of the loop and get a performance improvement somewhere between 15-20%. The optimized code can be found at [examples/intro/pixelize-anim-opt](https://github.com/tinne26/kage-desk/blob/main/examples/intro/pixelize-anim-opt), but it requires you to have read the [tutorial explaining texels](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/texels.md) to really understand everything that's going on. This is offered as an optimization exercise, but it's not part of the main tutorial (optimization is not one of the goals of the introduction).
 </details>
 
 

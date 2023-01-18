@@ -38,7 +38,7 @@ func Gradient() *image.RGBA {
 ```
 *(Full program available at [examples/intro/gradient-cpu](https://github.com/tinne26/kage-desk/blob/main/examples/intro/gradient-cpu))*
 
-To contextualize, one could use a gradient like this as the background for a videogame. We could compute it at the start of the game and store it in an image that would then be sent to the GPU. Otherwise, if we wanted to recompute this gradient on each frame... it could be better to use a shader instead. With the shader, we wouldn't need to recompute and transfer the image to the GPU on each frame: we would be passing *the shader program* to the GPU instead. In this simple case where the gradient doesn't change through time, the first approach may be simpler, but in more complex cases shaders would start to show more advantages and benefits.
+To contextualize, one could use a gradient like this as the background for a videogame. We could compute it at the start of the game and store it in an image that would then be sent to the GPU. Alternatively, if we wanted to recompute this gradient on each frame... it may be better to use a shader instead. With the shader, we wouldn't need to recompute and transfer the image to the GPU on each frame: we would be passing *the shader program* to the GPU instead. In this case where the gradient doesn't change through time the first approach may be simpler, but in more complex cases shaders would start offering additional benefits and advantages.
 
 With that out of the way, let's take a look at the GPU version (in pseudo-code):
 ```Golang

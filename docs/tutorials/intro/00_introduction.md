@@ -5,11 +5,15 @@ Kage is a programming language to implement shaders in Ebitengine.
 If you are new to shaders, the short version is that they are programs that run on the GPU instead of the CPU. For our purposes, shaders are programs that allow us to create or modify images[^1], like recoloring them, adding noise or grain, distorting them and many others:
 
 ![](https://github.com/tinne26/kage-desk/blob/main/img/zombie_aliens_recolor.webp?raw=true)
-*(Shader recoloring based on lightness, also applying gamma correction)*
+*(Shader recolor based on lightness, with gamma correction applied)*
 
-Shaders are programs that allow us to perform sophisticated computations for the individual pixels of an image in a highly parallel manner.
+In games, you will see shaders being used for all kinds of things: rounded rectangles on UI frameworks, hit and death animation on sprites, power-up or alter state effects, full screen effects like blurs, warpings, chromatic aberrations and CRT effects, lighting, water generation, screen transitions... and many, many more.
 
-There are a few different languages in which shaders can be written: you may have heard of GLSL, HLSL and others. Ebitengine has it's own intermediate language, Kage, which allows us to write shaders with a Golang-like syntax without having to worry about other internal details. At runtime, Ebitengine will translate our Kage program to HLSL, MSL or whatever language is needed to make it work on the platform where the game's being run.
+<!-- TODO: video of a few cool shaders to make the contextualization stick -->
+
+Shaders, in conclusion, are programs that allow the GPU to perform sophisticated computations for the individual pixels of an image in a highly parallel manner. When this process is repeated frame after frame —as you probably already understood from the previous examples—, we can even create cool animations and effects.
+
+There are a few different languages in which shaders can be written: you may have heard of GLSL, HLSL and others. Ebitengine has it's own intermediate language, Kage, which allows us to write shaders with a Golang-like syntax without having to worry about other internal details. At runtime, Ebitengine will translate our Kage program to HLSL, MSL or whatever language is needed to make it work on the platform where the game's being played.
 
 ### Table of Contents
 Next up: [#1](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/01_cpu_vs_gpu.md).

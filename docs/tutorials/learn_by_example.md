@@ -46,6 +46,8 @@ Here we go!
 - [Water reflection](): image, FX, projection, deformation, animation.
 - [Inside water](): image, FX, deformation, animation.
 - [Heat shimmer](): image, FX, deformation.
+- [Cube](): geometry, 3D, lighting.
+- [Animated cube](): geometry, 3D, lighting, animation.
 - [Ring loader](): UI, projection, animation.
 - [Cylindrical HUD](): UI, projection.
 - [Hemispherical HUD](): UI, projection.
@@ -56,8 +58,8 @@ Here we go!
 - [Rotating geodesic dome](): geometry, 3D, triangles, animation, lighting.
 
 At this point, I feel it's important to highlight that many fancy effects can also be achieved *without shaders*. Keep this in mind and avoid shader tunnel vision!
-- Hit effect: compress the sprite with regular `GeoM` transformations.
-- Morphing: saturate both images to white with `ColorM` transformations, and then scale the first down and the second up at the same center position. You can create "pokemon evolution" effects or other kinds of morphs between two sprites.
-- Skews and transitions: you can use `GeoM` to skew images, combine color blending operators, masks and other tricks to create screen transitions and all kind of animated effects.
-- Alter states: it's easy to create flashes of different colors on characters to represent alter states, like poison, paralysis and others. Often you can add custom small animations to make these effects even much better.
-- Many other effects done manually with game art: outlines, glows, glitches and others can be done directly with art. If you need a cool effect only in one specific situation, making the art for it may be easier than coding the shader.
+- **Hit effect**: compress the sprite with regular `GeoM` transformations.
+- **Morphing**: saturate both images to white with `ColorM` transformations, and then scale the first down and the second up at the same center position. You can create "pokemon evolution" effects or other kinds of morphs between two sprites.
+- **Skews and transitions**: you can use `GeoM` to skew images, combine color blending operators, masks and other tricks to create screen transitions and all kinds of animated effects.
+- **Alter states**: it's easy to create flashes of different colors on characters to represent alter states, like poison, paralysis and others. Often you can add custom small animations to make these effects even much better.
+- **Manual effects with game art**: outlines, glows, glitches and others can be done directly with art and animations. If you need a cool effect only in one specific situation, sometimes making the art for it may be easier than coding the shader.
