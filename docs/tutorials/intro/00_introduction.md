@@ -7,7 +7,7 @@ If you are new to shaders, the short version is that they are programs that run 
 ![](https://github.com/tinne26/kage-desk/blob/main/img/zombie_aliens_recolor.webp?raw=true)
 *(Shader recolor based on lightness, with gamma correction applied)*
 
-In games, you will see shaders being used for all kinds of things: rounded rectangles on UI frameworks, hit and death animation on sprites, power-up or alter state effects, full screen effects like blurs, warpings, chromatic aberrations and CRT effects, lighting, water generation, screen transitions... and many, many more.
+In games, you will see shaders being used for all kinds of things: rounded rectangles on UI frameworks, hit and death animations on sprites, power-up or alter state effects, full screen effects like blurs, warpings, chromatic aberrations and CRT effects, lighting, water generation, screen transitions... and many, many more.
 
 <!-- TODO: video of a few cool shaders to make the contextualization stick -->
 

@@ -10,7 +10,7 @@ You may remember from the previous chapters that the `DrawRectShaderOptions` ima
 
 Since `DrawRectShader()` won't work, we need to switch to `DrawTrianglesShader()` instead.
 
-Triangle-drawing calls in Ebitengine are confusing for *a lot of people*, so we have made a separate [tutorial](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/misc/triangles.md) for them. If you want to properly learn how triangles work, jump there and read. Otherwise, we have also prepared a helper function in `kage-desk/display` so you can adapt your `main.go` file and keep going even without understanding the thing that we titled this chapter with:
+Triangle-drawing calls in Ebitengine are confusing for *a lot of people*, so we have made a separate [tutorial](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/triangles.md) for them. If you want to properly learn how triangles work, jump there and read. Otherwise, we have also prepared a helper function in `kage-desk/display` so you can adapt your `main.go` file and keep going even without understanding the thing that we titled this chapter with:
 ```Golang
 func (self *Game) Draw(screen *ebiten.Image) {
 	// create draw options
