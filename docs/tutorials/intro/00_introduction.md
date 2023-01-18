@@ -11,7 +11,7 @@ In games, you will see shaders being used for all kinds of things: rounded recta
 
 <!-- TODO: video of a few cool shaders to make the contextualization stick -->
 
-Shaders, in conclusion, are programs that allow the GPU to perform sophisticated computations for the individual pixels of an image in a highly parallel manner. When this process is repeated frame after frame —as you probably already understood from the previous examples—, we can even create cool animations and effects.
+Shaders, in conclusion, are programs that allow the GPU to perform sophisticated computations for the individual pixels of an image in a highly parallel manner. When this process is repeated frame after frame —as you might have inferred from the previous examples—, we can even create cool animations and effects.
 
 There are a few different languages in which shaders can be written: you may have heard of GLSL, HLSL and others. Ebitengine has it's own intermediate language, Kage, which allows us to write shaders with a Golang-like syntax without having to worry about other internal details. At runtime, Ebitengine will translate our Kage program to HLSL, MSL or whatever language is needed to make it work on the platform where the game's being played.
 

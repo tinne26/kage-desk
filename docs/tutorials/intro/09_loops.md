@@ -66,7 +66,7 @@ This technique can also be used to create outlines or implement blurs and other 
 
 ## Overcoming the limitations
 
-This is all very nice, but having to use constants instead of uniforms is not cool. What if we wanted to animate the pixelization effect like in the following video, changing the cell size through time?
+This is all very nice, but having to use constants instead of uniforms is not cool. What if we wanted to animate the pixelization effect as in the following video, where the cell size changes through time?
 
 https://user-images.githubusercontent.com/95440833/212187726-a42a80d6-42c6-4e74-95e4-f6bcc404bae2.mp4
 
