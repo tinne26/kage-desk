@@ -37,7 +37,7 @@ The situation is very similar to what we've been seeing in the previous chapters
 For the uniforms, here's what we are doing:
 - `TargetRect` is important so you can compute both the main position of the creature and its reflection in relation to the shader's target rectangle. The actual content of `TargetRect` is `vec4(minX, minY, maxX, maxY)`.
 - `MirrorAlphaMult` is an opacity multiplier for the reflection. It is fairly easy to apply, but you don't need to worry about it until your are cleaning up the reflection effect.
-- `VertDisplacement` is an advanced and optional uniform that you should ignore until you get everything else working. The idea is that the mirrored image can have too much padding around the eges and look too disconnected from the reflection. We can use this configurable factor to bring the two closer to the center of the shader's target rectangle and make it look better. Notice that this uniform is an `int`! It could be a `float` too, but I wanted to throw an `int` in a shader at some point so you didn't forget about them.
+- `VertDisplacement` is an advanced and optional uniform that you should ignore until you get everything else working. The idea is that the mirrored image can have too much padding around the edges and look too disconnected from the reflection. We can use this configurable factor to bring the two closer to the center of the shader's target rectangle and make it look better. Notice that this uniform is an `int`! It could be a `float` too, but I wanted to throw an `int` in a shader at some point so you didn't forget about them.
 
 Remember also the `imageColorAtPixel(vec2)` helper function from the previous chapter, you will definitely need it! Or its sibling `imageColorAtUnit(vec2)`.
 

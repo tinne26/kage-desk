@@ -59,7 +59,7 @@ It takes more code than before, but most of it is boilerplate that you should al
 - The `Game` struct itself only keeps a reference to the compiled shader program and draws it with `DrawRectShader()` on each frame. The arguments of `DrawRectShader()` are the width and height of the area the shader will be drawn to, the compiled shader object and the draw options. These options include a `GeoM` matrix, as shown in the code, but also other options that will be explained in the next chapter.
 - The last point to keep in mind is that we are using a fixed layout of 512x512 at all times. If you are still confused about how `Game.Layout()` works in Ebitengine, make sure to [revise the basics](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/ebitengine_game.md). Shaders in non-toy applications will often be resizable, so you will eventually have to learn to adjust the position or resolution of the shaders dynamically.
 
-> If you are having any trouble, the full code for this manual shader invocation (along with a cleaned-up version of the wave shader of the previous section) can be found at [`kage-desk/examples/intro/invoke-shader`](https://github.com/tinne26/kage-desk/blob/main/examples/intro/invoke-shader).
+> If you are having any trouble, the full code for this manual shader invocation (along with a cleaned-up version of the wave shader of the previous chapter) can be found at [`kage-desk/examples/intro/invoke-shader`](https://github.com/tinne26/kage-desk/blob/main/examples/intro/invoke-shader).
 
 There's another way to invoke a shader, using `DrawTrianglesShader()` instead of `DrawRectShader()`. We will explain this second method later in the tutorial... but only when it becomes necessary.
 

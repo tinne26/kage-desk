@@ -37,6 +37,7 @@ Here we go!
 - [Breathing](): sprite, animation, FX, deformation.
 - [Character boost](): sprite, FX, animation.
 - [Character poison](): sprite, FX, animation.
+- [Windmill transition](): image, animation.
 - [Destroy (disintegrate + spread)](): sprite, animation, FX.
 - [Destroy (cut + vanish)](): sprite, animation, FX.
 - [Destroy (spiral collapse)](): sprite, animation, FX.
@@ -48,6 +49,7 @@ Here we go!
 - [Heat shimmer](): image, FX, deformation.
 - [Cube](): geometry, 3D, lighting.
 - [Animated cube](): geometry, 3D, lighting, animation.
+- [Ebiten model](): geometry, 3D, lighting, animation.
 - [Ring loader](): UI, projection, animation.
 - [Cylindrical HUD](): UI, projection.
 - [Hemispherical HUD](): UI, projection.

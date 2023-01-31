@@ -37,7 +37,7 @@ Failed to load shader:
 3:1: function Fragment must have a return statement but not
 ```
 
-Well, as we were just saying, a fragment shader should return the value of a pixel. It's color. We aren't returning anything yet, so let's fix the `Fragment` function by adding a `return vec4(1, 0, 0, 1)`. If you did it right, re-running `main.go` should now result in a red screen.
+Well, as we were just saying, a fragment shader should return the value of a pixel. Its color. We aren't returning anything yet, so let's fix the `Fragment` function by adding a `return vec4(1, 0, 0, 1)`. If you did it right, re-running `main.go` should now result in a red screen.
 
 You probably figured it out on your own, but as you can see, we don't use `color.RGBA` within shaders, but vectorial types instead. Check the function signature again:
 ```Golang

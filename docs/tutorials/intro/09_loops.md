@@ -1,6 +1,6 @@
 # Loops are tricky
 
-One thing we haven't discussed yet are loops. While in general shaders do support loops, they only do it in limited ways. In the case of Kage, we can only use classical `for` loops within ranges determined by constants:
+One thing we haven't discussed yet are loops. While in general shaders do support loops, they only do it in limited ways. In the case of Kage, we can only use classical `for` loops within ranges determined by *constants*:
 ```Golang
 for i := -2; i < 2; i++ {
 	// (do something)
@@ -20,7 +20,7 @@ The idea for this shader is not too complex:
 2. Find the cell corresponding to the current position.
 3. Average the colors of all pixels in that cell and return that value.
 
-This last step is the part where you will use a for loop. For example, you can use this as a reference:
+This last step is the part where you will use a `for` loop. For example, you can use this as a reference:
 ```Golang
 for y := 0.0; y < CellHeight; y += 1.0 {
 	for x := 0.0; x < CellWidth; x += 1.0 {
@@ -29,13 +29,13 @@ for y := 0.0; y < CellHeight; y += 1.0 {
 }
 ```
 
-Where `CellHeight` and `CellWidth` are constants declared in the following way:
+Where `CellHeight` and `CellWidth` are constants declared like this:
 ```Golang
 const CellWidth  float = 12.0 // must be at least 1
 const CellHeight float = 12.0 // must be at least 1
 ```
 
-Try to write the pixelator effect by yourself!
+Try to write the pixelator effect by yourself now!
 
 <details>
 <summary>Click to show the solution</summary>
