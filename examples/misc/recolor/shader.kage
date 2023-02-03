@@ -5,11 +5,23 @@ var LightColor vec4
 
 func Fragment(_ vec4, texCoord vec2, _ vec4) vec4 {
 	color := imageSrc0UnsafeAt(texCoord)
-	light := lightness(color)
+	light := lightness(color) // you can also use luminance() directly
 	return mix(DarkColor, LightColor, light)
 }
 
 func lightness(color vec4) float {
+	lum := luminance(color)
+	var light float
+	if lum <= 0.008856 {
+		light = lum*903.3
+	} else {
+		light = pow(lum, 1.0/3.0)*116 - 16
+	}
+
+	return light/100.0
+}
+
+func luminance(color vec4) float {
 	r, g, b := linearize(color.r), linearize(color.g), linearize(color.b)
 	return 0.2126*r + 0.7152*g + 0.0722*b
 }

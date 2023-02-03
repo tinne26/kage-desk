@@ -5,7 +5,7 @@ Kage is a programming language to implement shaders in Ebitengine.
 If you are new to shaders, the short version is that they are programs that run on the GPU instead of the CPU. For our purposes, shaders are programs that allow us to create or modify images[^1], like recoloring them, adding noise or grain, distorting them and many others:
 
 ![](https://github.com/tinne26/kage-desk/blob/main/img/zombie_aliens_recolor.webp?raw=true)
-*(Shader recolor based on lightness, with gamma correction applied)*
+*(Shader recolor based on raw luminance)*
 
 In games, you will see shaders being used for all kinds of things: rounded rectangles on UI frameworks, hit and death animations on sprites, power-up or alter state effects, full screen effects like blurs, warpings, chromatic aberrations and CRT effects, lighting, water generation, screen transitions... and many, many more.
 
