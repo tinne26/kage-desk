@@ -103,8 +103,8 @@ This is still not enough to make use of the full screen resolution, though, as l
 ```Golang
 func (_ *Game) LayoutF(logicWinWidth, logicWinHeight float64) (float64, float64) {
 	scale := ebiten.DeviceScaleFactor()
-	canvasWidth  := int(math.Ceil(logicWinWidth*scale))
-	canvasHeight := int(math.Ceil(logicWinHeight*scale))
+	canvasWidth  := math.Ceil(logicWinWidth*scale)
+	canvasHeight := math.Ceil(logicWinHeight*scale)
 	return canvasWidth, canvasHeight
 }
 ```
