@@ -10,7 +10,7 @@ Let's try to create a vertical color gradient that goes from green to blue. We c
 
 ![](https://github.com/tinne26/kage-desk/blob/main/img/intro_cpu_gradient.png?raw=true)
 
-We will start with the CPU version. It's quite simple, as we only need to fill 300 rows with a progressively changing color for each row. Since the gradient is so simple, we can start with 100% green and 0% blue, and end at 0% green and 100% blue. It could look like this:
+We will start with the CPU version. It's quite simple, as we only need to fill 300 rows with a progressively changing color for each row. Since the gradient is so simple, we can start with 100% green and 0% blue, and end at 0% green and 100% blue[^1]. It could look like this:
 ```Golang
 func Gradient() *image.RGBA {
 	// create the target image
@@ -64,6 +64,8 @@ That's it, you have successfully executed your first Kage shader!
 
 Key takeaway:
 > When creating shaders, we need to break a task into a pixel-level independent process.
+
+[^1]: We are using this interpolation method for simplicity, but if you want to create proper color gradients what we are doing here is a crime. Color interpolation for gradients should be done on a perceptually linear color space like Oklab, or at the very least linear RGB instead of the current sRGB. You may also know about CIELAB, but in this particular case, CIELAB will give terrible results too. If you are interested in the topic, I heavily recommend you to experiment yourself with the [interactive tool](https://raphlinus.github.io/color/2021/01/18/oklab-critique.html) that Raph Levien created for one of his blogposts. Set up the green-to-blue gradient and see the differences between color models.
 
 
 ### Table of Contents
