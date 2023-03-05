@@ -11,3 +11,16 @@ If you decide to go with the first option:
 - ...
 
 If your editor is missing or the given instructions don't work, let us know and help us improve this!
+
+
+## Highlighting `.kage` files on Github
+
+Another nice tip is to add the following line to a `.gitattributes` file when working with `.kage` shaders in a Github repository:
+```
+# make .kage shaders be highlighted in Github like Go code
+*.kage linguist-language=Go
+```
+
+Until `.kage` becomes an officially supported file extension in Github, this is the best way to get the files highlighted. In fact, since this very repository uses this trick, you can find the file at the root folder.
+
+Let us know if you have similar tricks for other platforms!
