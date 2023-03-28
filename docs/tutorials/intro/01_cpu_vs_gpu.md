@@ -19,8 +19,9 @@ func Gradient() *image.RGBA {
 	// for each row...
 	for y := 0; y < 300; y++ {
 		// compute the gradient color for this row (amount of blue and green)
-		greenLevel := (300.0 - float64(y) + 0.5)/300.0
-		blueLevel  := ((float64(y) + 0.5)/300.0)
+		fy := float64(y) + 0.5 // current row middle y position
+		greenLevel := (300.0 - fy)/300.0
+		blueLevel  := (fy/300.0)
 
 		// convert the float values to an rgba color, 8-bits per channel
 		greenValue := uint8(255*greenLevel)
