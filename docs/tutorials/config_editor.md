@@ -2,7 +2,7 @@
 
 There are two ways:
 - Set your `.kage` files to be highlighted like `.go` files.
-- Use [sedyh/ebitengine-kage](https://github.com/sedyh/ebitengine-kage-vscode) plugins for VSCode, Sublime or Vim.
+- Use [sedyh/ebitengine-kage](https://github.com/sedyh/ebitengine-kage-vscode) plugins for VSCode, Sublime or Vim. The VSCode plugin in particular is very complete and includes snippets and autocompletion, which can be super handy.
 
 If you decide to go with the first option:
 - **VSCode**: open a `.kage` file, press F1 to open the search, type "language", select `Change Language Mode`, then `Configure File Association for '.kage'`, and select `Go` from the list of options.
