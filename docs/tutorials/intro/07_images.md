@@ -29,7 +29,8 @@ Notice that we are importing `github.com/tinne26/kage-desk/display` again as it 
 For the shader, the first thing we will do is show the image. No effects yet. Just make the shader compute the color of each pixel as the color of the corresponding pixel in the passed image:
 ```Golang
 func Fragment(position vec4, _ vec2, _ vec4) vec4 {
-	return imageColorAtPixel(position.xy)
+	imgPixCoords := position.xy
+	return imageColorAtPixel(imgPixCoords)
 }
 ```
 
@@ -61,7 +62,17 @@ func imageColorAtUnit(unitCoords vec2) vec4 {
 }
 ```
 
-You can copy `imageColorAtPixel()` into the previous shader in order to make it work it. Notice also that if you want to use multiple images, you will need to write additional versions of these helper functions using `imageSrc1At()` and the others instead of `imageSrc0At()`.
+You can copy `imageColorAtPixel()` into the previous shader in order to make it work it. If you wanted to use multiple images, you would write additional versions of these helper functions using `imageSrc1At()` and the others instead of `imageSrc0At()`.
+
+We have been explaining many new concepts and functions, so let's take a step back and look again at the code:
+```Golang
+func Fragment(position vec4, _ vec2, _ vec4) vec4 {
+	imgPixCoords := position.xy
+	return imageColorAtPixel(imgPixCoords)
+}
+```
+
+One thing that may not be immediately obvious from this example is that `position` and the argument to `imageColorAtPixel()` (let's call is `imgPixCoords`) make reference to different images that may have different sizes and relative offsets. The `position` input argument refers to the shader's target global position, while `imgPixCoords` refers to the shader source image 0. In this case, since we are using `DrawRectShader()` and no `GeoM` translations, we know that the shader's target will be the same size as the source image and that there will be no offsets affecting the global `position`, so we can map coordinates one-to-one... but this is not necessarily true for the general case. Keep this in mind if you find yourself in trouble while trying to use `imageColorAtPixel()` in more complex scenarios.
 
 To complete the program, make sure to use the spider-cat-dog bounds for the window and layout sizes in your `main.go` and try to run it! You should be seeing this silly creature, but with a black background:
 
