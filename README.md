@@ -10,6 +10,8 @@ Without further ado:
 - [Showcase](https://github.com/tinne26/kage-desk/blob/main/docs/showcase.md): advanced examples and fancy shaders from the community.
 - [Articles](https://github.com/tinne26/kage-desk/blob/main/docs/articles.md): external articles by other members of the community.
 
+*Latest news: heated discussions over kage shaders at [#2639](https://github.com/hajimehoshi/ebiten/issues/2639) and [#2640](https://github.com/hajimehoshi/ebiten/issues/2640)!*
+
 If you need further help, have questions or suggestions, consider dropping by [Ebitengine's discord](https://discord.gg/3tVdM5H8cC)!
 
 [^1]: Ebitengine is a 2D game engine for Golang made by Hajime Hoshi, with a custom language for shaders called Kage that we keep abusing to do 3D. The official website is [ebitengine.org](https://ebitengine.org); the github project can be found at [github.com/hajimehoshi/ebiten](https://github.com/hajimehoshi/ebiten). Much love to Hajime Hoshi!
