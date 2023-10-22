@@ -83,11 +83,11 @@ func main() {
 
 Can you spot the mistake? Yeah, of course. This is what we would expect:
 
-
+[premult_nrgba.webm](https://github.com/tinne26/kage-desk/assets/95440833/21ed600c-dceb-4d18-a8ae-eb288e5fadb0)
 
 This is what we actually get:
 
-
+[premult_rgba.webm](https://github.com/tinne26/kage-desk/assets/95440833/14bf81f1-f39b-49ca-813c-50e6722f2cd7)
 
 At the beginning of the animation process, since `Game.fadeIn` starts increasing from 0, the color is *not a valid premultiplied alpha color*. The color only becomes valid when alpha reaches a value of 218. The solution in this program is, of course, replacing `color.RGBA` with `color.NRGBA`.
 
