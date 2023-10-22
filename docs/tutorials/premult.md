@@ -4,27 +4,25 @@ So you are happily writing code, creating some nice visuals to share with your i
 
 ![](https://github.com/tinne26/kage-desk/blob/main/img/premult_opaque.png?raw=true)
 
-"Yeah, it's looking stylish!", you say to yourself.
+"Yeah, it's looking stylish!", you tell yourself.
 
-"But perhaps we can make a couple slight changes here and there... *yo, what's going on with color?!*"
+"But perhaps we can make a couple tweaks here and there... *yooo, what's going on with color?!*"
 
 ![](https://github.com/tinne26/kage-desk/blob/main/img/premult_transparent.png?raw=true)
 
-And suddenly color gets weird.
+Suddenly color gets weird.
 
 No, you are not going insane. No, Ebitengine isn't broken. It's our good friend the **premultiplied alpha**.
 
-*(and this one is sadly very real)*
-
 ## Huh..?
 
-Most of the time we are working with RGBA values. One color, four channels: red, green, blue and finally alpha, which is kinda special.
+Most of the time we are working with RGBA values. One color, four channels: red, green, blue and finally alpha (also known as opacity), which is kind of special.
 
-When it comes to image processing (rendering, composition, and so on), there are multiple ways to interpret the alpha value of a given color. Computer graphics benefit most from the *premultiplied alpha* format, which considers that the alpha value of a color *has already been applied to the other color channels* in a pre-multiplication process.
+When it comes to image processing (rendering, composition, and so on), there are multiple ways to interpret the alpha value of a given color. Computer graphics benefit most from the *premultiplied alpha* format, which considers that the alpha of a color *has already been applied to the other color channels* in a pre-multiplication process.
 
 In other words, if we take the non-premultiplied color `clr := vec4(1.0, 1.0, 1.0, 0.5)` and we want to premultiply it, we would do `clr = vec4(clr.RGB*clr.A, clr.A)`, which would give us `vec4(0.5, 0.5, 0.5, 0.5)`.
 
-This might not mean much to you yet, but don't worry, just keep going. Wihle the concept may be tricky to grasp, its shape is actually quite easy to detect:
+This might not mean much to you yet, but don't worry; while the concept of premultiplied alpha may be tricky to grasp, identifying where it's misused is much simpler:
 - If you use a `color.RGBA` or a `vec4` where the alpha value is lower than any of the other channels (e.g., `color.RGBA{255, 255, 0, 128}`, `vec4(0, 0, 128, 64)`), you are creating an *invalid premultiplied alpha color* and bad things will happen.
 
 If you take a look at the documentation in [image/color](https://pkg.go.dev/image/color), you will see that it's full of references to "premultiplied alpha" and "non-premultiplied alpha". When Ebitengine asks you for `color.Color` values in the API, you have to pay attention to the actual types you are using. If you are using the most common color type, `color.RGBA`, you have to obey the spec and *use premultiplied values when you create the color*. Other types, like `color.NRGBA`, can be easier to use at the beginning. If you are using shaders, though, Ebitengine always requires you to use the premultiplied alpha format.
