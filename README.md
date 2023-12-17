@@ -10,7 +10,7 @@ Without further ado:
 - [Showcase](https://github.com/tinne26/kage-desk/blob/main/docs/showcase.md): advanced examples and fancy shaders from the community.
 - [Articles](https://github.com/tinne26/kage-desk/blob/main/docs/articles.md): external articles by other members of the community.
 
-*Latest news: heated discussions over kage shaders at [#2639](https://github.com/hajimehoshi/ebiten/issues/2639) and [#2640](https://github.com/hajimehoshi/ebiten/issues/2640)!*
+*Notice: since Ebitengine v2.6.0, the new "[pixel mode](https://ebitengine.org/en/documents/2.6.html#Pixel_mode_in_Kage)" is available for Kage shaders. This repository still hasn't been adapted to reflect that. While the existing content should still be useful, new projects are encouraged to use the new pixel mode, and some of the advice might be obsolete or missing. I'll update everything when I have some time!*
 
 If you need further help, have questions or suggestions, consider dropping by [Ebitengine's discord](https://discord.gg/3tVdM5H8cC)!
 
