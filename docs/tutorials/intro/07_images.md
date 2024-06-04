@@ -40,7 +40,7 @@ Again, this might be tricky to visualize with only an explanation, but the [tria
 
 ![](https://github.com/tinne26/kage-desk/raw/main/img/triangle_B.png?raw=true)
 
-So, *in order to map our source texture to the target region*, we get the source image bounds and set the `Vertex.SrcX` and `Vertex.SrcY` fields like this:
+So, *in order to map our source texture to the target vertices*, we get the source image bounds and set the `Vertex.SrcX` and `Vertex.SrcY` fields like this:
 ```Golang
 func (self *Game) Draw(screen *ebiten.Image) {
 	// map the vertices to the target image
@@ -77,7 +77,7 @@ func (self *Game) Draw(screen *ebiten.Image) {
 
 Oof. Ok, that was tedious, but we had to deal with it at some point. Let's go back to the shaders now!
 
-For the shader, the first thing we will try do is show the image. No effects yet. Just make the shader compute the color of each pixel as the color of the corresponding pixel in the passed image:
+For the shader, the first thing we will try to do is show the raw image. No effects yet. Just make the shader compute the color of each pixel as the color of the corresponding pixel in the passed image:
 ```Golang
 //kage:unit pixels
 package main 
@@ -87,7 +87,7 @@ func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
 }
 ```
 
-This code showcases a new function: <code>imageSrc<b><i>N</i></b>At()</code>. This function allows us to get the color of a source image at a given position. We can have up to four images, and you can use `imageSrc0At()`, `imageSrc1At()`, `imageSrc2At()` and `imageSrc3At()` to sample colors from each one. There are also [a few more functions](https://ebitengine.org/en/documents/shader.html#Built-in_functions_(images)) to get a source image size, origin and so on, but we can deal with that another day.
+This code showcases a new function: <code>imageSrc<b><i>N</i></b>At()</code>. This function allows us to get the color of a source image at a given position. We can have up to four images, and you can use `imageSrc0At()`, `imageSrc1At()`, `imageSrc2At()` and `imageSrc3At()` to sample colors from each one. There are also [a few more functions](https://ebitengine.org/en/documents/shader.html#Built-in_functions_(images)) to get a source image size, origin and so on, but we will cover that in later chapters.
 
 You should try to run all this now... and notice that the image doesn't properly fill the screen.
 

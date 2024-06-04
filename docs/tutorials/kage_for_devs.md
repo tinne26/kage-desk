@@ -89,7 +89,9 @@ A few points worth highlighting:
 
 ## Load and invoke
 
-If you want to compile and invoke a shader manually, here is some reference code. Basically, use 4 vertices to create a quad and set the vertex target coordinates. While `DrawRectShader()` also exist, you can just ignore it[^1] and focus on `DrawTrianglesShader()` instead. We will build upon this template for the next examples:
+If you want to compile and invoke a shader manually, here is some reference code. Basically, use 4 vertices to create a quad and set the vertex target coordinates. While `DrawRectShader()` also exists, I recommend focusing exclusively on `DrawTrianglesShader()` instead[^1].
+
+We will build upon the following template for the next examples:
 
 [^1]: While `DrawRectShader()` can be handy in some situations, in many practical scenarios you will have to end up reaching for `DrawTrianglesShader()` anyway, so I'm of the opinion that you should just spare yourself the cognitive overhead and simply ignore the function. If you really must know, its biggest restriction is probably that all source images must match the explicit dimensions passed as the first arguments.
 

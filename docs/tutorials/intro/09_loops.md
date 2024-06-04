@@ -38,7 +38,7 @@ const CellHeight float = 12.0 // must be at least 1
 Try to write the pixelator effect by yourself now!
 
 > [!TIP]
-> *Fix the window size and the layout to `display.ImageSpiderCatDog().Bounds()`.*
+> *Remember to fix the window size and the layout to `display.ImageSpiderCatDog().Bounds()`.*
 
 <details>
 <summary>Click to show the solution</summary>
