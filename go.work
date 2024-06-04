@@ -1,17 +1,20 @@
-go 1.19
+go 1.22.2
 
 use (
-	./examples/intro/gradient-cpu
-	./examples/intro/gradient
+	./display
 	./examples/intro/checkerboard
-	./examples/intro/invoke-shader
+	./examples/intro/checkerboard-preview
+	./examples/intro/circle
 	./examples/intro/circle-anim
 	./examples/intro/color-swap
+	./examples/intro/gradient
+	./examples/intro/gradient-cpu
+	./examples/intro/half-half
+	./examples/intro/invoke-shader
+	./examples/intro/mirror
 	./examples/intro/pixelize
 	./examples/intro/pixelize-anim
-	./examples/intro/pixelize-anim-opt
-	./examples/intro/mirror
-	./examples/misc/triangles
+	./examples/intro/wave-split
 	./examples/misc/recolor
-	./display
+	./examples/misc/triangles
 )

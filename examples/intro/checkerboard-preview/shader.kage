@@ -1,0 +1,16 @@
+//kage:unit pixels
+package main
+
+// Shader for drawing a checkerboard pattern in black and white.
+// Notice that since the pattern happens at the pixel level, it
+// might not be very readable. A later example builds upon this
+// to solve the problem (examples/intro/checkerboard).
+
+func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
+	xy := floor(targetCoords.x) + floor(targetCoords.y)
+	if mod(xy, 2) == 0 {
+		return vec4(1) // white
+	} else {
+		return vec4(0, 0, 0, 1) // black
+	}
+}

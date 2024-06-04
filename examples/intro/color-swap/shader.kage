@@ -1,13 +1,6 @@
+//kage:unit pixels
 package main
 
-func Fragment(position vec4, _ vec2, _ vec4) vec4 {
-	return imageColorAtPixel(position.xy).bgra
-}
-
-// Helper function to access an image's color at the given pixel coordinates.
-func imageColorAtPixel(pixelCoords vec2) vec4 {
-	sizeInPixels := imageSrcTextureSize()
-	offsetInTexels, _ := imageSrcRegionOnTexture()
-	adjustedTexelCoords := pixelCoords/sizeInPixels + offsetInTexels
-	return imageSrc0At(adjustedTexelCoords)
+func Fragment(_ vec4, sourceCoords vec2, _ vec4) vec4 {
+	return imageSrc0At(sourceCoords).brga
 }

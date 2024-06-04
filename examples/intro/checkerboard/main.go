@@ -1,7 +1,8 @@
 package main
 
 // This is an example shown on the "Introduction to Kage" tutorial.
-// It draw a checkerboard pattern in black and white.
+// It draws a checkerboard pattern in black and white, with an
+// easily modifiable cell size.
 //
 // Notice that the actual shader is on the shader.kage file.
 // 

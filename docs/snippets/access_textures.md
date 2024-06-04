@@ -1,5 +1,9 @@
 # Access textures
 
+> [!WARNING]
+> **Since the addition of pixels mode in Ebitengine v2.6.0, the content of this page is no longer relevant; it's offered only for historical context**.
+
+
 For explanations of texels and these functions, see [docs/tutorials/texels.md](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/texels.md).
 
 ```Golang

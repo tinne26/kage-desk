@@ -1,12 +1,12 @@
+//kage:unit pixels
 package main
 
 var CellSize float // uniform: max value is MaxCellSize
 const MaxCellSize float = 32.0
 
-func Fragment(position vec4, _ vec2, _ vec4) vec4 {
-	// find the position of the cell we are working on
-	baseX := floor(position.x/CellSize)*CellSize
-	baseY := floor(position.y/CellSize)*CellSize
+func Fragment(_ vec4, sourceCoords vec2, _ vec4) vec4 {
+	// find the origin of the cell we are working with
+	cellOrigin := floor(sourceCoords/CellSize)*CellSize
 
 	// iterate the pixelization cell
 	colorAcc := vec4(0.0) // color accumulator
@@ -14,19 +14,11 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 		if y >= CellSize { break }
 		for x := 0.0; x < MaxCellSize; x += 1.0 {
 			if x >= CellSize { break }
-			pixCoords := vec2(baseX + x, baseY + y)
-			colorAcc += imageColorAtPixel(pixCoords)	
+			pixCoords := cellOrigin + vec2(x, y)
+			colorAcc += imageSrc0At(pixCoords)
 		}
 	}
 
 	// divide the color to average it
 	return colorAcc/(CellSize*CellSize)
-}
-
-// Helper function to access an image's color at the given pixel coordinates.
-func imageColorAtPixel(pixelCoords vec2) vec4 {
-	sizeInPixels := imageSrcTextureSize()
-	offsetInTexels, _ := imageSrcRegionOnTexture()
-	adjustedTexelCoords := pixelCoords/sizeInPixels + offsetInTexels
-	return imageSrc0At(adjustedTexelCoords)
 }

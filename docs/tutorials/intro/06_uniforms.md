@@ -1,49 +1,56 @@
 # More input: uniforms
 
-Shaders, being run on the GPU, are rather limited in regards to the information they can access. Up to this point, the only real input we have seen for them is the `position vec4` input parameter that we receive on the `Fragment()` entry function... Which begs the question: can we pass additional parameters to the shaders?
+Shaders, being run on the GPU, are rather limited in regards to the information they can access. Up to this point, the only real input we have seen for them is the `targetCoords vec4` input parameter that we receive on the `Fragment()` entry function... Which begs the question: can we pass additional parameters to the shaders?
 
-The answer is yes: **uniforms** are variables whose values can be set from your code running on the CPU before actually invoking the shader.
+The answer is yes: **uniforms** are variables whose values can be set from your CPU-side code and sent to the GPU for use with your shader.
 
-In order to show how to use uniforms, we will try to draw a filled circle using a shader. Our draw function looked like this in the last chapter:
+In order to show how to use uniforms, we will try to draw a filled circle using a shader. Our draw function was something like this in the previous chapter:
 ```Golang
+
 func (self *Game) Draw(screen *ebiten.Image) {
-	// create draw options
-	opts := &ebiten.DrawRectShaderOptions{}
-	opts.GeoM.Translate(0, 0) // you could adjust the drawing position here
-	
+	// ... (some stuff)
+
+	// triangle shader options
+	var shaderOpts ebiten.DrawTrianglesShaderOptions
+
 	// draw shader
-	screen.DrawRectShader(512, 512, self.shader, opts)
+	indices := []uint16{0, 1, 2, 2, 1, 3} // map vertices to triangles
+	screen.DrawTrianglesShader(self.vertices[:], indices, self.shader, &shaderOpts)
 }
 ```
 
-Now we will change this code to add a new parameter for our shader: the center position of our circle.
+Now we will use the `shaderOpts` to add a new parameter for our shader: the center position of our circle.
 ```Golang
 func (self *Game) Draw(screen *ebiten.Image) {
-	// create draw options
-	opts := &ebiten.DrawRectShaderOptions{}
-	opts.Uniforms = make(map[string]interface{})
-	opts.Uniforms["Center"] = []float32{
+	// ... (some stuff)
+
+	// triangle shader options
+	var shaderOpts ebiten.DrawTrianglesShaderOptions
+	shaderOpts.Uniforms = make(map[string]interface{})
+	shaderOpts.Uniforms["Center"] = []float32{
 		float32(screen.Bounds().Dx())/2,
 		float32(screen.Bounds().Dy())/2,
 	}
-	
+
 	// draw shader
-	screen.DrawRectShader(512, 512, self.shader, opts)
+	indices := []uint16{0, 1, 2, 2, 1, 3} // map vertices to triangles
+	screen.DrawTrianglesShader(self.vertices[:], indices, self.shader, &shaderOpts)
 }
 ```
 
-The `Uniforms` map on the `DrawRectShaderOptions` allows us to send the `Center` variable to our shader. The main types that we can send are `int`, `float32` and `[]float32` values, which correspond to the shader `int`, `float` and `vec*` types. Since we passed a slice of two values, our shader has to look like this:
+The `Uniforms` map on the `DrawTrianglesShaderOptions` allows us to send the `Center` variable to our shader. The main types that we can send are `int`, `float32` and `[]float32` values, which correspond to the shader `int`, `float` and `vec*` types. Since we passed a slice of two values, our shader has to look like this:
 ```Golang
+//kage:unit pixels
 package main
 
 var Center vec2 // uniform: circle center coords
 
-func Fragment(position vec4, _ vec2, _ vec4) vec4 {
+func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
 	// ...
 }
 ```
 
-Uniform variables must always be capitalized (exported variables) and appear at the start of our shader code.
+Uniform variables must always be capitalized (like exported variables) and appear at the start of our shader code.
 
 Try to complete the shader so it draws a filled circle. Use a radius of 80px and any color you want.
 
@@ -51,13 +58,14 @@ Try to complete the shader so it draws a filled circle. Use a radius of 80px and
 <summary>Click to show the solution</summary>
 
 ```Golang
+//kage:unit pixels
 package main
 
 var Center vec2 // uniform: circle center coords
 const Radius = 80.0
 
-func Fragment(position vec4, _ vec2, _ vec4) vec4 {
-	distToCenter := distance(Center, position.xy)
+func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
+	distToCenter := distance(Center, targetCoords.xy)
 	distToEdge   := distToCenter - Radius
 
 	// dist to edge will be negative if we are inside the
@@ -66,14 +74,12 @@ func Fragment(position vec4, _ vec2, _ vec4) vec4 {
 	// by one), and discard it if we are outside (multiply
 	// by zero), so we need to change the sign and clamp
 	factor := clamp(-distToEdge, 0, 1)
-	factor  = pow(factor, 1.0/2.2) // gamma correction
 	return vec4(1, 0, 0, 1)*factor
 }
 ```
+*(Full program available at [examples/intro/circle](https://github.com/tinne26/kage-desk/blob/main/examples/intro/circle))*
 
-If you used `if` statements instead of `clamp()` and don't know what gamma correction is, don't worry. The reason `clamp()` (or some combinations of `min()`/`max()`) are preferred to conditionals is that shaders are executed by many GPU processors in parallel, and typically they are all executing the same instruction at the same time. When there are branches, all branches may have to be executed for all processors anyway. The topic is deep and complex and it's not something you have to worry about right now, but it's good to start seeing ways to avoid conditionals. Here an actual conditional wouldn't be much worse, but you definitely don't want big conditionals doing completely different things, because you may end up having to execute all those big branches on all processors anyway.
-
-On the other topic of gamma correction, the issue is that lightness is not perceived linearly by humans, but follows a power function instead. Therefore, using a linear fall-off for the opacity at the edge of the circumference is not ideal, so... we can use a simple formula to correct it. Again, this doesn't matter much here, but it's a concept you may want to know about for your future adventures. In more complex shaders it can have a significant effect.
+If you used `if` statements instead of `clamp()`, don't worry. The reason `clamp()` (or some combinations of `min()`/`max()`) are preferred to conditionals is that shaders are executed by many GPU processors in parallel, and typically they are all executing the same instruction at the same time. When there are branches, all branches may have to be executed for all processors anyway. The topic is deep and complex and it's not something you have to worry about right now, but it's good to start seeing ways to avoid conditionals. Here an actual conditional wouldn't be much worse, but you definitely don't want big conditionals doing completely different things, because you may end up having to execute all those big branches on all processors anyway.
 </details>
 
 With the circle shader working, the next step is to modify the `main.go` and the `shader.kage` programs so the `Radius` also becomes a uniform. Pass the value of 80 from the `Draw()` function in `main.go` instead of hardcoding it in the shader.
@@ -81,17 +87,20 @@ With the circle shader working, the next step is to modify the `main.go` and the
 Now the draw function in `main.go` should look like this:
 ```Golang
 func (self *Game) Draw(screen *ebiten.Image) {
-	// create draw options
-	opts := &ebiten.DrawRectShaderOptions{}
-	opts.Uniforms = make(map[string]interface{})
-	opts.Uniforms["Center"] = []float32{
+	// ... (some stuff)
+
+	// triangle shader options
+	var shaderOpts ebiten.DrawTrianglesShaderOptions
+	shaderOpts.Uniforms = make(map[string]interface{})
+	shaderOpts.Uniforms["Center"] = []float32{
 		float32(screen.Bounds().Dx())/2,
 		float32(screen.Bounds().Dy())/2,
 	}
-	opts.Uniforms["Radius"] = float32(80.0)
-	
+	shaderOpts.Uniforms["Radius"] = float32(80.0)
+
 	// draw shader
-	screen.DrawRectShader(512, 512, self.shader, opts)
+	indices := []uint16{0, 1, 2, 2, 1, 3} // map vertices to triangles
+	screen.DrawTrianglesShader(self.vertices[:], indices, self.shader, &shaderOpts)
 }
 ```
 
@@ -120,10 +129,11 @@ Next up: [#7](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intr
 0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md)
 1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/01_cpu_vs_gpu.md)
 2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/02_shader_setup.md)
-3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/03_position_input.md)
+3. [The `targetCoords` input parameter](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/03_target_coordinates.md)
 4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/04_built_in_functions.md)
 5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/05_invoke_shader.md)
 6. [**More input: uniforms**](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/06_uniforms.md)
 7. [Using images](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/07_images.md)
-8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/08_triangles.md)
+8. [Beyond one-to-one mapping](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/08_beyond.md)
 9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/09_loops.md)
+10. [What's next?](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/10_what_next.md)

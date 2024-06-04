@@ -1,3 +1,4 @@
+//kage:unit pixels
 package main
 
 // Shader for drawing a checkerboard pattern in black and white.
@@ -5,8 +6,8 @@ package main
 // bigger or smaller.
 const CellSize = 32 // powers of 2 recommended
 
-func Fragment(position vec4, _ vec2, _ vec4) vec4 {
-	xy := floor(position.x/CellSize) + floor(position.y/CellSize)
+func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
+	xy := floor(targetCoords.x/CellSize) + floor(targetCoords.y/CellSize)
 	if mod(xy, 2) == 0 {
 		return vec4(1) // white
 	} else {

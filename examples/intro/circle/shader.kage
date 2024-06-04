@@ -1,0 +1,18 @@
+//kage:unit pixels
+package main
+
+var Center vec2 // uniform: circle center coords
+const Radius = 80.0
+
+func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
+	distToCenter := distance(Center, targetCoords.xy)
+	distToEdge   := distToCenter - Radius
+
+	// dist to edge will be negative if we are inside the
+	// circle and positive if we are outside, but we want to 
+	// preserve the circle color if we are inside (multiply
+	// by one), and discard it if we are outside (multiply
+	// by zero), so we need to change the sign and clamp
+	factor := clamp(-distToEdge, 0, 1)
+	return vec4(1, 0, 0, 1)*factor
+}

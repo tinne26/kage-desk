@@ -1,0 +1,11 @@
+//kage:unit pixels
+package main
+
+// This is the entry point for the shader.
+// We aren't using any input parameters yet, but we are
+// returning a vec4 with the color we want to fill the
+// screen with. In our case, the color is red, but you
+// can try any color you want.
+func Fragment(_ vec4, _ vec2, _ vec4) vec4 {
+	return vec4(1, 0, 0, 1) // red
+}

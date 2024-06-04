@@ -1,0 +1,15 @@
+//kage:unit pixels
+package main
+
+func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
+	const Pi = 3.14159265
+	const NumOscillations = 7.0
+	const WaveWidth = 18.0
+
+	waveFactor := sin((targetCoords.y/512.0)*2*Pi*NumOscillations)*(WaveWidth/2)
+	if targetCoords.x < 256 + waveFactor {
+		return vec4(1) // white
+	} else {
+		return vec4(0, 0, 0, 1) // black
+	}
+}

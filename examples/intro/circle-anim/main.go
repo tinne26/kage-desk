@@ -1,7 +1,6 @@
 package main
 
 import "math"
-import "log"
 import _ "embed"
 
 import "github.com/hajimehoshi/ebiten/v2"
@@ -10,9 +9,9 @@ import "github.com/hajimehoshi/ebiten/v2"
 var shaderProgram []byte
 
 func main() {
-	// create shader object
+	// compile the shader
 	shader, err := ebiten.NewShader(shaderProgram)
-	if err != nil { log.Fatal(err) }
+	if err != nil { panic(err) }
 
 	// create game struct
 	game := &Game{ shader: shader }
@@ -21,13 +20,14 @@ func main() {
 	ebiten.SetWindowTitle("intro/circle-anim")
 	ebiten.SetWindowSize(512, 512)
 	err = ebiten.RunGame(game)
-	if err != nil { log.Fatal(err) }
+	if err != nil { panic(err) }
 }
 
 // Struct implementing the ebiten.Game interface.
 type Game struct {
-	degrees int
 	shader *ebiten.Shader
+	vertices [4]ebiten.Vertex
+	degrees int
 }
 
 // Assume a fixed layout.
@@ -42,17 +42,35 @@ func (self *Game) Update() error {
 	return nil
 }
 
-// Core drawing function from where we call DrawRectShader.
+// Core drawing function from where we call DrawTrianglesShader.
 func (self *Game) Draw(screen *ebiten.Image) {
-	// create draw options
-	opts := &ebiten.DrawRectShaderOptions{}
-	opts.Uniforms = make(map[string]interface{})
-	opts.Uniforms["Center"] = []float32{
+	// map the vertices to the target image
+	bounds := screen.Bounds()
+	self.vertices[0].DstX = float32(bounds.Min.X) // top-left
+	self.vertices[0].DstY = float32(bounds.Min.Y) // top-left
+	self.vertices[1].DstX = float32(bounds.Max.X) // top-right
+	self.vertices[1].DstY = float32(bounds.Min.Y) // top-right
+	self.vertices[2].DstX = float32(bounds.Min.X) // bottom-left
+	self.vertices[2].DstY = float32(bounds.Max.Y) // bottom-left
+	self.vertices[3].DstX = float32(bounds.Max.X) // bottom-right
+	self.vertices[3].DstY = float32(bounds.Max.Y) // bottom-right
+	// [VERTEX-NOTE]
+	// Other properties will be set on later examples. The full
+	// configuration is quite verbose, but you will typically create
+	// your own helper functions to do the heavy lifting, and in
+	// some cases you can optimize and omit some settings on
+	// successive passes.
+
+	// triangle shader options
+	var shaderOpts ebiten.DrawTrianglesShaderOptions
+	shaderOpts.Uniforms = make(map[string]interface{})
+	shaderOpts.Uniforms["Center"] = []float32{
 		float32(screen.Bounds().Dx())/2,
 		float32(screen.Bounds().Dy())/2,
 	}
-	opts.Uniforms["Radius"] = float32(80 + 30*math.Sin(float64(self.degrees)*math.Pi/180.0))
-	
+	shaderOpts.Uniforms["Radius"] = float32(80 + 30*math.Sin(float64(self.degrees)*math.Pi/180.0))
+
 	// draw shader
-	screen.DrawRectShader(512, 512, self.shader, opts)
+	indices := []uint16{0, 1, 2, 2, 1, 3} // map vertices to triangles
+	screen.DrawTrianglesShader(self.vertices[:], indices, self.shader, &shaderOpts)
 }

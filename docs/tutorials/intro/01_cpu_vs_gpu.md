@@ -39,7 +39,7 @@ func Gradient() *image.RGBA {
 ```
 *(Full program available at [examples/intro/gradient-cpu](https://github.com/tinne26/kage-desk/blob/main/examples/intro/gradient-cpu))*
 
-To contextualize, one could use a gradient like this as the background for a videogame. We could compute it at the start of the game and store it in an image that would then be sent to the GPU. Alternatively, if we wanted to recompute this gradient on each frame... it may be better to use a shader instead. With the shader, we wouldn't need to recompute and transfer the image to the GPU on each frame: we would be passing *the shader program* to the GPU instead. In this case where the gradient doesn't change through time the first approach may be simpler, but in more complex cases shaders would start offering additional benefits and advantages.
+To contextualize, one could use a gradient like this as the background for a videogame. We could compute it at the start of the game and store it in an image that would then be sent to the GPU. Alternatively, if we wanted to recompute this gradient on each frame... it may be better to use a shader instead. With the shader, we wouldn't need to recompute and transfer the image to the GPU on each frame: we would be passing *the shader program* to the GPU instead. In this case where the gradient doesn't change through time the first approach may be simpler, but in more complex cases shaders would start offering additional benefits.
 
 With that out of the way, let's take a look at the GPU version (in pseudo-code):
 ```Golang
@@ -53,7 +53,7 @@ func Gradient(position vec2) vec4 {
 
 Notice that in this version there's no outer loop. We won't go into much detail yet, but you can see that all we are doing here is take the position of the pixel we are working on and compute its color. One pixel, one calculation.
 
-In this case, the core code of the CPU and the GPU versions is very similar, but this isn't always the case. Thinking in the sequential version can be helpful sometimes, but you will have to learn many GPU-specific techniques in order to really get good at shaders. It's a different paradigm, so you need to start thinking differently.
+In this case, the core code of the CPU and the GPU versions is very similar, but this isn't always the case. Thinking in the sequential version can be helpful sometimes, but you will have to learn many GPU-specific techniques in order get the most out of shaders. It's a different paradigm, so you need to start thinking differently.
 
 Try to execute this first shader now. Open the terminal and run the following:
 ```
@@ -75,10 +75,11 @@ Next up: [#2](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intr
 0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md)
 1. [**CPU vs GPU: different paradigms**](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/01_cpu_vs_gpu.md)
 2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/02_shader_setup.md)
-3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/03_position_input.md)
+3. [The `targetCoords` input parameter](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/03_target_coordinates.md)
 4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/04_built_in_functions.md)
 5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/05_invoke_shader.md)
 6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/06_uniforms.md)
 7. [Using images](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/07_images.md)
-8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/08_triangles.md)
+8. [Beyond one-to-one mapping](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/08_beyond.md)
 9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/09_loops.md)
+10. [What's next?](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/10_what_next.md)

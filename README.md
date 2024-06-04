@@ -1,6 +1,6 @@
 # Kage's desk
 
-This repository is a project to make Kage shaders more accessible to Ebitengine[^1] game developers. Whether you are a newbie at shaders and need a [gentle introduction](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md) to them, you are a curious passerby looking for [cool examples](https://github.com/tinne26/kage-desk/blob/main/docs/cool_examples.md) or you are an initiated user looking for [snippets](https://github.com/tinne26/kage-desk/blob/main/docs/snippets/access_textures.md) and ideas, we made this to help you out.
+This repository is a project to make Kage shaders more accessible to Ebitengine[^1] game developers. Whether you are a newbie at shaders and need a [gentle introduction](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md) to them, you are a curious passerby looking for [cool examples](https://github.com/tinne26/kage-desk/blob/main/docs/cool_examples.md) or you are an initiated user looking for [snippets](https://github.com/tinne26/kage-desk/blob/main/docs/snippets/selectors.md) and ideas, we made this to help you out.
 
 Without further ado:
 - [Kage for newbies](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md): learn about shaders and Kage from zero. Practical oriented to game development.
@@ -9,8 +9,6 @@ Without further ado:
 - [Learn by example](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/learn_by_example.md): simple examples to serve as references for common techniques and problems.
 - [Showcase](https://github.com/tinne26/kage-desk/blob/main/docs/showcase.md): advanced examples and fancy shaders from the community.
 - [Articles](https://github.com/tinne26/kage-desk/blob/main/docs/articles.md): external articles by other members of the community.
-
-*Notice: since Ebitengine v2.6.0, the new "[pixel mode](https://ebitengine.org/en/documents/2.6.html#Pixel_mode_in_Kage)" is available for Kage shaders. This repository still hasn't been adapted to reflect that. While the existing content should still be useful, new projects are encouraged to use the new pixel mode, and some of the advice might be obsolete or missing. I'll update everything when I have some time!*
 
 If you need further help, have questions or suggestions, consider dropping by [Ebitengine's discord](https://discord.gg/3tVdM5H8cC)!
 

@@ -1,32 +1,31 @@
+//kage:unit pixels
 package main
 
-var TargetRect vec4       // uniform: min x, min y, max x, max y
 var MirrorAlphaMult float // uniform: reflection opacity multiplier
 var VertDisplacement int  // uniform: displacement towards the center
 
-func Fragment(position vec4, _ vec2, _ vec4) vec4 {
-	// prepare helper information
-	relativePos := vec2(position.x - TargetRect[0], position.y - TargetRect[1])
-	rectHeight := TargetRect[3] - TargetRect[1]
-	yCenter := rectHeight/2
-
-	// apply displacement
-	relativePos.y += float(VertDisplacement)*sign(relativePos.y - yCenter)
-
-	// top part (unmodified creature)
-	mainColor := imageColorAtPixel(relativePos)
-
-	// bottom part (inverted and alpha-adjusted creature)
-	mirrorPosition := vec2(relativePos.x, rectHeight - relativePos.y)
-	mirrorColor := imageColorAtPixel(mirrorPosition)*MirrorAlphaMult
-
-	// compose the result
-	return mainColor + mirrorColor
+func Fragment(targetCoords vec4, sourceCoords vec2, _ vec4) vec4 {
+	// compute top contribution
+	uprightColor := imageSrc0At(vec2(sourceCoords.x, sourceCoords.y*2 - float(VertDisplacement)))
+	uprightColor *= whenLessThan(sourceCoords.y, imageSrc0Size().y/2)
+	
+	// compute bottom contribution
+	adjustedY := (sourceCoords.y - imageSrc0Size().y/2)*2
+	invertedY := imageSrc0Size().y - adjustedY
+	samplingCoords := vec2(sourceCoords.x, invertedY - float(VertDisplacement))
+	mirrorColor := imageSrc0At(samplingCoords)*MirrorAlphaMult
+	mirrorColor *= whenGreaterThan(sourceCoords.y, imageSrc0Size().y/2)
+	
+	// return the sum of contributions
+	return uprightColor + mirrorColor
 }
 
-func imageColorAtPixel(pixelCoords vec2) vec4 {
-	sizeInPixels := imageSrcTextureSize()
-	originInTexels, _ := imageSrcRegionOnTexture()
-	adjustedTexelCoords := pixelCoords/sizeInPixels + originInTexels
-	return imageSrc0At(adjustedTexelCoords)
+// Returns 1 if a < b, 0 otherwise.
+func whenLessThan(a, b float) float {
+	return 1 - step(b, a)
+}
+
+// Returns 1 if a > b, 0 otherwise.
+func whenGreaterThan(a, b float) float {
+	return 1 - step(a, b)
 }

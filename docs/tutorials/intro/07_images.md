@@ -1,84 +1,112 @@
 # Using images
 
-There's only one critical piece left to reveal before you can unlock the full power of shaders: images.
+It's time to reveal the most important piece left to unlock the true power of shaders: images.
 
 There are two main reasons why we might want to pass images to our shaders:
 - To **apply an effect** to our game sprites or screen. This is the most common way to use images in 2D games. Pixelize an image, apply a blur or movement blur effect to it, deform it, control its color, apply chromatic aberrations, make simple lighting effects, screen transitions, etc.
 - To **use the image as a texture** for the shader. This is very common in 3D, where textures are used for "painting" raw triangles, geometry and lighting purposes. In 2D this is more unusual, but there are still some use-cases like creating animation effects on a sprite (e.g. being electrocuted), fancy glitches, reflections on the water, making "see behind the wall" effects and a few others that combine multiple images or textures to achieve a specific effect. Advanced lighting techniques with surfaces and normals can also be used in 2D, mainly in top-down view games, but this is rather uncommon, so we won't discuss it in this tutorial.
 
-*(The words _image_ and _texture_ are often used interchangeably in the context of shaders. There are some nuances, but we won't get into it today)*
+> [!NOTE]
+> *The words _image_ and _texture_ are often used interchangeably in the context of shaders. There are some nuances, but we won't get into it today.*
 
 To get started, we will show how to pass an image to a shader in `main.go`: the draw options struct includes an `Images` array where we can set up to 4 images to be passed to the shader:
 ```Golang
 func (self *Game) Draw(screen *ebiten.Image) {
-	// create draw options
-	opts := &ebiten.DrawRectShaderOptions{}
-	opts.Images[0] = display.ImageSpiderCatDog()
-	
+	// ... (some stuff)
+
+	// triangle shader options
+	var shaderOpts ebiten.DrawTrianglesShaderOptions
+	shaderOpts.Images[0] = display.ImageSpiderCatDog()
+
 	// draw shader
-	bounds := display.ImageSpiderCatDog().Bounds()
-	screen.DrawRectShader(bounds.Dx(), bounds.Dy(), self.shader, opts)
+	indices := []uint16{0, 1, 2, 2, 1, 3} // map vertices to triangles
+	screen.DrawTrianglesShader(self.vertices[:], indices, self.shader, &shaderOpts)
 }
 ```
+> [!NOTE]
+> *We are importing `github.com/tinne26/kage-desk/display` again as it includes some images that we can use for our tests quite easily. You can try loading your own images if you want.*
 
-Notice that we are importing `github.com/tinne26/kage-desk/display` again as it includes some images that we can use for our tests quite easily. You can try loading your own images if you want... but there's one **critical limitation** that you must know about:
-- Both the shader's target rectangle and the source images must all have the same size.
+Hmmmm... ok, but... there's something missing here.
 
-*(We will discuss how to get around this in the next chapter)*
+Now that we have an input image, how do we map it to the target? Like, the target and the source[^1] can have different sizes, so how do we deal with that?
 
-For the shader, the first thing we will do is show the image. No effects yet. Just make the shader compute the color of each pixel as the color of the corresponding pixel in the passed image:
+[^1]: Quick reminder in case you are a bit lost with the "target" (also known as "destination") and "source" terminology, as this applies to Ebitengine as a whole, not just shaders: the texture or image that we are modifying is the "target". Sometimes we are simply filling it with a color, gradient or noise, and we don't have any other element into the equation. More commonly though, we modify targets by blending graphical data from another image, the "source". The basic operation that does this in Ebitengine is `target.DrawImage(source, options)`. Knowing what's a target and what's a source is not only important conceptually, but [also for performance](https://ebitengine.org/en/documents/performancetips.html#Avoid_changing_render_sources'_pixels), as Ebitengine can operate much more efficiently if sources and targets are clearly differentiated and they consistently reside in separate internal atlases. In the case of shaders, the only new element is that you can have *multiple* source images at once. Don't worry, you will internalize all this in due time.
+
+The answer is that we need to use the `SrcX` and `SrcY` fields of the vertices. Vertices have two pairs of coordinates:
+- `DstX` and `DstY`, which indicate the *target* coordinates for the vertex.
+- `SrcX` and `SrcY`, which indicate the *texture sampling* coordinates for the source images we pass to the shader.
+Again, this might be tricky to visualize with only an explanation, but the [triangles](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/triangles.md) article goes a bit more in depth if you need additional explanations. Here's an image from that article that might help you visualize everything:
+
+![](https://github.com/tinne26/kage-desk/raw/main/img/triangle_B.png?raw=true)
+
+We can get the source image bounds and set them like this:
 ```Golang
-func Fragment(position vec4, _ vec2, _ vec4) vec4 {
-	imgPixCoords := position.xy
-	return imageColorAtPixel(imgPixCoords)
+func (self *Game) Draw(screen *ebiten.Image) {
+	// map the vertices to the target image
+	bounds := screen.Bounds()
+	self.vertices[0].DstX = float32(bounds.Min.X) // top-left
+	self.vertices[0].DstY = float32(bounds.Min.Y) // top-left
+	self.vertices[1].DstX = float32(bounds.Max.X) // top-right
+	self.vertices[1].DstY = float32(bounds.Min.Y) // top-right
+	self.vertices[2].DstX = float32(bounds.Min.X) // bottom-left
+	self.vertices[2].DstY = float32(bounds.Max.Y) // bottom-left
+	self.vertices[3].DstX = float32(bounds.Max.X) // bottom-right
+	self.vertices[3].DstY = float32(bounds.Max.Y) // bottom-right
+
+	// set the source image sampling coordinates
+	srcBounds := display.ImageSpiderCatDog().Bounds()
+	self.vertices[0].SrcX = float32(srcBounds.Min.X) // top-left
+	self.vertices[0].SrcY = float32(srcBounds.Min.Y) // top-left
+	self.vertices[1].SrcX = float32(srcBounds.Max.X) // top-right
+	self.vertices[1].SrcY = float32(srcBounds.Min.Y) // top-right
+	self.vertices[2].SrcX = float32(srcBounds.Min.X) // bottom-left
+	self.vertices[2].SrcY = float32(srcBounds.Max.Y) // bottom-left
+	self.vertices[3].SrcX = float32(srcBounds.Max.X) // bottom-right
+	self.vertices[3].SrcY = float32(srcBounds.Max.Y) // bottom-right
+
+	// triangle shader options
+	var shaderOpts ebiten.DrawTrianglesShaderOptions
+	shaderOpts.Images[0] = display.ImageSpiderCatDog()
+
+	// draw shader
+	indices := []uint16{0, 1, 2, 2, 1, 3} // map vertices to triangles
+	screen.DrawTrianglesShader(self.vertices[:], indices, self.shader, &shaderOpts)
 }
 ```
 
-This code is interesting because *it doesn't work*. But let me explain...
+Oof. Ok, that was tedious, but we had to deal with it at some point. Let's go back to the shaders now!
 
-Kage does have some built-in functions for working with images:
-- `imageSrc0At(texelCoords vec2) vec4`: returns the color of an input image at a specific point. As you may imagine, the variants `imageSrc1At()`, `imageSrc2At()` and `imageSrc3At()` also exist.
-- `imageSrc0UnsafeAt(texelCoords vec2) vec4`: a variant of the previous that doesn't check bounds. The safe version will return `vec4(0)` if trying to read a position outside bounds. This one is faster, but it may return anything else that resides in the [texture atlas](https://en.wikipedia.org/wiki/Texture_atlas) that contains our image (which Ebitengine manages automatically by default) if we mess up the coordinates.
-- `imageSrcTextureSize()`, `imageSrcRegionOnTexture()` and others that we won't discuss.
-
-Despite mentioning these functions, the current advice is that you should not use them directly, because texels in Kage require understanding implementation details that we don't believe you should be concerned with[^1]. Instead, you should generally be using these two helper functions instead:
-
+For the shader, the first thing we will try do is show the image. No effects yet. Just make the shader compute the color of each pixel as the color of the corresponding pixel in the passed image:
 ```Golang
-// Helper function to access an image's color at the given pixel coordinates.
-func imageColorAtPixel(pixelCoords vec2) vec4 {
-	sizeInPixels := imageSrcTextureSize()
-	offsetInTexels, _ := imageSrcRegionOnTexture()
-	adjustedTexelCoords := pixelCoords/sizeInPixels + offsetInTexels
-	return imageSrc0At(adjustedTexelCoords)
-}
+//kage:unit pixels
+package main 
 
-// Helper function to access an image's color at the given coordinates
-// from the unit interval (e.g. top-left is (0, 0), center is (0.5, 0.5),
-// bottom-right is (1.0, 1.0)).
-func imageColorAtUnit(unitCoords vec2) vec4 {
-	offsetInTexels, sizeInTexels := imageSrcRegionOnTexture()
-	adjustedTexelCoords := unitCoords*sizeInTexels + offsetInTexels
-	return imageSrc0At(adjustedTexelCoords)
+func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
+	return imageSrc0At(targetCoords.xy)
 }
 ```
 
-You can copy `imageColorAtPixel()` into the previous shader in order to make it work. If you wanted to use multiple images, you would write additional versions of these helper functions using `imageSrc1At()` and the others instead of `imageSrc0At()`.
+This code showcases a new function: `imageSrcNAt()`. This function allows us to get the color of a source image at a given position. We can have up to four images, and you can use `imageSrc0At()`, `imageSrc1At()`, `imageSrc2At()` and `imageSrc3At()` to sample colors from each one. There are also [a few more functions](https://ebitengine.org/en/documents/shader.html#Built-in_functions_(images)) to get a source image size, origin, etc.
 
----
+You should try to run all this now... and notice that the image doesn't properly fill the screen.
 
-Additional clarification for the previous code:
+Of course: `targetCoords` refer to the destination image; what we need are the *source texture sampling coordinates* corresponding to the current `targetCoords`! Luckily enough, that's actually the second argument to `Fragment(...)` that we hadn't unveiled yet:
 ```Golang
-func Fragment(position vec4, _ vec2, _ vec4) vec4 {
-	imgPixCoords := position.xy
-	return imageColorAtPixel(imgPixCoords)
+//kage:unit pixels
+package main 
+
+func Fragment(_ vec4, sourceCoords vec2, _ vec4) vec4 {
+	return imageSrc0At(sourceCoords)
 }
 ```
-Some people have stumbled with this in the past. Notice that `position` and the argument to `imageColorAtPixel()` (let's call it `imgPixCoords`) make reference to *different images that can have different sizes and relative offsets*. The `position` input argument refers to the shader's target position, in global coordinates, while `imgPixCoords` refers to the shader source image 0. In this case, since we are using `DrawRectShader()` and no `GeoM` translations, we know that the shader's target will be the same size as the source image and that there will be no offsets affecting `position`, so we can map coordinates one-to-one... but this is not necessarily true for the general case. Keep this in mind if you find yourself in trouble while trying to use `imageColorAtPixel()` in more complex scenarios.
+*(Full program available at [examples/intro/spider-cat](https://github.com/tinne26/kage-desk/blob/main/examples/intro/spider-cat))*
 
----
+Now you could even add `ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)` to the main program and test that no matter the size of the screen, the spider-cat-dog will resize alongside it. You might want to fill the screen white first so it's possible to tell how much space the automatic Ebitengine borders take.
 
-To complete the program, make sure to use the spider-cat-dog bounds for the window and layout sizes in your `main.go` and try to run it! You should be seeing this silly creature, but with a black background:
+> [!TIP]
+> *You might have noticed that the spider-cat-dog doesn't look particularly smooth. This is because by default, the sampling uses nearest neighbour interpolation, instead of bilinear or something else. This is outside the scope of this tutorial, but just know that bilinear interpolation would be quite easy to add to our shader to make the results much better. In the meantime, you might fix the layout to 384x384 instead, which is the exact size of the spider-cat-dog.*
 
+If you managed to put it all together, you should see something similar to this:
 ![](https://github.com/tinne26/kage-desk/blob/main/display/spider_cat_dog.png?raw=true)
 
 Easy! Let's end this chapter with a very simple exercise to get you more familiar with working with images: modify the previous shader to display the same image, but with the rgb channels mixed up. For example, try to put the red channel into the green, the green into the blue, and the blue into the red!
@@ -87,8 +115,11 @@ Easy! Let's end this chapter with a very simple exercise to get you more familia
 <summary>Click to show the solution</summary>
 
 ```Golang
-func Fragment(position vec4, _ vec2, _ vec4) vec4 {
-	return imageColorAtPixel(position.xy).brga
+//kage:unit pixels
+package main
+
+func Fragment(_ vec4, sourceCoords vec2, _ vec4) vec4 {
+	return imageSrc0At(sourceCoords).brga
 }
 ```
 *(Full program available at [examples/intro/color-swap](https://github.com/tinne26/kage-desk/blob/main/examples/intro/color-swap))*
@@ -103,12 +134,11 @@ Next up: [#8](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intr
 0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md)
 1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/01_cpu_vs_gpu.md)
 2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/02_shader_setup.md)
-3. [The `position` input parameter](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/03_position_input.md)
+3. [The `targetCoords` input parameter](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/03_target_coordinates.md)
 4. [Built-in functions](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/04_built_in_functions.md)
 5. [Manual shader invocation](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/05_invoke_shader.md)
 6. [More input: uniforms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/06_uniforms.md)
 7. [**Using images**](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/07_images.md)
-8. [`DrawTrianglesShader()`](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/08_triangles.md)
+8. [Beyond one-to-one mapping](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/08_beyond.md)
 9. [Loops are tricky](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/09_loops.md)
-
-[^1]: If you want to understand texels in Ebitengine, we have written a [tutorial for it](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/texels.md). We consider it a burden for most people, but it can be useful for optimization or if you can't live without understanding the *why* of things.
+10. [What's next?](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/10_what_next.md)
