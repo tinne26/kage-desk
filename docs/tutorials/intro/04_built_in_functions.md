@@ -3,9 +3,9 @@
 The half-white half-black shader was too easy, so let's make it more challenging now. For example, if I asked you to make a shader that creates a checkerboard-like pattern by making a pixel white if it's on an even position, and black otherwise... would you be able to make it?
 
 Well, with what you have been taught up to this point, you won't... because you don't know how to check if a number is even or odd in a Kage shader. To solve this, it's time to introduce the *built-in functions*. Although there's a [full list](https://ebitengine.org/en/documents/shader.html#Built-in_functions_(mathematics)) at ebitengine.org, you don't need to go there yet; learning about just a few of the functions is enough for the moment:
-- One argument functions: `abs`, `sign` (returns -1, 0 or 1), `sin`, `cos`, `sqrt`, `floor`, `ceil`, `fract` (returns the fractional part of a number), `length` (mathematical length of a vector) and `len` (same as in Golang, but applied to `vec` types, there are no slices or maps in Kage).
-- Two-argument functions: `mod(x, m)` (a.k.a `%`), `min(a, b)`, `max(a, b)`, `pow(x, exp)`, `step(s, x)` (0 if `x < s`, 1 otherwise), `distance(pointA, pointB)`.
-- Three-argument functions: `clamp(x, min, max)`, `mix(a, b, t)` (linear interpolation).
+- **Single-argument functions**: `abs`, `sign` (returns -1, 0 or 1), `sin`, `cos`, `sqrt`, `floor`, `ceil`, `fract` (returns the fractional part of a number), `length` (mathematical length of a vector) and `len` (same as in Golang, but applied to `vec` types, there are no slices or maps in Kage).
+- **Two-argument functions**: `mod(x, m)` (a.k.a `%`), `min(a, b)`, `max(a, b)`, `pow(x, exp)`, `step(s, x)` (0 if `x < s`, 1 otherwise), `distance(pointA, pointB)`.
+- **Three-argument functions**: `clamp(x, min, max)`, `mix(a, b, t)` (linear interpolation).
 
 These are all built-in functions that you can use in the same way you would use `copy` or `make` on Golang. They also happen to work on multiple data types: `float`, `vec2`, `vec3`, `vec4`.
 
@@ -32,7 +32,7 @@ func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
 The key function for this program is `mod()`. Using `mod()` allows us to find whether the position corresponds to an even or odd pixel. Using `floor()` is not strictly necessary, but since positions are given at the center of the pixel, using floor gets rid of the 0.5 decimal part and gives us a more natural value to work with when we only want to check the "parity of the pixel index".
 </details>
 
-If your screen has any form of DPI scaling, you may see the result heavily aliased. What would you do to make the pattern bigger and easier to see? Like, alternating 8x8 pixels white and 8x8 pixels black? (You can also try with 2x2 if that makes it easier to think about the problem). This one is a bit trickier, but that's the kind of math problems you will often find with shaders. Think about it for a while!
+If your screen has any form of DPI scaling, you may see the result heavily aliased. What would you do to make the pattern bigger and easier to see? Like, alternating 8x8 pixels white and 8x8 pixels black? (You can also try with 2x2 if that makes it easier to think about the problem). This one is a bit trickier, but that's the kind of math problems you will often face with shaders. Think about it for a while!
 
 <details>
 <summary>Click to show the solution</summary>
@@ -53,9 +53,9 @@ func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
 }
 ```
 *(Full program available at [examples/intro/checkerboard](https://github.com/tinne26/kage-desk/blob/main/examples/intro/checkerboard))*
-</details>
 
 We have declared a constant here to make our life easier and show that you can totally use that, but if you hardcoded the values that's perfectly fine too. With this, it's easier to change the cell size and make it 32 or anything else.
+</details>
 
 If you got it, well done! If you didn't, don't worry. There's a common idea here that's worth explaining as it comes up all the time when writing shaders: conceptually, we wanted to do the same as in the previous example... but at a different scale. We wanted to project the original "canvas" to one that was a fraction of the size, and only then apply the same `mod()` function as we did earlier. This idea of scaling / projecting / deforming a space or surface is extremely common in shaders. It may be confusing at the beginning, but try to wrap your mind around it. In general, when you have to work at the context of a single pixel, mathematical transformations are a very powerful tool.
 
@@ -92,7 +92,7 @@ Let's break it down a bit: `sin()` expects an angle in radians. There are `2*Pi`
 
 You may have noticed that the edge of the sine wave is jaggy, not smooth. We will see how to improve that in later examples, so don't get too hung up on it for the time being.
 
-If this was a bit difficult don't worry. The most important part is that you get exposed to these ideas and slowly become used to them. There are other parts of shaders that don't revolve so much around maths, but it's important to get some practice and become more familiar with these techniques if you really want to get the most out of your shaders.
+If this was a bit difficult don't worry. The most important part is that you get exposed to these ideas and slowly become used to them. There are other parts of shaders that don't revolve so much around maths, but it's important to get some practice and become more familiar with these techniques if you really want to get the most out of Kage.
 
 
 ### Table of Contents

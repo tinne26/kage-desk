@@ -8,7 +8,7 @@ We have now learned to use images, but we are still only scratching the surface 
 
 While it's true that we could draw the first part normally and the second using the shader, I want you to do everything in the same shader instead. After all, it won't be a proper training arc if I don't make you suffer a little bit.
 
-To get started, I will give you some reference code to help you out. You can copy the code from the previous chapter into a new project, and modify it with the following ideas:
+To get started, I will give you some reference code to help you out. You can copy the code from the previous chapter into a new project, and modify it with the following bits:
 ```Golang
 func main() {
 	// ...
@@ -64,9 +64,9 @@ func (self *Game) Draw(screen *ebiten.Image) {
 
 The quick breakdown is that we are using specific window, layout and canvas sizes to make the exercise more manageable. We want to draw the spider-cat-dog and its reflection, so we need twice the vertical space. For the uniforms, here's what we are doing:
 - `MirrorAlphaMult` is an opacity multiplier for the reflection. It is fairly easy to apply, but you don't need to worry about it until your are cleaning up the reflection effect.
-- `VertDisplacement` is an advanced and optional uniform that you should ignore until you get everything else working. The idea is that the mirrored image can have too much padding around the edges and look too disconnected from the reflection. We can use this configurable factor to bring the two closer to the center of the shader's target rectangle and make it look better. Notice that this uniform is an `int`! It could be a `float` too, but I wanted to throw an `int` in a shader at some point so you didn't forget about them.
+- `VertDisplacement` is an advanced and optional uniform that you should ignore until you get everything else working. The idea is that the mirrored image can have too much padding around the edges and look too disconnected from the reflection. We can use this configurable factor to bring the two closer to the center of the shader's target rectangle and make it look better. Notice that this uniform is an `int`! It could be a `float` too, but I wanted to throw an `int` in a shader at some point just so you didn't forget about them.
 
-Now, the first step should be running just this and see what you get:
+Now the first step will be running this as it is and see what you get:
 ```Golang
 package main
 
@@ -80,13 +80,14 @@ func Fragment(_ vec4, sourceCoords vec2, _ vec4) vec4 {
 
 You should be getting a stretched spider-dog-cat. That's good. When you are writing shaders, since you can't add `Printf`s and debug code so easily, it's best to start very slowly and try to make progress step by step. You are almost ready to take it from here, but let me give you a few more tools:
 - You can use [`imageDstSize()`](https://ebitengine.org/en/documents/shader.html#Built-in_functions_(images)) to get the target image size, in pixels, within a shader.
-- You can use [`imageSrcNSize()`](https://ebitengine.org/en/documents/shader.html#Built-in_functions_(images)) to get the size of the source image N, in pixels, within a shader.
-- You don't really need it in this case since origins are (0, 0) everywhere, but you can use `imageDstOrigin()` and `imageSrcNOrigin()` to get the origin coordinates of both target and source images.
+- You can use [<code>imageSrc<b><i>N</i></b>Size()</code>](https://ebitengine.org/en/documents/shader.html#Built-in_functions_(images)) to get the size of the source image N, in pixels, within a shader.
+- You don't really need it in this case since origins are (0, 0) everywhere, but you can use `imageDstOrigin()` and <code>imageSrc<b><i>N</b></i>Origin()</code> to get the origin coordinates of both target and source images.
 
 Ok, the time has come: with the current setup, try to write the mirror shader by yourself. This is probably the hardest shader you will be asked to write in the tutorial, so take your time... and don't get frustrated if you fail, but at least try to come out of the attempt with *more and more concrete questions* than you had going in. This whole chapter is about tackling a non-trivial problem for the first time, so try to put some real effort into it.
 
 <details>
 <summary>Click to show tips if stuck for more than 15 minutes</summary>
+
 Some steps that would be relevant:
 - Make sure you know how to draw the top half of the screen in one color, and the lower half in another.
 - Make sure you can draw the spider-cat-dog on the top half, isolated, without stretching.
@@ -117,11 +118,11 @@ func Fragment(targetCoords vec4, sourceCoords vec2, _ vec4) vec4 {
 	}
 }
 ```
-The code shouldn't be too hard to understand. If we are on the top half of the screen, we sample the source image... but since it would be stretched, we multiply the `y` by 2 to make it fit properly into the top area. The x value is always the natural value, so it never has to be modified. For the lower half, the normalization of the `y` value is slightly trickier, but it's not much different. Since we are already at least at the midpoint position throughout the source image, we need to offset that and then apply the same `y*2` idea of the first branch. To invert the image, we simply use `height - y`. Finally, we sample the value at the relevant position and multiply it by `MirrorAlphaMult`, which yes, is a simple product on the sampled pixel color.
+The code shouldn't be too hard to understand. If we are on the top half of the screen, we sample the source image... but since it would be stretched, we multiply the `y` by 2 to make it fit properly into the top area. The x value is always already what we want, so it never has to be modified. For the lower half, the normalization of the `y` value is slightly trickier, but it's not much different. Since we are already past the midpoint position through the source image, we need to offset that and then apply the same `y*2` idea of the first branch. To invert the image, we simply use `height - y`. Finally, we sample the value at the relevant position and multiply it by `MirrorAlphaMult`, which yes, is a simple product on the sampled pixel color.
 
-This code does rely on the fact that `imageSrc0Size()` is exactly half `imageDstSize()`, and we could actually use only one of them for everything. This is not very clean, not very nice and whatever, but if you understand the constraints of your context, you don't have to be a perfectionist, just get the job done. You could parametrize all this with further uniforms, or automatically center everything on an arbitrarily-sized target, or whatever. That's a pain and not fun, so do it as homework if you really want to.
+This code does rely on the fact that `imageSrc0Size()` is exactly half `imageDstSize()`, and we could actually use only one of them for everything. This is not very clean, not very nice and whatever, but if you understand the constraints of your context... you don't have to be a perfectionist, just get the job done. You could parametrize all this with further uniforms, or automatically center everything on an arbitrarily-sized target, or whatever. That's a pain and not fun, so do it as homework if you really have nothing better to do.
 
-Now let's jump onto the more general solution, using `VertDisplacement`:
+Now let's jump onto the more general solution using `VertDisplacement`:
 ```Golang
 //kage:unit pixels
 package main
@@ -150,6 +151,8 @@ This second shader is not that different, but it has a few subtle ideas worth ex
 - The reason why we didn't "filter" the results here is that `imageSrc0At()` will return `vec4(0, 0, 0, 0)` if we are requesting positions out of bounds, and *it just happens that for this particular example*, the different calculations for different parts of the image do not collide (given reasonable `VertDisplacement` values, at least).
 - For proper filtering, you could use [selectors](https://github.com/tinne26/kage-desk/blob/main/docs/snippets/selectors.md) to keep or discard specific results. Again, this is not necessary in this specific situation, but you could totally add something like `uprightColor *= whenLessThan(sourceCoords.y, imageSrc0Size().y/2)` and `mirrorColor *= whenGreaterThan(sourceCoords.y, imageSrc0Size().y/2)` to be a bit safer.
 </details>
+
+Good work! We are getting close to the end now!
 
 
 ### Table of Contents

@@ -38,7 +38,7 @@ const CellHeight float = 12.0 // must be at least 1
 Try to write the pixelator effect by yourself now!
 
 > [!TIP]
-> *Fix the window size and the layout return to `display.ImageSpiderCatDog().Bounds()`.*
+> *Fix the window size and the layout to `display.ImageSpiderCatDog().Bounds()`.*
 
 <details>
 <summary>Click to show the solution</summary>
@@ -80,7 +80,7 @@ This is all very nice, but having to use constants instead of uniforms is not co
 https://user-images.githubusercontent.com/95440833/212187726-a42a80d6-42c6-4e74-95e4-f6bcc404bae2.mp4
 
 There are three key tricks you should know about to get around these limitations:
-- **Upper bounding**: if you make your looping constant act as an upper bound for the number of loop iterations, you can use the `break` keyword to break earlier based on the value of an actual uniform. It doesn't look as sleek as a regular loop, but... it works ¯\_(ツ)_/¯.
+- **Upper bounding**: if you make your looping constant act as an upper bound for the number of loop iterations, you can use the `break` keyword to break earlier based on the value of an actual uniform. It doesn't look as sleek as a regular loop, but... it works ¯\\_(ツ)\_/¯.
 - **Not looping**: sometimes you can just fake it. For pixelation, for example, you could take the central pixel of the cell regardless of the cell size. This will be sacrificing accuracy, but for some animations it can work well enough!
 - **Constant sampling**: sometimes you can't just *completely fake it*... but you can *half fake it*! What if you didn't check all the pixels within the cell, but only 6 values at properly distributed locations? This is a probabilistic method that can help you balance cost and accuracy while still allowing you to scale your cell size as you want.
 
@@ -124,6 +124,8 @@ Notice also that for this to work correctly, we have to send a whole `CellSize` 
 
 
 ### Table of Contents
+Next up: [#10](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/10_what_next.md).
+
 0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md)
 1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/01_cpu_vs_gpu.md)
 2. [Setting up your first shader](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/02_shader_setup.md)

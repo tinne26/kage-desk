@@ -1,6 +1,6 @@
 # Learn by example
 
-**NOTICE: none of the examples are written yet, this is a "what would be awesome to have" list... but also, Ebitengine shaders are undergoing some heated discussion at the moment**
+**NOTICE: none of the examples are written yet, this is a "what would be awesome to have" list...**
 
 This is a list of Kage shaders that you may use as references or in order to learn specific techniques. It's recommended that you have some basic knowledge about shaders and / or Kage before diving into this, but we have no bouncer at the door.
 

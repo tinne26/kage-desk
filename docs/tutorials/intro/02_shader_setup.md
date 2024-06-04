@@ -3,7 +3,7 @@
 With the introduction out of the way, now it's time to get our hands dirty. If you want to learn shaders, you need to write shaders!
 
 > [!IMPORTANT]
-> *The entirety of kage-desk expects you to have Go1.19 or higher installed, and it also depends on Ebitengine's "pixel mode" for kage, which was added in version v2.6.0. All these have been around for a good while, so everything should be fine by default... but better safe than sorry.*
+> *The entirety of kage-desk expects you to have Go1.19 or higher installed, and it also depends on Ebitengine's "pixel mode" for kage, which was added in version v2.6.0. All these have been around for a while, so everything should be fine by default, but... now you know.*
 
 First, create a folder somewhere on your messy computer, run `go mod init first-shader` within it, and create a `main.go` with this content:
 ```Golang
@@ -29,7 +29,8 @@ func Fragment(_ vec4, _ vec2, _ vec4) vec4 {
 	// ...
 }
 ```
-> [!TIP] *You can [configure your editor](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/config_editor.md) to highlight `.kage` files like `.go` programs)*
+> [!TIP]
+> *You can [configure your editor](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/config_editor.md) to highlight `.kage` files like `.go` programs)*
 
 > [!CAUTION]
 > *Notice that the `kage:unit pixels` is not just a comment, but a special directive in the same style as [Golang's compiler directives](https://pkg.go.dev/cmd/compile#hdr-Compiler_Directives). Do not remove or modify it[^1].*
@@ -72,7 +73,7 @@ This field access magic thing is known as "swizzling". I'll test you again in a 
 
 
 ### Table of Contents
-Next up: [#3](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/03_position_input.md).
+Next up: [#3](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/03_target_coordinates.md).
 
 0. [Introduction](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/00_introduction.md)
 1. [CPU vs GPU: different paradigms](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/intro/01_cpu_vs_gpu.md)

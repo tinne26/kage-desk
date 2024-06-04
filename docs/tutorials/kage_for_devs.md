@@ -6,7 +6,7 @@ Kage is the language used on Ebitengine to write shaders. It has a Golang-like s
 - Supported types: `bool`, `int`, `float` (float32), `vec2`, `vec3`, `vec4` (float vectors), `mat2`, `mat3`, `mat4` and constants.
 - Vectors support swizzling with `rgba`, `xyzw` and `stpq`. You can also index them `[N]` directly.
 - You can write helper functions, but there are no slices, maps, strings, structs, import, switch, etc.
-- Textures limited to 4 RGBA images per shader invocation.
+- Source textures limited to 4 RGBA images per shader invocation.
 
 #### Table of contents
 - [Built-in functions](#built-in-functions)
@@ -36,6 +36,7 @@ mod(x, m) // %
 min(a, b); max(a, b)
 pow(x, exp)
 step(s, x) // 0 if `x < s`, 1 otherwise
+atan2(x, y) // classic `angle := atan2(x - ox, y - oy)`
 dot(x, y); cross(x, y vec3) // dot and cross products
 distance(pointA, pointB) // == length(pointA - pointB)
 ```
@@ -88,7 +89,9 @@ A few points worth highlighting:
 
 ## Load and invoke
 
-If you want to compile and invoke a shader manually, here's a quick template. Basically, use 4 vertices to create a quad and set the vertex target coordinates. We will build upon this for the next examples:
+If you want to compile and invoke a shader manually, here is some reference code. Basically, use 4 vertices to create a quad and set the vertex target coordinates. While `DrawRectShader()` also exist, you can just ignore it[^1] and focus on `DrawTrianglesShader()` instead. We will build upon this template for the next examples:
+
+[^1]: While `DrawRectShader()` can be handy in some situations, in many practical scenarios you will have to end up reaching for `DrawTrianglesShader()` anyway, so I'm of the opinion that you should just spare yourself the cognitive overhead and simply ignore the function. If you really must know, its biggest restriction is probably that all source images must match the explicit dimensions passed as the first arguments.
 
 ```Golang
 package main
@@ -203,17 +206,18 @@ func dot(current vec2, target vec2, hardRadius, softRadius float) float {
 }
 ```
 
-As you can see, adding uniforms is as simple as declaring exported variables at the start of the file with the correct names. Vectorial types are inferred from `[]float32` slices. Implicit conversions from `float64` and `int` to the shader's `float` will also happen automatically, but using `float32` directly on the CPU side is the most natural choice.
+As you can see, adding uniforms is as simple as declaring exported variables at the start of the file with the correct names. Vectorial types are inferred from `[]float32` slices. Implicit conversions from `float64` and `int` to the shader's `float` will also happen automatically, but using `float32` directly on the CPU side is probably better practice.
 
 ## Textures
 
-To sample a texture, you will typically use the `sourceCoords` input argument and the `imageSrc0At()` function, which expects a coordinate in pixels. As showed in the [load and invoke](#load-and-invoke) section, you can link up to 4 images in the shader options. The full collection of relevant image functions is the following:
-- `imageSrc**N**At()` (replace N with {0, 1, 2, 3}): source texture sampling. Sampling is [always nearest](https://github.com/hajimehoshi/ebiten/issues/2962); if you want to perform linear interpolation you will have to do it manually. Until we make something better, you can find some interpolation implementations [here](https://github.com/tinne26/mipix/tree/main/filters)[^1].
-- `imageSrc**N**UnsafeAt()` (replace N with {0, 1, 2, 3}): like `imageSrc**N**At()`, but doesn't check whether you go out of bounds. If you go out of bounds with `imageSrc**N**At()`, you will get back `vec4(0)`. With the unsafe function, you could actually peek at the whole internal atlas.
-- `imageSrc**N**Size()` (replace N with {0, 1, 2, 3}): returns the size in pixels of the requested source texture.
-- `imageSrc**N**Origin()` (replace N with {0, 1, 2, 3}): returns the origin of the requested source texture in pixels. This is relevant when working with subimages that might not start at (0, 0). Always keep those in mind!
+To sample a texture, you will typically use the `sourceCoords` input argument and the `imageSrc0At()` function, which expects a coordinate in pixels. As showcased in the [load and invoke](#load-and-invoke) section, you can link up to 4 images in the shader options. The full collection of relevant image functions is the following:
+- <code>imageSrc<b><i>N</i></b>At()</code> (replace N with {0, 1, 2, 3}): source texture sampling. Sampling is [always nearest](https://github.com/hajimehoshi/ebiten/issues/2962); if you want to perform linear interpolation you will have to do it manually. Until we make something better, you can find some interpolation implementations [here](https://github.com/tinne26/mipix/tree/main/filters)[^2].
+- <code>imageSrc<b><i>N</i></b>UnsafeAt()</code> (replace N with {0, 1, 2, 3}): like `imageSrc**N**At()`, but doesn't check whether you go out of bounds. If you go out of bounds with `imageSrc**N**At()`, you will get back `vec4(0)`. With the unsafe function, you could actually peek at the whole internal atlas.
+- <code>imageSrc<b><i>N</i></b>Size()</code> (replace N with {0, 1, 2, 3}): returns the size in pixels of the requested source texture.
+- <code>imageSrc<b><i>N</i></b>Origin()</code> (replace N with {0, 1, 2, 3}): returns the origin of the requested source texture in pixels. This is relevant when working with subimages that might not start at (0, 0). Always keep those in mind!
 - `imageDstSize()` and `imageDstOrigin()`: same idea as the two previous functions, but for the target texture instead of the sources. With these you could eliminate the `Center` uniform of the previous section, for example.
 
-Remember that colors are in RGBA format, with values between [0, 1], and [premultiplied alpha](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/premult.md) (color channel values can't exceed the alpha value, or weird stuff will happen). It's easy to slip when you are often working with [0, 255] RGBA on the CPU side.
+> [!NOTE]
+> *Remember that colors are in RGBA format, with values between `[0, 1]`, and [premultiplied alpha](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/premult.md) (color channel values can't exceed the alpha value, or weird stuff will happen). It's easy to slip when you are often working with [0, 255] RGBA on the CPU side.*
 
-[^1]: Many of those shaders use `SourceRelativeTextureUnitX` and `SourceRelativeTextureUnitY` uniforms, but that can often be replaced with `units := fwidth(sourceCoords)`. Otherwise, the classic bilinear interpolation with +/-0.5 can be found as [src_bilinear.kage](https://github.com/tinne26/mipix/blob/main/filters/src_bilinear.kage) and doesn't require any uniforms. This is pretty much what Ebitengine does by default with `FilterLinear`, but with some extra clamping that you might or might not be interested in.
+[^2]: Many of those shaders use `SourceRelativeTextureUnitX` and `SourceRelativeTextureUnitY` uniforms, but that can often be replaced with `units := fwidth(sourceCoords)`. Otherwise, the classic bilinear interpolation with +/-0.5 can be found as [src_bilinear.kage](https://github.com/tinne26/mipix/blob/main/filters/src_bilinear.kage) and doesn't require any uniforms. This is pretty much what Ebitengine does by default with `FilterLinear`, but with some extra clamping that you might or might not be interested in.

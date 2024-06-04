@@ -4,7 +4,7 @@ Shaders, being run on the GPU, are rather limited in regards to the information 
 
 The answer is yes: **uniforms** are variables whose values can be set from your CPU-side code and sent to the GPU for use with your shader.
 
-In order to show how to use uniforms, we will try to draw a filled circle using a shader. Our draw function was something like this in the previous chapter:
+In order to demonstrate how to use uniforms, we will try to draw a filled circle using a shader. Our draw function was something like this in the previous chapter:
 ```Golang
 
 func (self *Game) Draw(screen *ebiten.Image) {
@@ -79,8 +79,10 @@ func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
 ```
 *(Full program available at [examples/intro/circle](https://github.com/tinne26/kage-desk/blob/main/examples/intro/circle))*
 
-If you used `if` statements instead of `clamp()`, don't worry. The reason `clamp()` (or some combinations of `min()`/`max()`) are preferred to conditionals is that shaders are executed by many GPU processors in parallel, and typically they are all executing the same instruction at the same time. When there are branches, all branches may have to be executed for all processors anyway. The topic is deep and complex and it's not something you have to worry about right now, but it's good to start seeing ways to avoid conditionals. Here an actual conditional wouldn't be much worse, but you definitely don't want big conditionals doing completely different things, because you may end up having to execute all those big branches on all processors anyway.
+If you used `if` statements instead of `clamp()`, don't worry, that's perfectly fine too. There are many other ways to do it (e.g. `smoothstep()`, `step()`).
 </details>
+
+---
 
 With the circle shader working, the next step is to modify the `main.go` and the `shader.kage` programs so the `Radius` also becomes a uniform. Pass the value of 80 from the `Draw()` function in `main.go` instead of hardcoding it in the shader.
 
