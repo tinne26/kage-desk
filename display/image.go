@@ -7,6 +7,9 @@ import "image/png"
 
 import "github.com/hajimehoshi/ebiten/v2"
 
+// Similar concept to [Shader](), but for single images.
+// You can press 'E' at any time to export the image
+// as a file too.
 func Image(img image.Image) {
 	if img == nil { panic("can't display nil image") }
 	ebitenImage := ebiten.NewImageFromImage(img)

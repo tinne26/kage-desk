@@ -23,10 +23,10 @@ import "github.com/hajimehoshi/ebiten/v2/inpututil"
 // The shaders have a few functionalities built-in:
 //  - Multiple uniforms are given by default. This includes
 //    'Time float', 'Cursor vec2' (in [0, 1] normalized
-//    coordinates), 'MouseButtons int' (0 if none, 1
-//    if left, 2 if right, 3 if both).
-//  - Sample textures are linked to Images[0] and Image[1] if
-//    image usage is detected. You can also [LinkShaderImage]()s
+//    coordinates), 'MouseButtons int' (0b00 if none, 0b10
+//    if left, 0b01 if right, 0b11 if both).
+//  - Sample textures are linked to Images[0] and Images[1] if
+//    image usage is detected. You can also [LinkShaderImage]()
 //    on your own.
 func Shader(args ...any) {
 	var programBytes []byte

@@ -15,6 +15,8 @@ var imageWaterfallBytes []byte
 var imageSpiderCatDog *ebiten.Image
 var imageWaterfall *ebiten.Image
 
+// The source 0 image used for [Shader]().
+// You can access it manually too. 384x384.
 func ImageSpiderCatDog() *ebiten.Image {
 	if imageSpiderCatDog == nil {
 		reader := bytes.NewReader(imageSpiderCatDogBytes)
@@ -25,6 +27,8 @@ func ImageSpiderCatDog() *ebiten.Image {
 	return imageSpiderCatDog
 }
 
+// The source 1 image used for [Shader]().
+// You can access it manually too. 512x512.
 func ImageWaterfall() *ebiten.Image {
 	if imageWaterfall == nil {
 		reader := bytes.NewReader(imageWaterfallBytes)

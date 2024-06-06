@@ -1,6 +1,8 @@
 package display
 
 import "image"
+import "image/color"
+
 import "github.com/hajimehoshi/ebiten/v2"
 
 // Given 4 vertices and source x left, right, y top, bottom and dest x left, right, y top and bottom
@@ -28,4 +30,14 @@ func PositionRectVertices(vertices *[4]ebiten.Vertex, sxl, sxr, syt, syb, dxl, d
 // as float32 values, in this order.
 func RectToF32(rect image.Rectangle) (xl, xr, yt, yb float32) {
 	return float32(rect.Min.X), float32(rect.Max.X), float32(rect.Min.Y), float32(rect.Max.Y)
+}
+
+// Creates a fully opaque [color.RGBA] from the given values.
+func RGB(r, g, b uint8) color.RGBA {
+	return color.RGBA{r, g, b, 255}
+}
+
+// Creates a [color.RGBA] from the given values.
+func RGBA(r, g, b, a uint8) color.RGBA {
+	return color.RGBA{r, g, b, a}
 }

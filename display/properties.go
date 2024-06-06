@@ -84,11 +84,17 @@ func init() {
 	}
 }
 
+// Sets a window title. Fairly equivalent to [ebiten.SetWindowTitle](),
+// but also stores the title internally in case you pass the --maxfps
+// tag, which will display the FPS on the title bar in addition to
+// the title.
 func SetTitle(title string) {
 	winTitle = title
 	ebiten.SetWindowTitle(title)
 }
 
+// Sets the logical layout size you want to work with.
+// Common options include [Resizable] and [HiRes].
 func SetSize(width, height int, options ...WindowOption) {
 	// safety asserts
 	if width < 32 || height < 32 {
@@ -155,10 +161,10 @@ var shaderImage0, shaderImage1, shaderImage2, shaderImage3 *ebiten.Image
 // Links a specific image for use with shaders. The given n can
 // only be 0, 1, 2 or 3.
 // 
-// By default, two sample textures are already linked for images 0
-// (a cute spider cat dog) and 1 (a waterfall), both square and
-// around 400x400 pixels. You can override them with your own or
-// restore them by setting their values back to nil.
+// By default, two sample textures are already linked for images
+// 0 and 1 (see [ImageSpiderDogCat]() and [ImageWaterfall]()).
+// You can override them with your own or restore them by setting
+// their values back to nil.
 func LinkShaderImage(n int, image *ebiten.Image) {
 	switch n {
 	case 0: shaderImage0 = image
