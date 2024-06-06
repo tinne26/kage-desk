@@ -246,4 +246,4 @@ Don't forget to link your images too!
 self.shaderOpts.Images[0] = yourImage
 ```
 
-Check the [misc. snippets](https://github.com/tinne26/kage-desk/blob/main/docs/snippets/misc.md) if you need some texture clamping/repeat code.
+If you need texture clamping / repeat, the [miscellaneous snippets](https://github.com/tinne26/kage-desk/blob/main/docs/snippets/misc.md#texture-clamping--repeat) page has some code for it.

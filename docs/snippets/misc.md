@@ -47,7 +47,7 @@ package main
 var Cursor vec2 // in [0, 1] ranges, built-in with kage-desk/display
 
 func Fragment(_ vec4, sourceCoords vec2, _ vec4) vec4 {
-	minSrc0, maxSrc0 := GetMinMaxSource0Coords()
+	minSrc0, maxSrc0 := GetSource0ClampCoords()
 	clampedCoords := clamp(sourceCoords + (Cursor - vec2(0.5))*100.0
 	return imageSrc0UnsafeAt(clampedCoords)
 }
@@ -91,7 +91,7 @@ sourceCoords1 := (normCoords0*imageSrc1Size()) + imageSrc0Origin()
 ```
 Yep, that's not a typo, we have to *add the origin of `Source0`*.
 
-To be fair, the isolated normalization of source coords for image 0 can be quite useful on its own, so here it goes:
+To be fair, the isolated normalization of coordinates can be quite useful on its own, so here you go:
 ```Golang
 func normSrc0Coords(sourceCoords vec2) vec2 {
 	return (sourceCoords - imageSrc0Origin())/imageSrc0Size()
@@ -102,7 +102,7 @@ func normDstCoords(targetCoords vec4) vec2 {
 }
 ```
 
-## Misc. math functions
+## Math functions
 
 **TODO: UNTESTED**
 ```Golang

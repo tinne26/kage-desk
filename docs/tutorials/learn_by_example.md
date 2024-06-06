@@ -1,11 +1,12 @@
 # Learn by example
 
-**NOTICE: none of the examples are written yet, this is a "what would be awesome to have" list...**
-
 This is a list of Kage shaders that you may use as references or in order to learn specific techniques. It's recommended that you have some basic knowledge about shaders and / or Kage before diving into this, but we have no bouncer at the door.
 
 The shaders are roughly sorted from simple to complex, and they include tags that indicate what topics they touch on. Here's the full list of tags, which you may use to `ctrl + f` if you are looking for anything in particular:
 > geometry, 3D, lighting, triangles, deformation, projection, masking, animation, UI, FX, screen, sprite, image, color, artistic.
+
+> [!NOTE]
+> This page is still very much in development. There's already a fair amount of content, but nowhere as much as I'd like. The accessibility and immediacy also need to be severely improved. Please have some leniency.
 
 We have also created a page for [community contributed examples](https://github.com/tinne26/kage-desk/blob/main/docs/community_examples.md). Check those out too and feel free to contribute your own!
 
