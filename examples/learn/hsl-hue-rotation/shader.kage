@@ -1,0 +1,142 @@
+//kage:unit pixels
+package main
+
+var Cursor vec2 // built-in uniform for kage-desk/display
+var Image int // see main.go, changes by pressing 1 or 2 in the keyboard
+
+func Fragment(targetCoords vec4, sourceCoords vec2, _ vec4) vec4 {
+	var color vec4
+	if Image == 1 {
+		// sample the image (could use imageSrc0At(), don't worry about it)
+		color = bilinearSampling0(sourceCoords, fwidth(sourceCoords))
+	} else { // we are renormalizing coords here and using a second image
+		normCoords := (sourceCoords - imageSrc0Origin())/imageSrc0Size()
+		src1Coords := (normCoords*imageSrc1Size()) + imageSrc0Origin()
+		color = bilinearSampling1(src1Coords, fwidth(src1Coords))
+	}
+
+	// convert color to HSL
+	hsl := RGBToHSL(color.rgb)
+	
+	// apply hue rotation (derive rotation from x)
+	hsl[0] += Cursor.x
+	if hsl[0] >= 1 { hsl[0] -= 1.0 }
+
+	// convert color back to RGB
+	rgb := HSLToRGB(hsl)
+	return vec4(rgb, color.a)
+}
+
+// HSL values are all in [0, 1] range.
+func RGBToHSL(rgb vec3) vec3 {
+	cmin := min3(rgb.r, rgb.g, rgb.b)
+	cmax := max3(rgb.r, rgb.g, rgb.b)
+	delta := cmax - cmin
+
+	// lightness calculation
+	lightness := (cmax + cmin)/2.0
+
+	var hue, saturation float
+	if delta != 0 {
+		// hue calculation
+		var a, b, offset float
+		if cmax == rgb.r {
+			a, b = rgb.g, rgb.b
+			if rgb.g < rgb.b { offset = 6.0 }
+		} else if cmax == rgb.g {
+			a, b = rgb.b, rgb.r
+			offset = 2.0
+		} else { // cmax == rgb.b
+			a, b = rgb.r, rgb.g
+			offset = 4.0
+		}
+		hue = (offset + (a - b)/delta)/6.0
+
+		// saturation calculation
+		if lightness > 0.5 {
+			saturation = delta/(2.0 - cmax - cmin)
+		} else {
+			saturation = delta/(cmax + cmin)
+		}
+	}
+
+	// return HSL
+	return vec3(hue, saturation, lightness)
+}
+
+func HSLToRGB(hsl vec3) vec3 {
+	hue, saturation, lightness := hsl.x, hsl.y, hsl.z
+	var q float
+	if lightness < 0.5 {
+		q = lightness*(1 + saturation)
+	} else {
+		q = lightness + saturation - lightness*saturation
+	} 
+	p := 2.0*lightness - q
+
+	r := hueToRGB(p, q, hue + 1.0/3.0)
+	g := hueToRGB(p, q, hue)
+	b := hueToRGB(p, q, hue - 1.0/3.0)
+	return vec3(r, g, b)
+}
+
+func hueToRGB(p, q, t float) float {
+	if t < 0.0 { t += 1.0 }
+	if t > 1.0 { t -= 1.0 }
+	if t < 1.0/6.0 { return p + (q - p)*6.0*t }
+	if t < 1.0/2.0 { return q }
+	if t < 2.0/3.0 { return p + (q - p)*(2.0/3.0 - t)*6.0 }
+	return p
+}
+
+// Consider this instead if #3011 is resolved
+// func HSLToRGB(hsl vec3) vec3 {
+// 	saturation := hsl[1]
+// 	lightness  := hsl[2]
+//
+// 	c := (1 - abs(2*lightness - 1))*saturation
+// 	x := c*(1 - abs(mod((hsl[0]*60.0), 2.0) - 1))
+// 	m := lightness - c/2.0
+//	
+// 	order := [6]ivec3{
+// 		ivec3(2, 0, 1), ivec3(2, 1, 0),
+// 		ivec3(0, 1, 2), ivec3(0, 2, 1),
+// 		ivec3(1, 2, 0), ivec3(1, 0, 2),
+// 	}[int(floor(hsl[0]*6))]
+// 	var rgb vec3
+// 	rgb[order[0]] = 0 + m
+// 	rgb[order[1]] = c + m
+// 	rgb[order[2]] = x + m
+// 	_ = order
+// 	return rgb
+// }
+
+func min3(a, b, c float) float {
+	return min(min(a, b), c)
+}
+
+func max3(a, b, c float) float {
+	return max(max(a, b), c)
+}
+
+func bilinearSampling0(coords, unit vec2) vec4 {
+	tl := imageSrc0At(coords - unit/2.0)
+	tr := imageSrc0At(coords + vec2(+unit.x/2.0, -unit.y/2.0))
+	bl := imageSrc0At(coords + vec2(-unit.x/2.0, +unit.y/2.0))
+	br := imageSrc0At(coords + unit/2.0)
+	delta  := min(fract(coords + unit/2.0), unit)/unit
+	top    := mix(tl, tr, delta.x)
+	bottom := mix(bl, br, delta.x)
+	return mix(top, bottom, delta.y)
+}
+
+func bilinearSampling1(coords, unit vec2) vec4 {
+	tl := imageSrc1At(coords - unit/2.0)
+	tr := imageSrc1At(coords + vec2(+unit.x/2.0, -unit.y/2.0))
+	bl := imageSrc1At(coords + vec2(-unit.x/2.0, +unit.y/2.0))
+	br := imageSrc1At(coords + unit/2.0)
+	delta  := min(fract(coords + unit/2.0), unit)/unit
+	top    := mix(tl, tr, delta.x)
+	bottom := mix(bl, br, delta.x)
+	return mix(top, bottom, delta.y)
+}

@@ -1,0 +1,115 @@
+//kage:unit pixels
+package main
+
+var Cursor vec2 // kage-desk/display built-in uniform
+var MouseButtons int // kage-desk/display built-in uniform
+var Image int // see main.go, changes by pressing 1 or 2 in the keyboard
+
+func Fragment(targetCoords vec4, sourceCoords vec2, _ vec4) vec4 {
+	var color vec4
+	if Image == 1 {
+		// we are renormalizing coords here and using a second image
+		normCoords := (sourceCoords - imageSrc0Origin())/imageSrc0Size()
+		src1Coords := (normCoords*imageSrc1Size()) + imageSrc0Origin()
+		color = bilinearSampling1(src1Coords, fwidth(src1Coords))
+	} else { 
+		// sample the image (could use imageSrc0At(), don't worry about it)
+		color = bilinearSampling0(sourceCoords, fwidth(sourceCoords))			
+	}
+
+	// allow holding a mouse button to quickly compare with the original
+	if MouseButtons != 0 { return color }
+
+	// convert color to oklab
+	lab := RGBToOklab(color.rgb)
+	
+	// convert to polar form, set new chroma, go back
+	lch := LCh(lab)
+	lch[1] = max(lch[1] + (Cursor.x - 0.5)/2.0, 0.0)
+	lab = LAB(lch)
+
+	// convert color back to RGB
+	rgb := OklabToRGB(lab)
+	return vec4(rgb, color.a)
+}
+
+func RGBToOklab(rgb vec3) vec3 {
+	linR, linG, linB := linearize(rgb.r), linearize(rgb.g), linearize(rgb.b)
+	x := pow(0.4122214708*linR + 0.5363325363*linG + 0.0514459929*linB, 1.0/3.0)
+	y := pow(0.2119034982*linR + 0.6806995451*linG + 0.1073969566*linB, 1.0/3.0)
+	z := pow(0.0883024619*linR + 0.2817188376*linG + 0.6299787005*linB, 1.0/3.0)
+	
+	l := 0.2104542553*x + 0.7936177850*y - 0.0040720468*z
+	a := 1.9779984951*x - 2.4285922050*y + 0.4505937099*z
+	b := 0.0259040371*x + 0.7827717662*y - 0.8086757660*z
+	return vec3(l, a, b)
+}
+
+func OklabToRGB(lab vec3) vec3 {
+	linRGB := OklabToLinRGB(lab)
+	return vec3(unlinearize(linRGB.r), unlinearize(linRGB.g), unlinearize(linRGB.b))
+}
+
+func OklabToLinRGB(lab vec3) vec3 {
+	x := pow(lab[0] + 0.3963377774*lab[1] + 0.2158037573*lab[2], 3)
+	y := pow(lab[0] - 0.1055613458*lab[1] - 0.0638541728*lab[2], 3)
+	z := pow(lab[0] - 0.0894841775*lab[1] - 1.2914855480*lab[2], 3)
+
+	return vec3(
+		clamp(+4.0767416621*x - 3.3077115913*y + 0.2309699292*z, 0, 1),
+		clamp(-1.2684380046*x + 2.6097574011*y - 0.3413193965*z, 0, 1),
+		clamp(-0.0041960863*x - 0.7034186147*y + 1.7076147010*z, 0, 1),
+	)
+}
+
+
+
+func linearize(colorChan float) float {
+	if colorChan >= 0.04045 {
+		return pow((colorChan + 0.055)/1.055, 2.4)
+	} else {
+		return colorChan/12.92
+	}
+}
+
+func unlinearize(colorChan float) float {
+	if colorChan >= 0.0031308 {
+		return 1.055*pow(colorChan, 1.0/2.4) - 0.055
+	} else {
+		return colorChan*12.92
+	}
+}
+
+// convert from LAB to polar form
+func LCh(lab vec3) vec3 {
+	return vec3(lab[0], pow(lab[1]*lab[1] + lab[2]*lab[2], 1.0/2.0), atan2(lab[2], lab[1]))
+}
+
+// convert from polar form to LAB
+func LAB(lch vec3) vec3 {
+	return vec3(lch[0], lch[1]*cos(lch[2]), lch[1]*sin(lch[2]))
+}
+
+// --- texture interpolation ---
+
+func bilinearSampling0(coords, unit vec2) vec4 {
+	tl := imageSrc0At(coords - unit/2.0)
+	tr := imageSrc0At(coords + vec2(+unit.x/2.0, -unit.y/2.0))
+	bl := imageSrc0At(coords + vec2(-unit.x/2.0, +unit.y/2.0))
+	br := imageSrc0At(coords + unit/2.0)
+	delta  := min(fract(coords + unit/2.0), unit)/unit
+	top    := mix(tl, tr, delta.x)
+	bottom := mix(bl, br, delta.x)
+	return mix(top, bottom, delta.y)
+}
+
+func bilinearSampling1(coords, unit vec2) vec4 {
+	tl := imageSrc1At(coords - unit/2.0)
+	tr := imageSrc1At(coords + vec2(+unit.x/2.0, -unit.y/2.0))
+	bl := imageSrc1At(coords + vec2(-unit.x/2.0, +unit.y/2.0))
+	br := imageSrc1At(coords + unit/2.0)
+	delta  := min(fract(coords + unit/2.0), unit)/unit
+	top    := mix(tl, tr, delta.x)
+	bottom := mix(bl, br, delta.x)
+	return mix(top, bottom, delta.y)
+}

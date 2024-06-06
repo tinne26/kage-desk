@@ -31,3 +31,17 @@ func whenLessOrEqualThan(a, b float) float {
 	return step(a, b)
 }
 ```
+
+A/B'ing with selector results can also be made nicer with some helper functions:
+```Golang
+// Returns a if selector is 0, b if selector is 1.
+func AB01(a, b vec2, selector float) vec2 {
+	return a*(1.0 - selector) + b*selector
+}
+
+// Returns a if selector is 1, b if selector is 0.
+func AB10(a, b vec2, selector float) vec2 {
+	return a*selector + b*(1.0 - selector)
+}
+```
+I read these as "pick A or B with 0 or 1", and "pick A or B with 1 or 0".

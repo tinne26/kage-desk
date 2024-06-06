@@ -1,0 +1,77 @@
+//kage:unit pixels
+package main
+
+var Cursor vec2
+var MouseButtons int // 0b00 if none, 0b10 if left, 0b01 if right, 0b11 if both
+
+const MouseButtonLeft  = 0b10
+const MouseButtonRight = 0b01
+
+func Fragment(targetCoords vec4, sourceCoords vec2, _ vec4) vec4 {
+	// sample the image (could be just imageSrc1At(), don't worry about it)
+	color := bilinearSampling(sourceCoords, fwidth(sourceCoords))
+
+	// bypass black and white by left-clicking
+	if MouseButtons & MouseButtonLeft == MouseButtonLeft {
+		return color
+	}
+
+	// black and white program. move mouse horizontally to compare methods
+	var value float
+	if normDstCoords(targetCoords).x < Cursor.x { // for the left half, we use a fast approximation
+		value = dot(color.rgb, vec3(0.299, 0.587, 0.114))
+		// ^ equivalent to r*0.299 + g*0.587 + g*0.114
+	} else { // for the right half, we use a more accurate calculation
+		value = lightness(color)
+	}
+
+	return vec4(vec3(value), color.a)
+}
+
+// --- functions for better style and quality ---
+// These aren't really necessary, just some extra stuff
+// to make life more interesting.
+
+func normDstCoords(targetCoords vec4) vec2 {
+	return (targetCoords.xy - imageDstOrigin())/imageDstSize()
+}
+
+func bilinearSampling(coords, unit vec2) vec4 {
+	tl := imageSrc1At(coords - unit/2.0)
+	tr := imageSrc1At(coords + vec2(+unit.x/2.0, -unit.y/2.0))
+	bl := imageSrc1At(coords + vec2(-unit.x/2.0, +unit.y/2.0))
+	br := imageSrc1At(coords + unit/2.0)
+	delta  := min(fract(coords + unit/2.0), unit)/unit
+	top    := mix(tl, tr, delta.x)
+	bottom := mix(bl, br, delta.x)
+	return mix(top, bottom, delta.y)
+}
+
+// --- accurate computation methods ---
+// (all these are only relevant if you need the accuracy;
+// otherwise the cheap method is ok for most use-cases)
+
+func lightness(color vec4) float {
+	lum := luminance(color)
+	var light float
+	if lum <= 0.008856 {
+		light = lum*903.3
+	} else {
+		light = pow(lum, 1.0/3.0)*116 - 16
+	}
+
+	return light/100.0
+}
+
+func luminance(color vec4) float {
+	r, g, b := linearize(color.r), linearize(color.g), linearize(color.b)
+	return 0.2126*r + 0.7152*g + 0.0722*b
+}
+
+func linearize(colorChan float) float {
+	if colorChan <= 0.04045 {
+		return colorChan/12.92
+	} else {
+		return pow((colorChan + 0.055)/1.055, 2.4)
+	}
+}

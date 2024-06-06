@@ -1,0 +1,31 @@
+//kage:unit pixels
+package main
+
+var Cursor vec2
+var MouseButtons int
+
+func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
+	const Radius = 80.0
+
+	targetCenter := imageDstOrigin() + imageDstSize()/2.0
+	center := AB01(targetCenter, Cursor*imageDstSize(), whenMouseButton())
+	sdf    := circleSDF(targetCoords.xy - center, Radius)
+	return vec4(1)*clamp(-sdf, 0, 1)
+}
+
+func circleSDF(coords vec2, radius float) float {
+	return length(coords) - radius
+}
+
+// ---- extras for some interactivity ----
+// You can press any mouse button to set the circle center
+// at the cursor's position.
+
+func whenMouseButton() float {
+	return 1.0 - step(float(MouseButtons), 0.0)
+}
+
+// Returns a if selector is 0, b if selector is 1.
+func AB01(a, b vec2, selector float) vec2 {
+	return a*(1.0 - selector) + b*selector
+}

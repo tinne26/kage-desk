@@ -1,0 +1,41 @@
+//kage:unit pixels
+package main
+
+var Cursor vec2      // kage-desk/display built-in uniform
+var MouseButtons int // kage-desk/display built-in uniform
+
+func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
+	center := imageDstOrigin() + imageDstSize()/2.0
+	thickness := 6 + variableExtraThickness()
+	sdf    := unfilledRoundedRectSDF(targetCoords.xy - center, 250, 150, 75, thickness)
+	return vec4(1)*clamp(-sdf, 0, 1)
+}
+
+func unfilledRoundedRectSDF(coords vec2, width, height, radius, thickness float) float {
+	dist := roundedRectSDF(coords, width, height, radius)
+	return max(-(dist + thickness/2), dist - thickness/2)
+}
+
+func roundedRectSDF(coords vec2, width, height, radius float) float {
+	return rectSDF(coords, width - radius*2, height - radius*2) - radius
+}
+
+func rectSDF(coords vec2, width, height float) float {
+	size    := vec2(width, height)
+	distXY  := abs(coords) - size/2.0
+	outDist := length(max(distXY, 0))
+	inDist  := min(max(distXY.x, distXY.y), 0)
+	return outDist + inDist
+}
+
+// --- extra elements for interactivity ---
+// Just for fun, this is unimportant and optional
+
+func variableExtraThickness() float {
+	return distance(vec2(0.5), Cursor)*imageDstSize().x*0.1*whenMouseButton()
+}
+
+func whenMouseButton() float {
+	return 1.0 - step(float(MouseButtons), 0.0)
+}
+

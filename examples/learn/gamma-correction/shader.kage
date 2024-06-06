@@ -1,0 +1,22 @@
+//kage:unit pixels
+package main
+
+func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
+	group := floor(12*targetCoords.x/imageDstSize().x)
+	value := group/11.0
+
+	if targetCoords.y < imageDstSize().y/2.0 {
+		return vec4(value, value, value, 1) // perceptually linear
+	} else {
+		value = GammaCorrected(value)
+		return vec4(value, value, value, 1) // physically linear
+	}
+	return 
+}
+
+// If you need more context on the topic, consider reading
+// https://blog.johnnovak.net/2016/09/21/what-every-coder-should-know-about-gamma/
+func GammaCorrected(value float) float {
+	const Gamma = 2.2
+	return pow(value, 1.0/Gamma)
+}

@@ -1,0 +1,39 @@
+//kage:unit pixels
+package main
+
+func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
+	center := imageDstOrigin() + imageDstSize()/2.0
+	vertA, vertB, vertC := vec2(0, -130), vec2(-70, 30), vec2(60, 70)
+	sdf := unfilledTriangleSDF(targetCoords.xy - center, vertA, vertB, vertC, 3)
+	return vec4(1)*clamp(-sdf, 0, 1)
+}
+
+func unfilledTriangleSDF(coords, vertexA, vertexB, vertexC vec2, thickness float) float {
+	dist := triangleSDF(coords, vertexA, vertexB, vertexC)
+	return max(-(dist + thickness/2), dist - thickness/2)
+}
+
+func triangleSDF(coords, vertexA, vertexB, vertexC vec2) float {
+	offsetA := coords - vertexA
+	offsetB := coords - vertexB
+	offsetC := coords - vertexC 
+	offsetAB := vertexB - vertexA
+	offsetBC := vertexC - vertexB
+	offsetCA := vertexA - vertexC
+
+	aba := offsetA - offsetAB*clamp(dot(offsetA, offsetAB)/dot(offsetAB, offsetAB), 0, 1)
+	bcb := offsetB - offsetBC*clamp(dot(offsetB, offsetBC)/dot(offsetBC, offsetBC), 0, 1)
+	cac := offsetC - offsetCA*clamp(dot(offsetC, offsetCA)/dot(offsetCA, offsetCA), 0, 1)
+
+	s := sign(offsetAB.x*offsetCA.y - offsetAB.y*offsetCA.x)
+	dist := min3(
+		vec2(dot(aba, aba), s*(offsetA.x*offsetAB.y - offsetA.y*offsetAB.x)),
+		vec2(dot(bcb, bcb), s*(offsetB.x*offsetBC.y - offsetB.y*offsetBC.x)),
+		vec2(dot(cac, cac), s*(offsetC.x*offsetCA.y - offsetC.y*offsetCA.x)),
+	)
+	return -sqrt(dist.x)*sign(dist.y)
+}
+
+func min3(a, b, c vec2) vec2 {
+	return min(min(a, b), c)
+}

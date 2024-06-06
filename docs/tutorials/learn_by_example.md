@@ -10,56 +10,59 @@ The shaders are roughly sorted from simple to complex, and they include tags tha
 We have also created a page for [community contributed examples](https://github.com/tinne26/kage-desk/blob/main/docs/community_examples.md). Check those out too and feel free to contribute your own!
 
 Here we go!
-- [Filled circle](): geometry.
-- [Unfilled circle](): geometry.
-- [Gamma correction](): color.
-- [Filled smooth triangle](): geometry.
-- [Unfilled smooth triangle](): geometry.
-- [Filled rounded rectangle](): geometry, UI.
-- [Unfilled rounded rectangle](): geometry, UI.
-- [Filled polygon](): geometry.
-- [Unfilled polygon](): geometry.
-- [Black and white](): image, color.
-- [Simple tint](): image, color.
-- [Simple sphere](): geometry, 3D, lighting.
-- [Complex wave](): geometry, animation.
-- [Blur](): FX, image.
-- [Pixelize](): FX, image.
-- [Pixelize (sampled)](): FX, image.
-- [Bézier conic curve](): geometry.
-- [Bézier cubic curve](): geometry.
-- [Complex polygon](): geometry.
-- [Grain](): screen, FX, animation.
-- [Vignette](): screen, FX, ¿animation?.
-- [Simple glow](): sprite, FX.
-- [Simple outline](): sprite, FX.
-- [Behind obstruction](): masking, sprite.
-- [Behind wall](): masking, sprite.
-- [Dynamic motion blur](): FX, image, animation.
-- [Breathing](): sprite, animation, FX, deformation.
-- [Character boost](): sprite, FX, animation.
-- [Character poison](): sprite, FX, animation.
-- [Windmill transition](): image, animation.
-- [Destroy (disintegrate + spread)](): sprite, animation, FX.
-- [Destroy (cut + vanish)](): sprite, animation, FX.
-- [Destroy (spiral collapse)](): sprite, animation, FX.
-- [Destroy (radial crystal)](): sprite, animation, FX.
-- [Chromatic aberration](): image, FX, color.
-- [Hit (pixelize + wave)](): sprite, animation, FX.
-- [Water reflection](): image, FX, projection, deformation, animation.
-- [Inside water](): image, FX, deformation, animation.
-- [Heat shimmer](): image, FX, deformation.
-- [Cube](): geometry, 3D, lighting.
-- [Animated cube](): geometry, 3D, lighting, animation.
-- [Ebiten model](): geometry, 3D, lighting, animation.
-- [Ring loader](): UI, projection, animation.
-- [Cylindrical HUD](): UI, projection.
-- [Hemispherical HUD](): UI, projection.
-- [SMAA (antialiasing)](): screen, FX. https://github.com/iryoku/smaa
-- [Subpixel antialiasing](): screen, FX, color.
-- [Simple moon phases](): geometry, masking, animation.
-- [Geodesic dome](): geometry, 3D, triangles, lighting.
-- [Rotating geodesic dome](): geometry, 3D, triangles, animation, lighting.
+- [Filled circle](https://github.com/tinne26/kage-desk/blob/main/examples/learn/filled-circle): geometry.
+- [Unfilled circle](https://github.com/tinne26/kage-desk/blob/main/examples/learn/unfilled-circle): geometry.
+- [Gamma correction](https://github.com/tinne26/kage-desk/blob/main/examples/learn/gamma-correction): color.
+- [Filled triangle](https://github.com/tinne26/kage-desk/blob/main/examples/learn/filled-triangle): geometry.
+- [Unfilled triangle](https://github.com/tinne26/kage-desk/blob/main/examples/learn/unfilled-triangle): geometry.
+- [Filled rounded rectangle](https://github.com/tinne26/kage-desk/blob/main/examples/learn/filled-rounded-rectangle): geometry, UI.
+- [Unfilled rounded rectangle](https://github.com/tinne26/kage-desk/blob/main/examples/learn/unfilled-rounded-rectangle): geometry, UI.
+- `TODO` [Filled polygon](): geometry.
+- `TODO` [Unfilled polygon](): geometry.
+- [Black and white](https://github.com/tinne26/kage-desk/blob/main/examples/learn/black-and-white): image, color.
+- [Simple tint](https://github.com/tinne26/kage-desk/blob/main/examples/learn/simple-tint): image, color.
+- [HSL hue rotation](https://github.com/tinne26/kage-desk/blob/main/examples/learn/hsl-hue-rotation): image, color.
+- [Oklab chroma shift](https://github.com/tinne26/kage-desk/blob/main/examples/learn/oklab-chroma-shift): image, color.
+- `TODO` [Pixelize](): FX, image.
+- `TODO` [Pixelize (sampled)](): FX, image.
+- `TODO` [Blur](): FX, image.
+- `TODO` [Grain](): screen, FX, animation.
+- `TODO` [Vignette](): screen, FX, ¿animation?.
+- `TODO` [Noise](): FX.
+- `TODO` [Simple sphere](): geometry, 3D, lighting.
+- `TODO` [Complex wave](): geometry, animation.
+- `TODO` [Bézier conic curve](): geometry.
+- `TODO` [Bézier cubic curve](): geometry.
+- `TODO` [Complex polygon](): geometry.
+- `TODO` [Simple glow](): sprite, FX.
+- `TODO` [Simple outline](): sprite, FX.
+- `TODO` [Behind obstruction](): masking, sprite.
+- `TODO` [Behind wall](): masking, sprite.
+- `TODO` [Dynamic motion blur](): FX, image, animation.
+- `TODO` [Breathing](): sprite, animation, FX, deformation.
+- `TODO` [Character boost](): sprite, FX, animation.
+- `TODO` [Character poison](): sprite, FX, animation.
+- `TODO` [Windmill transition](): image, animation.
+- `TODO` [Destroy (disintegrate + spread)](): sprite, animation, FX.
+- `TODO` [Destroy (cut + vanish)](): sprite, animation, FX.
+- `TODO` [Destroy (spiral collapse)](): sprite, animation, FX.
+- `TODO` [Destroy (radial crystal)](): sprite, animation, FX.
+- `TODO` [Chromatic aberration](): image, FX, color.
+- `TODO` [Hit (pixelize + wave)](): sprite, animation, FX.
+- `TODO` [Water reflection](): image, FX, projection, deformation, animation.
+- `TODO` [Inside water](): image, FX, deformation, animation.
+- `TODO` [Heat shimmer](): image, FX, deformation.
+- `TODO` [Cube](): geometry, 3D, lighting.
+- `TODO` [Animated cube](): geometry, 3D, lighting, animation.
+- `TODO` [Ebiten model](): geometry, 3D, lighting, animation.
+- `TODO` [Ring loader](): UI, projection, animation.
+- `TODO` [Cylindrical HUD](): UI, projection.
+- `TODO` [Hemispherical HUD](): UI, projection.
+- `TODO` [SMAA (antialiasing)](): screen, FX. https://github.com/iryoku/smaa
+- `TODO` [Subpixel antialiasing](): screen, FX, color.
+- `TODO` [Simple moon phases](): geometry, masking, animation.
+- `TODO` [Geodesic dome](): geometry, 3D, triangles, lighting.
+- `TODO` [Rotating geodesic dome](): geometry, 3D, triangles, animation, lighting.
 
 At this point, I feel it's important to highlight that many fancy effects can also be achieved *without shaders*. Keep this in mind and avoid shader tunnel vision!
 - **Hit effect**: compress the sprite with regular `GeoM` transformations.

@@ -1,0 +1,28 @@
+//kage:unit pixels
+package main
+
+var Cursor vec2
+var MouseButtons int
+
+func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
+	center := imageDstOrigin() + imageDstSize()/2.0
+	radius := 75.0/2.0 + (Cursor.x - 0.5)*whenMouseButton()*(75.0)
+	sdf    := roundedRectSDF(targetCoords.xy - center, 240, 150, radius)
+	return vec4(1)*clamp(-sdf, 0, 1)
+}
+
+func roundedRectSDF(coords vec2, width, height, radius float) float {
+	return rectSDF(coords, width - radius*2, height - radius*2) - radius
+}
+
+func rectSDF(coords vec2, width, height float) float {
+	size    := vec2(width, height)
+	distXY  := abs(coords) - size/2.0
+	outDist := length(max(distXY, 0))
+	inDist  := min(max(distXY.x, distXY.y), 0)
+	return outDist + inDist
+}
+
+func whenMouseButton() float {
+	return 1.0 - step(float(MouseButtons), 0.0)
+}

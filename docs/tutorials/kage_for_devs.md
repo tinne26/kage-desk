@@ -10,7 +10,7 @@ Kage is the language used on Ebitengine to write shaders. It has a Golang-like s
 
 #### Table of contents
 - [Built-in functions](#built-in-functions)
-- [Basic examples](#basic-shaderkage-example)
+- [Basic example](#basic-shaderkage-example)
 - [Load and invoke](#load-and-invoke)
 - [Uniforms](#uniforms)
 - [Textures](#textures)
@@ -56,7 +56,7 @@ Example Kage shader that generates a checkerboard pattern.
 //kage:unit pixels
 package main
 
-func Fragment(targetCoords vec4, sourceCoords vec2, colorVertexAttr vec4) vec4 {
+func Fragment(targetCoords vec4, sourceCoords vec2, color vec4) vec4 {
 	const CellSize = 32
 
 	cellCoords := floor(targetCoords/CellSize)
@@ -82,14 +82,14 @@ func main() {
 }
 ```
 
-A few points worth highlighting:
-- The `//kage:unit pixels` is a special directive similar to Golang's compiler directives. Without it, you would be operating in texels mode. The general recommendation —and what all advanced users I know of are doing— is to use the new pixels mode. All the information in this tutorial is based on the pixel mode; if there's anything that behaves differently under the texels mode, I won't tell you, so keep that in mind.
-- The names for the input parameters are only intended to be illustrative. For example, `colorVertexAttr` is typically just `color`, and you can `_` any unused argument.
-- If you are too lazy, you can use [kageland](https://www.kageland.com/) to test Kage shaders online. You can copy paste the shader code above and just `Run` it on your browser.
+The `//kage:unit pixels` is a special directive similar to Golang's compiler directives. Without it, you would be operating in texels mode. The general recommendation —and what all advanced users I know of are doing— is to use the new pixels mode. All the information in this tutorial is based on the pixel mode; if there's anything that behaves differently under the texels mode, I won't even bother telling you, so keep that in mind.
+
+> [!TIP]
+> *If you are too lazy, you can use [kageland](https://www.kageland.com/) to test Kage shaders online. You can copy paste the shader code above and just `Run` it on your browser.*
 
 ## Load and invoke
 
-If you want to compile and invoke a shader manually, here is some reference code. Basically, use 4 vertices to create a quad and set the vertex target coordinates. While `DrawRectShader()` also exists, I recommend focusing exclusively on `DrawTrianglesShader()` instead[^1].
+If you want to compile and invoke a shader manually, here is some reference code. Basically, use 4 vertices to create a quad and set the vertex target coordinates. While `DrawRectShader()` also exists, I recommend focusing on `DrawTrianglesShader()` instead[^1].
 
 We will build upon the following template for the next examples:
 
@@ -176,6 +176,9 @@ func (self *Game) Draw(screen *ebiten.Image) {
 }
 ```
 
+> [!TIP]
+> *If you are too lazy to do all this when starting but you still prefer your editor to [kageland](https://www.kageland.com/), notice that the [`kage-desk/display`](https://pkg.go.dev/github.com/tinne26/kage-desk/display) package also provides many utilities: quick setup, background color, two default images, high resolution and resizability options, `Time float`, `Cursor vec2` and `MouseButtons int` uniforms, F (fullscreen) and ESC shortcuts... If you are interested, check out the [main.go](https://github.com/tinne26/kage-desk/blob/main/examples/learn/filled-circle/main.go) and [shade.kage](https://github.com/tinne26/kage-desk/blob/main/examples/learn/filled-circle/shader.kage) files of the `learn/filled-circle` example for a quick reference.*
+
 ## Uniforms
 
 The code from the previous section already shows how to link uniforms from the CPU side. Now let's see how to use them in the actual shader. We are going to make a shader where a pixel orbits around the center of the screen, at a rate of one revolution per minute (so, a clock that tracks seconds):
@@ -214,12 +217,33 @@ As you can see, adding uniforms is as simple as declaring exported variables at 
 
 To sample a texture, you will typically use the `sourceCoords` input argument and the `imageSrc0At()` function, which expects a coordinate in pixels. As showcased in the [load and invoke](#load-and-invoke) section, you can link up to 4 images in the shader options. The full collection of relevant image functions is the following:
 - <code>imageSrc<b><i>N</i></b>At()</code> (replace N with {0, 1, 2, 3}): source texture sampling. Sampling is [always nearest](https://github.com/hajimehoshi/ebiten/issues/2962); if you want to perform linear interpolation you will have to do it manually. Until we make something better, you can find some interpolation implementations [here](https://github.com/tinne26/mipix/tree/main/filters)[^2].
-- <code>imageSrc<b><i>N</i></b>UnsafeAt()</code> (replace N with {0, 1, 2, 3}): like `imageSrc**N**At()`, but doesn't check whether you go out of bounds. If you go out of bounds with `imageSrc**N**At()`, you will get back `vec4(0)`. With the unsafe function, you could actually peek at the whole internal atlas.
+- <code>imageSrc<b><i>N</i></b>UnsafeAt()</code> (replace N with {0, 1, 2, 3}): like <code>imageSrc<b><i>N</i></b>At()</code>, but doesn't check whether you go out of bounds. If you go out of bounds with <code>imageSrc<b><i>N</i></b>At()</code>, you will get back `vec4(0)`. With the unsafe function, you could actually peek at the whole internal atlas.
 - <code>imageSrc<b><i>N</i></b>Size()</code> (replace N with {0, 1, 2, 3}): returns the size in pixels of the requested source texture.
 - <code>imageSrc<b><i>N</i></b>Origin()</code> (replace N with {0, 1, 2, 3}): returns the origin of the requested source texture in pixels. This is relevant when working with subimages that might not start at (0, 0). Always keep those in mind!
 - `imageDstSize()` and `imageDstOrigin()`: same idea as the two previous functions, but for the target texture instead of the sources. With these you could eliminate the `Center` uniform of the previous section, for example.
 
+[^2]: Many of those shaders use `SourceRelativeTextureUnitX` and `SourceRelativeTextureUnitY` uniforms, but that can often be replaced with `units := fwidth(sourceCoords)`. Otherwise, the classic bilinear interpolation with +/-0.5 can be found at [src_bilinear.kage](https://github.com/tinne26/mipix/blob/main/filters/src_bilinear.kage) and doesn't require any uniforms. This is pretty much what Ebitengine does by default with `FilterLinear`, but with some extra clamping that you might or might not be interested in.
+
 > [!NOTE]
 > *Remember that colors are in RGBA format, with values between `[0, 1]`, and [premultiplied alpha](https://github.com/tinne26/kage-desk/blob/main/docs/tutorials/premult.md) (color channel values can't exceed the alpha value, or weird stuff will happen). It's easy to slip when you are often working with [0, 255] RGBA on the CPU side.*
 
-[^2]: Many of those shaders use `SourceRelativeTextureUnitX` and `SourceRelativeTextureUnitY` uniforms, but that can often be replaced with `units := fwidth(sourceCoords)`. Otherwise, the classic bilinear interpolation with +/-0.5 can be found as [src_bilinear.kage](https://github.com/tinne26/mipix/blob/main/filters/src_bilinear.kage) and doesn't require any uniforms. This is pretty much what Ebitengine does by default with `FilterLinear`, but with some extra clamping that you might or might not be interested in.
+If you are using `DrawTrianglesShader(...)`, you also need to *map the source texture to the target vertices*:
+```Golang
+// (typically done after the DstX/DstY setup)
+srcBounds := yourImage.Bounds()
+self.vertices[0].SrcX = float32(srcBounds.Min.X) // top-left
+self.vertices[0].SrcY = float32(srcBounds.Min.Y) // top-left
+self.vertices[1].SrcX = float32(srcBounds.Max.X) // top-right
+self.vertices[1].SrcY = float32(srcBounds.Min.Y) // top-right
+self.vertices[2].SrcX = float32(srcBounds.Min.X) // bottom-left
+self.vertices[2].SrcY = float32(srcBounds.Max.Y) // bottom-left
+self.vertices[3].SrcX = float32(srcBounds.Max.X) // bottom-right
+self.vertices[3].SrcY = float32(srcBounds.Max.Y) // bottom-right
+```
+
+Don't forget to link your images too!
+```Golang
+self.shaderOpts.Images[0] = yourImage
+```
+
+Check the [misc. snippets](https://github.com/tinne26/kage-desk/blob/main/docs/snippets/misc.md) if you need some texture clamping/repeat code.

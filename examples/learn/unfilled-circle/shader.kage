@@ -1,0 +1,29 @@
+//kage:unit pixels
+package main
+
+var Cursor vec2 // kage-desk/display built-in uniform
+var Time float  // kage-desk/display built-in uniform
+
+func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
+	const Radius = 120.0
+	const Thickness = 20.0
+	
+	center := imageDstOrigin() + imageDstSize()/2.0
+	center += anxiety()
+	sdf    := ringSDF(targetCoords.xy - center, Radius, Thickness)
+	return vec4(1)*clamp(-sdf, 0, 1)
+}
+
+// hollow circle, unfilled circle, ring, annulus
+func ringSDF(coords vec2, radius, thickness float) float {
+	distance := length(coords)
+	circle := distance - radius
+	return max(-(circle + thickness/2), circle - thickness/2)
+}
+
+func anxiety() vec2 {
+	microdose := imageDstSize()/200.0
+	ocdtrig := -(Cursor - vec2(0.5))*microdose
+	ruokbro := vec2(sin(Time*0.5), -cos(Time*0.25) + sin(Time*0.125)*0.5)*microdose
+	return ocdtrig + ruokbro
+}
