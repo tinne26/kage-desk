@@ -32,7 +32,7 @@ func bilinearSampling(coords, unit vec2) vec4 {
 }
 ```
 
-## Texture clamping / repeat
+## Texture clamping and repeat
 
 If you use `imageSrcNAt()`, coordinates outside bounds will return `vec4(0)` by default. If you use `imageSrcNUnsafeAt()`, there's no clamping at all and you might access the whole underlying internal atlas. Here are some snippets for other behaviors:
 
