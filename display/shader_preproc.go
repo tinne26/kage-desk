@@ -1,3 +1,4 @@
+//go:build nope
 package display
 
 import "github.com/hajimehoshi/ebiten/v2"
