@@ -1,0 +1,66 @@
+//kage:unit pixels
+package main
+
+var Cursor vec2 // kage-desk/display built-in uniform
+
+func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
+	// normalize the coordinates to [0, 1] range
+	normTargetCoords := normDstCoords(targetCoords)
+
+	// we will have our ray go forward (z = +1) from our
+	// current normalized position within a plane at z = 0
+	rayOrigin := vec3(normTargetCoords.x, normTargetCoords.y, 0)
+	rayDirection := vec3(0, 0, 1)
+
+	// for our sphere, we will center it at (0.5X, 0.5Y),
+	// give it a radius < 0.5 so it fits in the 1x1 plane
+	// we are working with, and set it at a z distance so
+	// the closest point is touching z = 0.
+	sphereRadius := 0.4
+	sphereCenter := vec3(0.5, 0.5, sphereRadius)
+	
+	// compute the distance to the sphere
+	dist := SphereIntersectDist(sphereCenter, sphereRadius, rayOrigin, rayDirection)
+
+	// in more advanced examples we will go full camera
+	// matrix, lighting and so on, but we will be painting
+	// the raw distance instead for this example (this is
+	// why we are working with everything in [0, 1] range)
+	if dist < -sphereRadius {
+		return vec4(0, 0, 0, 1)
+	} else {
+		dist  *= sign(dist) // (for displaying distances inside the sphere)
+		value := 1.0 - clamp(dist, 0, 1.0)
+		value  = max(value - Cursor.x, 0) // offset lightness with cursor x
+		return vec4(value, value, value, 1.0)
+	}
+}
+
+func normDstCoords(targetCoords vec4) vec2 {
+	return (targetCoords.xy - imageDstOrigin())/imageDstSize()
+}
+
+// The function returns the distance between rayOrigin and the sphere
+// surface when moving in rayDirection. This distance will be negative
+// if we are inside the sphere. You can test for no intersection with
+// (dist < -sphereRadius).
+func SphereIntersectDist(sphereCenter vec3, sphereRadius float, rayOrigin vec3, rayDirection vec3) float {
+	minDir   := rayOrigin - sphereCenter
+	minDist2 := dot(minDir, minDir) - sphereRadius*sphereRadius // [^1]
+	raysDot  := dot(minDir, rayDirection) // [^2]
+	
+	delta := raysDot*raysDot - minDist2
+	if delta < 0.0 {
+		const epsilon = 1.0/65536.0
+		return -(sphereRadius + epsilon) // no intersection
+	} else {
+		return -raysDot - sqrt(delta)
+	}
+
+	// [^1]: the dot product of a vector with itself gives us the (vector length)^2
+	// [^2]: the dot product in general is a form of "multiplication with direction".
+	//       Completely dissimilar directions (e.g. dot(vec2(1, 0), vec2(0, 1))) will
+	//       give us zero, and completely similar directions will give us vecLen^2,
+	//       as mentioned in [^1]. For different degrees of directional similarity,
+	//       the result will range from that 0 to vecLen^2.
+}

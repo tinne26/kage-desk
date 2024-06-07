@@ -1,0 +1,96 @@
+//kage:unit pixels
+package main
+
+var Cursor vec2 // kage-desk/display built-in uniform
+
+func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
+	// normalize the coordinates to [0, 1] range
+	normTargetCoords := normDstCoords(targetCoords)
+
+	// used later for more dynamic effects
+	cshift := clampByRadius((vec2(-0.5) + Cursor), 0.5)
+
+	// we will have our ray go forward (z = +1) from our
+	// current normalized position within a plane at z = 0
+	rayOrigin := vec3(normTargetCoords.x, normTargetCoords.y, 0)
+	rayDirection := vec3(0, 0, 1)
+	rayDirection  = normalize(rayDirection) // ensure unit vector
+
+	// sphere properties. notice that we won't be using a
+	// perspective camera or anything, so the distance won't
+	// change how big the sphere looks.
+	sphereRadius := 0.25
+	sphereCenter := vec3(0.5, 0.5, sphereRadius + 1.0)
+	
+	// compute the ray distance to the sphere
+	dist := SphereIntersectDist(sphereCenter, sphereRadius, rayOrigin, rayDirection)
+	if dist < -sphereRadius { // not intersecting the sphere, paint some background
+		alpha := 1.0 - sin(0.9*distance(vec2(0.5), normTargetCoords - cshift*0.5))
+		return vec4(0.549*alpha, 0.254*alpha, 0.333*alpha, 1.0)
+	}
+	intersectPoint := rayOrigin + rayDirection*dist
+	normal := SphereNormal(sphereCenter, intersectPoint)
+
+	// compute light direction
+	lightDirection := normalize(vec3(cshift*0.8, -1.0))
+
+	// combine sphere color with lighting
+	sphereColor := vec3(0.5, 1, 1)
+	lightColor  := Phong(lightDirection, normal, -rayDirection)
+	return vec4(sphereColor*lightColor, 1.0) // (you could add more lights)
+}
+
+func normDstCoords(targetCoords vec4) vec2 {
+	return (targetCoords.xy - imageDstOrigin())/imageDstSize()
+}
+
+// Returns the normal for the given sphere at the given intersection point.
+func SphereNormal(sphereCenter vec3, intersectionPoint vec3) vec3 {
+	return normalize(intersectionPoint - sphereCenter)
+}
+
+// The function returns the distance between rayOrigin and the sphere
+// surface when moving in rayDirection. This distance will be negative
+// if we are inside the sphere. You can test for no intersection with
+// (dist < -sphereRadius).
+func SphereIntersectDist(sphereCenter vec3, sphereRadius float, rayOrigin vec3, rayDirection vec3) float {
+	minDir   := rayOrigin - sphereCenter
+	minDist2 := dot(minDir, minDir) - sphereRadius*sphereRadius
+	raysDot  := dot(minDir, rayDirection) 
+	
+	delta := raysDot*raysDot - minDist2
+	if delta < 0.0 {
+		const epsilon = 1.0/65536.0
+		return -(sphereRadius + epsilon) // no intersection
+	} else {
+		return -raysDot - sqrt(delta)
+	}
+}
+
+// Classic lighting color calculation function.
+func Phong(lightDirection, normal, rayDirection vec3) vec3 {
+	// ambient (flat lighting color)
+	ambientFactor := 0.08
+	ambientColor  := vec3(1.0, 1.0, 1.0)
+	ambient := ambientColor*ambientFactor
+
+	// diffuse (normal based color)
+	diffuseFactor := 0.5
+	diffuseColor  := vec3(1.0, 1.0, 0.9)
+	diffuseDot    := max(dot(normal, lightDirection), 0)
+	diffuse := diffuseColor*diffuseDot*diffuseFactor
+
+	// specular (reflections / shininess)
+	specularFactor := 0.08
+	specularColor  := vec3(1.0, 1.0, 1.0)
+	specularDot := clamp(dot(reflect(lightDirection, normal), -rayDirection), 0, 1)
+	specular := specularColor*pow(specularDot, 7.0)*specularFactor
+
+	return ambient + diffuse + specular
+}
+
+func clampByRadius(coords vec2, radius float) vec2 {
+	angle := atan2(coords.y, coords.x)
+	vlen  := min(length(coords), radius)
+	return vec2(vlen*cos(angle), vlen*sin(angle))
+}

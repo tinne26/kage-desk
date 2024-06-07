@@ -199,14 +199,14 @@ func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
 	secPos   := Center + vec2(sin(secAngle)*MarkerDistance, -cos(secAngle)*MarkerDistance)
 
 	// return the sum of contributions for the two dots in the screen
-	centerMarker := vec4(1)*dot(targetCoords.xy, Center, 2, 1.5)
-	secondMarker := vec4(1)*dot(targetCoords.xy, secPos, 2, 1.5)
+	centerMarker := vec4(1)*inDotMask(targetCoords.xy, Center, 2, 1.5)
+	secondMarker := vec4(1)*inDotMask(targetCoords.xy, secPos, 2, 1.5)
 	return centerMarker + secondMarker
 }
 
 // Returns 1 if the current position is within 'hardRadius' of 'target',
 // between 1 and 0 if within 'hardRadius + softRadius', zero otherwise.
-func dot(current vec2, target vec2, hardRadius, softRadius float) float {
+func inDotMask(current vec2, target vec2, hardRadius, softRadius float) float {
 	return 1.0 - smoothstep(hardRadius, hardRadius + softRadius, distance(current, target))
 }
 ```

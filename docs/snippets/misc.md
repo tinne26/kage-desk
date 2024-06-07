@@ -112,7 +112,7 @@ func fmod(value, modulo float) float {
 
 func trunc(a float) float {
 	if a >= 0 { return floor(a) }
-	return -floor(-a)
+	return ceil(a)
 }
 ```
 

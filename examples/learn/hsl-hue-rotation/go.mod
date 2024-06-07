@@ -1,6 +1,6 @@
 module github.com/tinne26/kage-desk/examples/learn/hsl-hue-rotation
 
-go 1.22.2
+go 1.19
 
 require (
 	github.com/hajimehoshi/ebiten/v2 v2.7.4

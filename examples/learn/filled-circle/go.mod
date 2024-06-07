@@ -1,6 +1,6 @@
 module github.com/tinne26/kage-desk/examples/learn/filled-circle
 
-go 1.22.2
+go 1.19
 
 require github.com/tinne26/kage-desk/display v0.0.0-20240606194240-419b91db2465
 

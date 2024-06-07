@@ -7,7 +7,7 @@ Similar concept to the [selectors](https://github.com/tinne26/kage-desk/blob/mai
 // the function returns 1, otherwise, returns 0.
 // Margins greater than zero smooth the result at the
 // edges.
-func band(value, lo, hi float, margin float) float {
+func inBandMask(value, lo, hi float, margin float) float {
 	rangeLen := hi - lo
 	presence := clamp(value - lo, 0, rangeLen)
 	in  := smoothstep(0, margin, presence)
@@ -18,7 +18,7 @@ func band(value, lo, hi float, margin float) float {
 // Return 1 if the current position is within 'hardRadius' of 'target',
 // between 1 and 0 if within 'hardRadius + softRadius' of 'target',
 // or zero otherwise.
-func dot(current vec2, target vec2, hardRadius, softRadius float) float {
+func inDotMask(current vec2, target vec2, hardRadius, softRadius float) float {
 	return 1.0 - smoothstep(hardRadius, hardRadius + softRadius, distance(current, target))
 }
 ```

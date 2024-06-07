@@ -1,7 +1,8 @@
-go 1.22.2
+go 1.19
 
 use (
 	./display
+
 	./examples/intro/checkerboard
 	./examples/intro/checkerboard-preview
 	./examples/intro/circle
@@ -15,6 +16,21 @@ use (
 	./examples/intro/pixelize
 	./examples/intro/pixelize-anim
 	./examples/intro/wave-split
+
+	./examples/learn/black-and-white
+	./examples/learn/filled-circle
+	./examples/learn/filled-rounded-rect
+	./examples/learn/filled-triangle
+	./examples/learn/gamma-correction
+	./examples/learn/hsl-hue-rotation
+	./examples/learn/oklab-chroma-shift
+	./examples/learn/simple-tint
+	./examples/learn/sphere-intersect-dist
+	./examples/learn/sphere-phong
+	./examples/learn/unfilled-circle
+	./examples/learn/unfilled-rounded-rect
+	./examples/learn/unfilled-triangle
+
 	./examples/misc/recolor
 	./examples/misc/triangles
 )

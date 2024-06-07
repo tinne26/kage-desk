@@ -1,4 +1,4 @@
-module github.com/tinne26/kage-desk/examples/learn/unfilled-circle
+module github.com/tinne26/kage-desk/examples/learn/sphere-intersect-dist
 
 go 1.19
 
