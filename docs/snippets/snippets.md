@@ -22,7 +22,7 @@ A collection of snippets and common functions for Kage.
 
 A set of functions for keeping/discarding results based on simple conditions[^1]:
 
-[^1] This can actually be done directly with conditionals most of the time, but some programmers prefer to avoid these in their shaders. The reason is quite long-winded and complex... Modern GPUs are much better optimized now, but in the past, conditionals were suboptimal in many cases. Since the same program is executed for a wavefront (group of pixels), whenever any of the pixels takes a different conditional branch, this branch must still be evaluated for all the pixels in the wavefront. If it's a short `if`, this is not a problem. If the branches are divergent and start doing a lot of completely distinct work, then this can have much more severe performance repercussions.
+[^1]: This can actually be done directly with conditionals most of the time, but some programmers prefer to avoid these in their shaders. The reason is quite long-winded and complex... Modern GPUs are much better optimized now, but in the past, conditionals were suboptimal in many cases. Since the same program is executed for a wavefront (group of pixels), whenever any of the pixels takes a different conditional branch, this branch must still be evaluated for all the pixels in the wavefront. If it's a short `if`, this is not a problem. If the branches are divergent and start doing a lot of completely distinct work, then this can have much more severe performance repercussions.
 
 ```Golang
 // Returns 1 if a == b, 0 otherwise.
@@ -196,7 +196,6 @@ func bilinearSampling(coords, unit vec2) vec4 {
 
 ### Math functions
 
-**TODO: UNTESTED**
 ```Golang
 func fmod(value, modulo float) float {
 	return value - modulo*trunc(value/modulo)
@@ -210,7 +209,7 @@ func trunc(a float) float {
 
 ### Colors
 
-Shouldn't stay there after you optimize, but occasionally helpful for testing colors:
+Using RGB [0-255] directly can be useful while testing colors. Just make sure to optimize afterwards if needed!
 ```Golang
 func rgb(r, g, b int) vec4 {
 	return vec4(float(r)/255.0, float(g)/255.0, float(b)/255.0, 1.0)
