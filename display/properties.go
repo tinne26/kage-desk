@@ -162,7 +162,7 @@ var shaderImage0, shaderImage1, shaderImage2, shaderImage3 *ebiten.Image
 // only be 0, 1, 2 or 3.
 // 
 // By default, two sample textures are already linked for images
-// 0 and 1 (see [ImageSpiderDogCat]() and [ImageWaterfall]()).
+// 0 and 1 (see [ImageSpiderCatDog]() and [ImageWaterfall]()).
 // You can override them with your own or restore them by setting
 // their values back to nil.
 func LinkShaderImage(n int, image *ebiten.Image) {
@@ -355,19 +355,26 @@ func (self *extraUniformInfo) FormatValue(value any) string {
 var extraUniformInfoOrders []string
 
 // Allows displaying additional information for a given uniform.
-// Information will be displayed as: "infos[0]{UniformName}: {Value}infos[1]".
+// You can pass up to three strings. If you don't pass any, the
+// information will be displayed as "UniformName: {value}". The first
+// string you can pass will be used as a prefix, the second as a
+// suffix, and the third would replace the original "UniformName: "
+// completely. For example, ("Mode", "%d", "[", "]") would result
+// in "[Mode: 0]", while ("Cursor", "%vec2[0]", "", "(move cursor)",
+// "X: ") would result in something like "X: 0.14 (move cursor)".
+//
 // By default, no info is shown.
 // 
-// Example common setup:
-//   display.LinkUniformKey("Mode", 0, ebiten.KeyDigit0, ebiten.KeyNumpad0)
+// Example setup in combination with [LinkUniformKey]():
 //   display.LinkUniformKey("Mode", 1, ebiten.KeyDigit1, ebiten.KeyNumpad1)
 //   display.LinkUniformKey("Mode", 2, ebiten.KeyDigit2, ebiten.KeyNumpad2)
-//   display.SetUniformInfo("Mode", "%d", "", " [change with 0, 1, 2]")
+//   display.LinkUniformKey("Mode", 3, ebiten.KeyDigit3, ebiten.KeyNumpad3)
+//   display.SetUniformInfo("Mode", "%d", "", " [change with 1, 2, 3]")
 //
 // There are some additional special verbs for ease of use: "%vec2", "%vec3",
 // "%vec4", "%ivec2", "%ivec4", "%RGB8", "%rgb", "%RGBA8", "%rgba", "%percent",
 // "%vec2-percent", "%vec2[0]", "%vec2[1]", "%hide". If none of these are
-// helpful, consider [SetUniformFmt]() instead.
+// enough, see [SetUniformFmt]().
 func SetUniformInfo(name, verb string, infos ...string) {
 	if len(infos) > 3 {
 		panic("SetUniformInfo() doesn't accept more than three info arguments: pre, post, replace")
@@ -394,12 +401,14 @@ func SetUniformInfo(name, verb string, infos ...string) {
 	}
 }
 
-// Typically used with [SetUniformFmt](" ", display.StrFn("Some information")).
+// An adapter to return a static string from func(any). Intended
+// for [SetUniformFmt](" ", display.StrFn("Some information")).
 func StrFn(str string) func(any) string {
 	return func(any) string { return str }
 }
 
 // Similar to [SetUniformInfo](), but with a fully customizable formatter.
+// For fixed strings, you may rely on [StrFn]().
 func SetUniformFmt(name string, formatter func(any) string) {
 	info, found := extraUniformInfos[name]
 	if extraUniformInfos == nil {
