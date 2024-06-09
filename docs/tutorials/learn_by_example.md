@@ -23,8 +23,8 @@ Here we go!
 - [Gamma correction](https://github.com/tinne26/kage-desk/blob/main/examples/learn/gamma-correction): color.
 - [Filled triangle](https://github.com/tinne26/kage-desk/blob/main/examples/learn/filled-triangle): geometry.
 - [Unfilled triangle](https://github.com/tinne26/kage-desk/blob/main/examples/learn/unfilled-triangle): geometry.
-- [Filled rounded rectangle](https://github.com/tinne26/kage-desk/blob/main/examples/learn/filled-rounded-rectangle): geometry, UI.
-- [Unfilled rounded rectangle](https://github.com/tinne26/kage-desk/blob/main/examples/learn/unfilled-rounded-rectangle): geometry, UI.
+- [Filled rounded rect](https://github.com/tinne26/kage-desk/blob/main/examples/learn/filled-rounded-rect): geometry, UI.
+- [Unfilled rounded rect](https://github.com/tinne26/kage-desk/blob/main/examples/learn/unfilled-rounded-rect): geometry, UI.
 - `TODO` [Filled polygon](): geometry.
 - `TODO` [Unfilled polygon](): geometry.
 - [Black and white](https://github.com/tinne26/kage-desk/blob/main/examples/learn/black-and-white): image, color.
