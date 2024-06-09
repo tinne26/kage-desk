@@ -149,7 +149,7 @@ func Fragment(targetCoords vec4, sourceCoords vec2, _ vec4) vec4 {
 This second shader is not that different, but it has a few subtle ideas worth explaining:
 - We are computing different parts of the image all in a single pass and adding them at the end. This is a common pattern used in many shaders, but it often requires gating or filtering the partial results before summing them.
 - The reason why we didn't "filter" the results here is that `imageSrc0At()` will return `vec4(0, 0, 0, 0)` if we are requesting positions out of bounds, and *it just happens that for this particular example*, the different calculations for different parts of the image do not collide (given reasonable `VertDisplacement` values, at least).
-- For proper filtering, you could use [selectors](https://github.com/tinne26/kage-desk/blob/main/docs/snippets/selectors.md) to keep or discard specific results. Again, this is not necessary in this specific situation, but you could totally add something like `uprightColor *= whenLessThan(sourceCoords.y, imageSrc0Size().y/2)` and `mirrorColor *= whenGreaterThan(sourceCoords.y, imageSrc0Size().y/2)` to be a bit safer.
+- For proper filtering, you could use [selectors](https://github.com/tinne26/kage-desk/blob/main/docs/snippets/snippets.md#selectors) to keep or discard specific results. Again, this is not necessary in this specific situation, but you could totally add something like `uprightColor *= whenLessThan(sourceCoords.y, imageSrc0Size().y/2)` and `mirrorColor *= whenGreaterThan(sourceCoords.y, imageSrc0Size().y/2)` to be a bit safer.
 </details>
 
 Good work! We are getting close to the end now!

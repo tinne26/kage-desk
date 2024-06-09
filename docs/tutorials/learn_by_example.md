@@ -37,7 +37,7 @@ Here we go!
 - `TODO` [Grain](): screen, FX, animation.
 - `TODO` [Vignette](): screen, FX, ¿animation?.
 - `TODO` [Noise](): FX.
-- [Sphere intersect](https://github.com/tinne26/kage-desk/blob/main/examples/learn/sphere-intersect-dist): geometry, 3D.
+- [Sphere intersect dist](https://github.com/tinne26/kage-desk/blob/main/examples/learn/sphere-intersect-dist): geometry, 3D.
 - [Sphere Phong](https://github.com/tinne26/kage-desk/blob/main/examples/learn/sphere-phong): geometry, 3D, lighting.
 - `TODO` [Complex wave](): geometry, animation.
 - `TODO` [Bézier conic curve](): geometry.

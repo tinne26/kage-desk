@@ -85,7 +85,7 @@ func main() {
 The `//kage:unit pixels` is a special directive similar to Golang's compiler directives. Without it, you would be operating in texels mode. The general recommendation —and what all advanced users I know of are doing— is to use the new pixels mode. All the information in this tutorial is based on the pixel mode; if there's anything that behaves differently under the texels mode, I won't even bother telling you, so keep that in mind.
 
 > [!TIP]
-> *If you are too lazy, you can use [kageland](https://www.kageland.com/) to test Kage shaders online. You can copy paste the shader code above and just `Run` it on your browser.*
+> *If you are too lazy, you can also use [www.kageland.com](https://www.kageland.com/), a very handy playground created by [@tomlister](https://github.com/tomlister) to write and share Kage shaders from your browser. Try copy pasting the shader code above and `Run` it!*
 
 ## Load and invoke
 
@@ -246,4 +246,4 @@ Don't forget to link your images too!
 self.shaderOpts.Images[0] = yourImage
 ```
 
-If you need texture clamping / repeat, the [miscellaneous snippets](https://github.com/tinne26/kage-desk/blob/main/docs/snippets/misc.md#texture-clamping-and-repeat) page has some code for it.
+If you need texture clamping / repeat, the [snippets](https://github.com/tinne26/kage-desk/blob/main/docs/snippets/snippets.md#texture-clamping-and-repeat) page has some code for it.
