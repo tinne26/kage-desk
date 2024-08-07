@@ -89,28 +89,6 @@ func hueToRGB(p, q, t float) float {
 	return p
 }
 
-// Consider this instead if #3011 is resolved
-// func HSLToRGB(hsl vec3) vec3 {
-// 	saturation := hsl[1]
-// 	lightness  := hsl[2]
-//
-// 	c := (1 - abs(2*lightness - 1))*saturation
-// 	x := c*(1 - abs(mod((hsl[0]*60.0), 2.0) - 1))
-// 	m := lightness - c/2.0
-//	
-// 	order := [6]ivec3{
-// 		ivec3(2, 0, 1), ivec3(2, 1, 0),
-// 		ivec3(0, 1, 2), ivec3(0, 2, 1),
-// 		ivec3(1, 2, 0), ivec3(1, 0, 2),
-// 	}[int(floor(hsl[0]*6))]
-// 	var rgb vec3
-// 	rgb[order[0]] = 0 + m
-// 	rgb[order[1]] = c + m
-// 	rgb[order[2]] = x + m
-// 	_ = order
-// 	return rgb
-// }
-
 func min3(a, b, c float) float {
 	return min(min(a, b), c)
 }
