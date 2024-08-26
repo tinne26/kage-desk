@@ -57,7 +57,7 @@ You probably figured it out on your own, but as you can see, we don't use `color
 func Fragment(_ vec4, _ vec2, _ vec4) vec4
 ```
 
-We have a few input vectors of different sizes that we are ignoring for the moment, and one output `vec4`. That output vector is the color of the pixel! The vector has the four components that you may expect: red, green, blue and alpha.
+We have a few input vectors of different sizes that we are ignoring for the moment, and one output `vec4`. That output vector is the color of the pixel! The vector has the four components that you expect: red, green, blue and alpha.
 
 Vectors in Kage are made of `float` values, which are 32-bit precision. In Golang we have both `float64` and `float32`; in kage we only have `float`. Using float values also means that unlike `color.RGBA`, `vec4` components are expected in the [0, 1] range (instead of [0, 255]). Keep this in mind because it's very easy to accidentally mix it up! If you use values outside that range in the returned color, they will be clamped to 0 - 1.
 

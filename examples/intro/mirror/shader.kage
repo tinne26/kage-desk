@@ -5,16 +5,19 @@ var MirrorAlphaMult float // uniform: reflection opacity multiplier
 var VertDisplacement int  // uniform: displacement towards the center
 
 func Fragment(targetCoords vec4, sourceCoords vec2, _ vec4) vec4 {
+	originY := imageSrc0Origin().y
+	relativeSrcY := sourceCoords.y - originY
+
 	// compute top contribution
-	uprightColor := imageSrc0At(vec2(sourceCoords.x, sourceCoords.y*2 - float(VertDisplacement)))
-	uprightColor *= whenLessThan(sourceCoords.y, imageSrc0Size().y/2)
+	uprightColor := imageSrc0At(vec2(sourceCoords.x, relativeSrcY*2 + originY - float(VertDisplacement)))
+	uprightColor *= whenLessThan(relativeSrcY, imageSrc0Size().y/2)
 	
 	// compute bottom contribution
-	adjustedY := (sourceCoords.y - imageSrc0Size().y/2)*2
+	adjustedY := (relativeSrcY - imageSrc0Size().y/2)*2
 	invertedY := imageSrc0Size().y - adjustedY
-	samplingCoords := vec2(sourceCoords.x, invertedY - float(VertDisplacement))
+	samplingCoords := vec2(sourceCoords.x, invertedY + originY - float(VertDisplacement))
 	mirrorColor := imageSrc0At(samplingCoords)*MirrorAlphaMult
-	mirrorColor *= whenGreaterThan(sourceCoords.y, imageSrc0Size().y/2)
+	mirrorColor *= whenGreaterThan(relativeSrcY, imageSrc0Size().y/2)
 	
 	// return the sum of contributions
 	return uprightColor + mirrorColor

@@ -32,7 +32,7 @@ func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
 The key function for this program is `mod()`. Using `mod()` allows us to find whether the position corresponds to an even or odd pixel. Using `floor()` is not strictly necessary, but since positions are given at the center of the pixel, using floor gets rid of the 0.5 decimal part and gives us a more natural value to work with when we only want to check the "parity of the pixel index".
 </details>
 
-If your screen has any form of DPI scaling, you may see the result heavily aliased. What would you do to make the pattern bigger and easier to see? Like, alternating 8x8 pixels white and 8x8 pixels black? (You can also try with 2x2 if that makes it easier to think about the problem). This one is a bit trickier, but that's the kind of math problems you will often face with shaders. Think about it for a while!
+If your screen has any form of DPI scaling, you might see the result heavily aliased. What would you do to make the pattern bigger and easier to see? Like, alternating 8x8 pixels white and 8x8 pixels black? (You can also try with 2x2 if that makes it easier to think about the problem). This one is a bit trickier, but that's the kind of math problems you will often face with shaders. Think about it for a while!
 
 <details>
 <summary>Click to show the solution</summary>
@@ -90,7 +90,7 @@ func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4 {
 Let's break it down a bit: `sin()` expects an angle in radians. There are `2*Pi` radians in a circumference. Therefore, if we can go from `0` to `2*Pi` through the 512 pixels of the screen's vertical axis, we will have completed a full sine oscillation. We want more oscillations? Just multiply the value going into `sin()` by `NumOscillations`! Finally, we can also control the width of the sine wave by multiplying the `sin` result by `WaveWidth/2`. Since the result is already oscillating between `[-N, +N]`, we only need to add this `waveFactor` to our previous cutoff point... and now we have a fancy sine wave splitting the screen instead of a boring straight line!
 </details>
 
-You may have noticed that the edge of the sine wave is jaggy, not smooth. We will see how to improve that in later examples, so don't get too hung up on it for the time being.
+You might have noticed that the edge of the sine wave is jaggy, not smooth. We will see how to improve that in later examples, so don't get too hung up on it for the time being.
 
 If this was a bit difficult don't worry. The most important part is that you get exposed to these ideas and slowly become used to them. There are other parts of shaders that don't revolve so much around maths, but it's important to get some practice and become more familiar with these techniques if you really want to get the most out of Kage.
 

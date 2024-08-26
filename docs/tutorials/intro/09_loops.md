@@ -52,15 +52,16 @@ const CellHeight float = 12.0 // must be at least 1
 
 func Fragment(_ vec4, sourceCoords vec2, _ vec4) vec4 {
 	// find the origin of the cell we are working with
-	cellOX := floor(sourceCoords.x/CellWidth )*CellWidth
-	cellOY := floor(sourceCoords.y/CellHeight)*CellHeight
+	relativeSrcCoords := sourceCoords - imageSrc0Origin()
+	cellOX := floor(relativeSrcCoords.x/CellWidth )*CellWidth
+	cellOY := floor(relativeSrcCoords.y/CellHeight)*CellHeight
 
 	// iterate the pixelization cell
 	colorAcc := vec4(0.0) // color accumulator
 	for y := 0.0; y < CellHeight; y += 1.0 {
 		for x := 0.0; x < CellWidth; x += 1.0 {
 			pixCoords := vec2(cellOX + x, cellOY + y)
-			colorAcc += imageSrc0At(pixCoords)
+			colorAcc += imageSrc0At(pixCoords + imageSrc0Origin())
 		}
 	}
 
@@ -98,7 +99,8 @@ const MaxCellSize float = 32.0
 
 func Fragment(_ vec4, sourceCoords vec2, _ vec4) vec4 {
 	// find the origin of the cell we are working with
-	cellOrigin := floor(sourceCoords/CellSize)*CellSize
+	relativeSrcCoords := sourceCoords - imageSrc0Origin()
+	cellOrigin := floor(relativeSrcCoords/CellSize)*CellSize
 
 	// iterate the pixelization cell
 	colorAcc := vec4(0.0) // color accumulator
@@ -107,7 +109,7 @@ func Fragment(_ vec4, sourceCoords vec2, _ vec4) vec4 {
 		for x := 0.0; x < MaxCellSize; x += 1.0 {
 			if x >= CellSize { break }
 			pixCoords := cellOrigin + vec2(x, y)
-			colorAcc += imageSrc0At(pixCoords)
+			colorAcc += imageSrc0At(pixCoords + imageSrc0Origin())
 		}
 	}
 

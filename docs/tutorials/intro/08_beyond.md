@@ -81,7 +81,9 @@ func Fragment(_ vec4, sourceCoords vec2, _ vec4) vec4 {
 You should be getting a stretched spider-dog-cat. That's good. When you are writing shaders, since you can't add `Printf`s and debug code so easily, it's best to start very slowly and try to make progress step by step. You are almost ready to take it from here, but let me give you a few more tools:
 - You can use [`imageDstSize()`](https://ebitengine.org/en/documents/shader.html#Built-in_functions_(images)) to get the target image size, in pixels, within a shader.
 - You can use [<code>imageSrc<b><i>N</i></b>Size()</code>](https://ebitengine.org/en/documents/shader.html#Built-in_functions_(images)) to get the size of the source image N, in pixels, within a shader.
-- You don't really need it in this case since origins are (0, 0) everywhere, but you can use `imageDstOrigin()` and <code>imageSrc<b><i>N</b></i>Origin()</code> to get the origin coordinates of both target and source images.
+- You can use `imageDstOrigin()` and <code>imageSrc<b><i>N</b></i>Origin()</code> to get the origin coordinates of both target and source images. By default, the image origin is included in the `sourceCoords` parameter, but if you have to multiply or divide that value, you will need to subtract the origin first, adjust the relative coordinates, and then add the origin back. In general, due to Ebitengine internal atlasing, you should never rely on the origin coordinates being zero[^1].
+
+[^1]: Internal atlasing is not discussed much on Ebitengine's documentation since it's expected to be an internal concept, managed transparently so the programmer doesn't have to worry about it. Sadly, when working with shaders we sometimes have to worry about it. An internal atlas is just a big texture where all your smaller textures are automatically pushed, for better performance and automatic draw command batching. As a side effect of this, the origin of your images aren't really (0, 0) most of the time, but some arbitrary point within the internal atlas instead. Again, if you are only looking at the surrounding pixels of the given `sourceCoords`, you don't need to worry about it, but for some more complex operations everything can easily break if you forget about origins. Unmanaged images are an alternative to automatically managed atlases.
 
 Ok, the time has come: with the current setup, try to write the mirror shader by yourself. This is probably the hardest shader you will be asked to write in the tutorial, so take your time... and don't get frustrated if you fail, but at least try to come out of the attempt with *more and more concrete questions* than you had going in. This whole chapter is about tackling a non-trivial problem for the first time, so try to put some real effort into it.
 
@@ -108,12 +110,14 @@ var MirrorAlphaMult float // uniform: reflection opacity multiplier
 var VertDisplacement int  // uniform: displacement towards the center
 
 func Fragment(targetCoords vec4, sourceCoords vec2, _ vec4) vec4 {
+	originY := imageSrc0Origin().y
+	relativeSrcY := sourceCoords.y - originY
 	if targetCoords.y < imageDstSize().y/2 {
-		return imageSrc0At(vec2(sourceCoords.x, sourceCoords.y*2))
+		return imageSrc0At(vec2(sourceCoords.x, relativeSrcY*2 + originY))
 	} else {
-		adjustedY := (sourceCoords.y - imageSrc0Size().y/2)*2
+		adjustedY := (relativeSrcY - imageSrc0Size().y/2)*2
 		invertedY := imageSrc0Size().y - adjustedY
-		samplingCoords := vec2(sourceCoords.x, invertedY)
+		samplingCoords := vec2(sourceCoords.x, invertedY + originY)
 		return imageSrc0At(samplingCoords)*MirrorAlphaMult
 	}
 }
@@ -131,15 +135,18 @@ var MirrorAlphaMult float // uniform: reflection opacity multiplier
 var VertDisplacement int  // uniform: displacement towards the center
 
 func Fragment(targetCoords vec4, sourceCoords vec2, _ vec4) vec4 {
+	originY := imageSrc0Origin().y
+	relativeSrcY := sourceCoords.y - originY
+
 	// compute top contribution
-	uprightColor := imageSrc0At(vec2(sourceCoords.x, sourceCoords.y*2 - float(VertDisplacement)))
+	uprightColor := imageSrc0At(vec2(sourceCoords.x, relativeSrcY*2 + originY - float(VertDisplacement)))
 	
 	// compute bottom contribution
-	adjustedY := (sourceCoords.y - imageSrc0Size().y/2)*2
+	adjustedY := (relativeSrcY - imageSrc0Size().y/2)*2
 	invertedY := imageSrc0Size().y - adjustedY
-	samplingCoords := vec2(sourceCoords.x, invertedY - float(VertDisplacement))
+	samplingCoords := vec2(sourceCoords.x, invertedY + originY - float(VertDisplacement))
 	mirrorColor := imageSrc0At(samplingCoords)*MirrorAlphaMult
-
+	
 	// return the sum of contributions
 	return uprightColor + mirrorColor
 }
@@ -149,7 +156,7 @@ func Fragment(targetCoords vec4, sourceCoords vec2, _ vec4) vec4 {
 This second shader is not that different, but it has a few subtle ideas worth explaining:
 - We are computing different parts of the image all in a single pass and adding them at the end. This is a common pattern used in many shaders, but it often requires gating or filtering the partial results before summing them.
 - The reason why we didn't "filter" the results here is that `imageSrc0At()` will return `vec4(0, 0, 0, 0)` if we are requesting positions out of bounds, and *it just happens that for this particular example*, the different calculations for different parts of the image do not collide (given reasonable `VertDisplacement` values, at least).
-- For proper filtering, you could use [selectors](https://github.com/tinne26/kage-desk/blob/main/docs/snippets/snippets.md#selectors) to keep or discard specific results. Again, this is not necessary in this specific situation, but you could totally add something like `uprightColor *= whenLessThan(sourceCoords.y, imageSrc0Size().y/2)` and `mirrorColor *= whenGreaterThan(sourceCoords.y, imageSrc0Size().y/2)` to be a bit safer.
+- For proper filtering, you could use [selectors](https://github.com/tinne26/kage-desk/blob/main/docs/snippets/snippets.md#selectors) to keep or discard specific results. Again, this is not necessary in this specific situation, but you could totally add something like `uprightColor *= whenLessThan(relativeSrcY, imageSrc0Size().y/2)` and `mirrorColor *= whenGreaterThan(relativeSrcY, imageSrc0Size().y/2)` to be a bit safer.
 </details>
 
 Good work! We are getting close to the end now!

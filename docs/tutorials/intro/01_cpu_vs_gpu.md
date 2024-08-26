@@ -39,7 +39,7 @@ func Gradient() *image.RGBA {
 ```
 *(Full program available at [examples/intro/gradient-cpu](https://github.com/tinne26/kage-desk/blob/main/examples/intro/gradient-cpu))*
 
-To contextualize, one could use a gradient like this as the background for a videogame. We could compute it at the start of the game and store it in an image that would then be sent to the GPU. Alternatively, if we wanted to recompute this gradient on each frame... it may be better to use a shader instead. With the shader, we wouldn't need to recompute and transfer the image to the GPU on each frame: we would be passing *the shader program* to the GPU instead. In this case where the gradient doesn't change through time the first approach may be simpler, but in more complex cases shaders would start offering additional benefits.
+To contextualize, one could use a gradient like this as the background for a videogame. We could compute it at the start of the game and store it in an image that would then be sent to the GPU. Alternatively, if we wanted to recompute this gradient on each frame... it might be better to use a shader instead. With the shader, we wouldn't need to recompute and transfer the image to the GPU on each frame: we would be passing *the shader program* to the GPU instead. In this case where the gradient doesn't change through time the first approach might be simpler, but in more complex cases shaders would start offering additional benefits.
 
 With that out of the way, let's take a look at the GPU version (in pseudo-code):
 ```Golang
@@ -66,7 +66,7 @@ That's it, you have successfully executed your first Kage shader!
 > [!NOTE]
 > *Key takeaway: when creating shaders, we need to break a task into a pixel-level independent process.*
 
-[^1]: We are using this interpolation method for simplicity, but if you want to create proper color gradients what we are doing here is a crime. Color interpolation for gradients should be done on a perceptually linear color space like Oklab, or at the very least linear RGB instead of the current sRGB. You may also know about CIELAB, but in this particular case, CIELAB will give terrible results too. If you are interested in the topic, I heavily recommend you to experiment yourself with the [interactive tool](https://raphlinus.github.io/color/2021/01/18/oklab-critique.html) that Raph Levien created for one of his blogposts. Set up the green-to-blue gradient and see the differences between color models.
+[^1]: We are using this interpolation method for simplicity, but if you want to create proper color gradients what we are doing here is a crime. Color interpolation for gradients should be done on a perceptually linear color space like Oklab, or at the very least linear RGB instead of the current sRGB. You might also know about CIELAB, but in this particular case, CIELAB will give terrible results too. If you are interested in the topic, I heavily recommend you to experiment yourself with the [interactive tool](https://raphlinus.github.io/color/2021/01/18/oklab-critique.html) that Raph Levien created for one of his blogposts. Set up the green-to-blue gradient and see the differences between color models.
 
 
 ### Table of Contents

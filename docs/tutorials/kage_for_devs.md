@@ -17,7 +17,7 @@ Kage is the language used on Ebitengine to write shaders. It has a Golang-like s
 
 ## Built-in functions
 
-Almost all of them can be applied both to numerical types like `int` and `float`, but also vectors. E.g.: `abs(vec2(-1, 0)) == vec2(1, 0)`.
+Most of them can be applied to numerical types like `int` and `float`, but also vectors (e.g. `abs(vec2(-1, 0)) == vec2(1, 0)`).
 
 Key single-argument functions:
 ```Golang
@@ -36,7 +36,7 @@ mod(x, m) // %
 min(a, b); max(a, b)
 pow(x, exp)
 step(s, x) // 0 if `x < s`, 1 otherwise
-atan2(x, y) // classic `angle := atan2(x - ox, y - oy)`
+atan2(x, y) // classic `angle := atan2(y - oy, x - ox)`
 dot(x, y); cross(x, y vec3) // dot and cross products
 distance(pointA, pointB) // == length(pointA - pointB)
 ```
@@ -82,7 +82,7 @@ func main() {
 }
 ```
 
-The `//kage:unit pixels` is a special directive similar to Golang's compiler directives. Without it, you would be operating in texels mode. The general recommendation —and what all advanced users I know of are doing— is to use the new pixels mode. All the information in this tutorial is based on the pixel mode; if there's anything that behaves differently under the texels mode, I won't even bother telling you, so keep that in mind.
+The `//kage:unit pixels` is a special directive similar to Golang's compiler directives. Without it, you would be operating in texels mode. The general recommendation —and what virtually all advanced users are doing— is to use the new pixels mode. All the information in this tutorial is based on the pixel mode; if there's anything that behaves differently under the texels mode I won't even bother telling you, so keep that in mind.
 
 > [!TIP]
 > *If you are too lazy, you can also use [www.kageland.com](https://www.kageland.com/), a very handy playground created by [@tomlister](https://github.com/tomlister) to write and share Kage shaders from your browser. Try copy pasting the shader code above and `Run` it!*
@@ -93,7 +93,7 @@ If you want to compile and invoke a shader manually, here is some reference code
 
 We will build upon the following template for the next examples:
 
-[^1]: While `DrawRectShader()` can be handy in some situations, in many practical scenarios you will have to end up reaching for `DrawTrianglesShader()` anyway, so I'm of the opinion that you should just spare yourself the cognitive overhead and simply ignore the function. If you really must know, its biggest restriction is probably that all source images must match the explicit dimensions passed as the first arguments.
+[^1]: While `DrawRectShader()` can be handy in some situations, in many practical scenarios you will have to end up reaching for `DrawTrianglesShader()` anyway, so I'm of the opinion that you should spare yourself the cognitive overhead and simply ignore the function. If you really must know about the restrictions, all source images must have the same dimensions as the target area and any scaling must be handled through `GeoM`. In my opinion, the combined use of `GeoM` with shaders can make texture sizes, sampling/interpolations and so on more surprising and confusing than operating directly with vertices.
 
 ```Golang
 package main
@@ -211,7 +211,7 @@ func inDotMask(current vec2, target vec2, hardRadius, softRadius float) float {
 }
 ```
 
-As you can see, adding uniforms is as simple as declaring exported variables at the start of the file with the correct names. Vectorial types are inferred from `[]float32` slices. Implicit conversions from `float64` and `int` to the shader's `float` will also happen automatically, but using `float32` directly on the CPU side is probably better practice.
+As you can see, adding uniforms is as simple as declaring exported variables at the start of the file with the correct names. Vectorial types are inferred from `[]float32` slices. Implicit conversions from `float64` and `int` to the shader's `float` will also happen automatically, but using `float32` directly on the CPU side is probably the best practice.
 
 ## Textures
 
@@ -219,7 +219,7 @@ To sample a texture, you will typically use the `sourceCoords` input argument an
 - <code>imageSrc<b><i>N</i></b>At()</code> (replace N with {0, 1, 2, 3}): source texture sampling. Sampling is [always nearest](https://github.com/hajimehoshi/ebiten/issues/2962); if you want to perform linear interpolation you will have to do it manually. Until we make something better, you can find some interpolation implementations [here](https://github.com/tinne26/mipix/tree/main/filters)[^2].
 - <code>imageSrc<b><i>N</i></b>UnsafeAt()</code> (replace N with {0, 1, 2, 3}): like <code>imageSrc<b><i>N</i></b>At()</code>, but doesn't check whether you go out of bounds. If you go out of bounds with <code>imageSrc<b><i>N</i></b>At()</code>, you will get back `vec4(0)`. With the unsafe function, you could actually peek at the whole internal atlas.
 - <code>imageSrc<b><i>N</i></b>Size()</code> (replace N with {0, 1, 2, 3}): returns the size in pixels of the requested source texture.
-- <code>imageSrc<b><i>N</i></b>Origin()</code> (replace N with {0, 1, 2, 3}): returns the origin of the requested source texture in pixels. This is relevant when working with subimages that might not start at (0, 0). Always keep those in mind!
+- <code>imageSrc<b><i>N</i></b>Origin()</code> (replace N with {0, 1, 2, 3}): returns the origin of the requested source texture in pixels. This is not only relevant when working with subimages that might not start at (0, 0), but also any time your want to divide or multiply the coordinates. Since Ebitengine uses internal atlases, you have to subtract the origin to get the relative coordinates, transform them, and then add the origin back. Always keep that in mind!
 - `imageDstSize()` and `imageDstOrigin()`: same idea as the two previous functions, but for the target texture instead of the sources. With these you could eliminate the `Center` uniform of the previous section, for example.
 
 [^2]: Many of those shaders use `SourceRelativeTextureUnitX` and `SourceRelativeTextureUnitY` uniforms, but that can often be replaced with `units := fwidth(sourceCoords)`. Otherwise, the classic bilinear interpolation with +/-0.5 can be found at [src_bilinear.kage](https://github.com/tinne26/mipix/blob/main/filters/src_bilinear.kage) and doesn't require any uniforms. This is pretty much what Ebitengine does by default with `FilterLinear`, but with some extra clamping that you might or might not be interested in.
@@ -241,7 +241,7 @@ self.vertices[3].SrcX = float32(srcBounds.Max.X) // bottom-right
 self.vertices[3].SrcY = float32(srcBounds.Max.Y) // bottom-right
 ```
 
-Don't forget to link your images too!
+...and don't forget to link your images too!
 ```Golang
 self.shaderOpts.Images[0] = yourImage
 ```

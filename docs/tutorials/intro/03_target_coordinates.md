@@ -9,7 +9,7 @@ There are many ways, but the first step are the input parameters passed to the `
 func Fragment(targetCoords vec4, _ vec2, _ vec4) vec4
 ```
 
-As you may expect, the `targetCoords` argument tells us what pixel we are modifying. If the coordinates are `(0.5, 0.5)`, we are working with the pixel at the top-left corner of the target image. If the target is the main canvas and the `targetCoords` are `(320.5, 240.5)`, then we are probably somewhere closer to the middle of the screen. Notice that we receive the positions at the *center* of the pixel, not the corner! So, we have `(0.5, 0.5)`, not `(0, 0)`! This is kind of a subtle detail that you will almost never need to think about consciously, but if you are a dev with subpixel perfect centering OCD... it's *critical* to know.
+As you might expect, the `targetCoords` argument tells us what pixel we are modifying. If the coordinates are `(0.5, 0.5)`, we are working with the pixel at the top-left corner of the target image. If the target is the main canvas and the `targetCoords` are `(320.5, 240.5)`, then we are probably somewhere closer to the middle of the screen. Notice that we receive the positions at the *center* of the pixel, not the corner! So, we have `(0.5, 0.5)`, not `(0, 0)`! This is kind of a subtle detail that you will almost never need to think about consciously, but if you are a dev with subpixel perfect centering OCD... it's *critical* to know.
 
 Another important fact to be aware of is that position coordinates are *global*, not local. If we received a 400x400 screen image on our game's `Draw()` function and we drew a shader on the bottom right quadrant, on the shader we would see x and y coordinates go from 200.5 to 399.5, not 0.5 to 199.5.
 

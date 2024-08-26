@@ -1,7 +1,7 @@
 ## Texels in Kage
 
 > [!WARNING]
-> **Since the addition of pixels mode in Ebitengine v2.6.0, the content of this page is no longer relevant; it's offered only for historical context**.
+> **_Since the addition of pixels mode in Ebitengine v2.6.0, the content of this page is no longer relevant; it's preserved only for historical context_**.
 
 From working with Ebitengine you will know that its graphical API is based around "images". Images are simply arrays of pixels with 4 channels (red, green, blue, alpha) per pixel. Images also have an integer width and height, in pixels.
 
