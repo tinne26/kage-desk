@@ -140,19 +140,23 @@ package main
 var Cursor vec2 // in [0, 1] ranges, built-in with kage-desk/display
 
 func Fragment(_ vec4, sourceCoords vec2, _ vec4) vec4 {
+	// as an example, we offset sourceCoords based on the cursor
+	// so we can go out of bounds and see the clamping in action
+	modifiedCoords := sourceCoords + (Cursor - vec2(0.5))*200.0
+
 	minSrc0, maxSrc0 := GetSource0ClampCoords()
-	clampedCoords := clamp(sourceCoords + (Cursor - vec2(0.5))*100.0
+	clampedCoords := clamp(modifiedCoords, minSrc0, maxSrc0)
 	return imageSrc0UnsafeAt(clampedCoords)
 }
 
 func GetSource0ClampCoords() (vec2, vec2) {
-	const epsilon = 1.0/65536.0 // TODO: how small can we safely set this?
+	const epsilon = 1.0/16384.0 // TODO: how small can we safely set this?
 	origin := imageSrc0Origin()
 	return origin, origin + imageSrc0Size() - vec2(epsilon)
 }
 ```
 
-**TODO: UNTESTED** Wrap:
+Wrap:
 ```Golang
 //kage:unit pixels
 package main
@@ -160,9 +164,13 @@ package main
 var Cursor vec2 // in [0, 1] ranges, built-in with kage-desk/display
 
 func Fragment(_ vec4, sourceCoords vec2, _ vec4) vec4 {
+	// as an example, we offset sourceCoords based on the cursor
+	// so we can go out of bounds and see the clamping in action
+	modifiedCoords := sourceCoords + (Cursor - vec2(0.5))*400.0
+
 	originSrc0, endSrc0 := GetSource0Region()
-	adjustedCoords := sourceCoords + (Cursor - vec2(0.5))*100.0
-	return imageSrc0UnsafeAt(Wrap(adjustedCoords, originSrc0, endSrc0))
+	wrappedCoords := Wrap(modifiedCoords, originSrc0, endSrc0)
+	return imageSrc0UnsafeAt(wrappedCoords)
 }
 
 func GetSource0Region() (vec2, vec2) {
