@@ -90,7 +90,7 @@ Unfortunately for you, pure pixel art games are *very uncommon*. In almost all c
 In any of these cases we will need to make use of the full screen resolution:
 ```Golang
 func (_ *Game) Layout(logicWinWidth, logicWinHeight int) (int, int) {
-	scale := ebiten.DeviceScaleFactor()
+	scale := ebiten.Monitor().DeviceScaleFactor()
 	canvasWidth  := int(math.Ceil(float64(logicWinWidth )*scale))
 	canvasHeight := int(math.Ceil(float64(logicWinHeight)*scale))
 	return canvasWidth, canvasHeight
@@ -102,7 +102,7 @@ You will notice that the canvas size will be bigger than the given window size i
 This is still not enough to make use of the full screen resolution, though, as logical window sizes can be fractional. Using the `int` values from `Layout()` can still result in a lossy and blurry projection at certain sizes if window resizing is allowed... which is why Ebitengine v2.5.0 added `LayoutF()` supporting `float64` values. If your game struct implements it, Ebitengine will call `LayoutF()` instead of `Layout()`. The correct conversion is the following:
 ```Golang
 func (_ *Game) LayoutF(logicWinWidth, logicWinHeight float64) (float64, float64) {
-	scale := ebiten.DeviceScaleFactor()
+	scale := ebiten.Monitor().DeviceScaleFactor()
 	canvasWidth  := math.Ceil(logicWinWidth*scale)
 	canvasHeight := math.Ceil(logicWinHeight*scale)
 	return canvasWidth, canvasHeight
