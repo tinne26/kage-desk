@@ -103,15 +103,11 @@ This is still not enough to make use of the full screen resolution, though, as l
 ```Golang
 func (_ *Game) LayoutF(logicWinWidth, logicWinHeight float64) (float64, float64) {
 	scale := ebiten.Monitor().DeviceScaleFactor()
-	canvasWidth  := math.Ceil(logicWinWidth*scale)
-	canvasHeight := math.Ceil(logicWinHeight*scale)
-	return canvasWidth, canvasHeight
+	return logicWinWidth*scale, logicWinHeight*scale
 }
 ```
 
 Notice that `Layout()` still needs to exist with a dummy implementation (e.g. `panic("unused")`) so your struct complies with the `ebiten.Game` interface. Can't wait for `LayoutF()` to become the default in v3!
-
-The need for `math.Ceil` is an implementation detail that we shouldn't have to be aware of, but that's what we have for the moment.
 
 With all this, the "canvas" that we receive in `Draw()` will have the maximum size possible, meaning we can draw at the highest resolution supported by the screen... unless the OS gets in the way somehow (*ehem ehem macOS*).
 
