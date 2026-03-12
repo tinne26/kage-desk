@@ -150,7 +150,7 @@ func Fragment(_ vec4, sourceCoords vec2, _ vec4) vec4 {
 }
 
 func GetSource0ClampCoords() (vec2, vec2) {
-	const epsilon = 1.0/16384.0 // TODO: how small can we safely set this?
+	const epsilon = 0.001 // f16 compatible epsilon
 	origin := imageSrc0Origin()
 	return origin, origin + imageSrc0Size() - vec2(epsilon)
 }
