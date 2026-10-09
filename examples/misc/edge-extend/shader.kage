@@ -14,7 +14,7 @@ func Fragment(_ vec4, sourceCoords vec2, _ vec4) vec4 {
 }
 
 func GetSource0ClampCoords() (vec2, vec2) {
-	const epsilon = 0.001 // f16 compatible epsilon
+	const epsilon = 0.001 // compatible with f32 atlas coords up to 32768
 	origin := imageSrc0Origin()
 	return origin, (origin + imageSrc0Size()) - vec2(epsilon)
 }
